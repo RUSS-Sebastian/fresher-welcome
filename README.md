@@ -47,23 +47,6 @@ A complete Spring Boot web application built to streamline and manage all activi
 
 ## 📂 Project Structure
 
-```
-
-university-fresher-welcome/
-├── src/
-│   └── main/
-│       ├── java/com/uit/fresherwelcome/
-│       │   ├── controller/
-│       │   ├── model/
-│       │   ├── repository/
-│       │   └── service/
-│       └── resources/
-│           ├── static/
-│           ├── templates/ (if Thymeleaf)
-│           └── application.properties
-├── pom.xml
-
-````
 
 ---
 
@@ -142,7 +125,4 @@ MIT License © 2025 \[Your Name / UIT Team]
 
 > Built with 💻 by UIT Students for UIT Freshers 💙
 
-```
-
-Would you like to include actual screenshots, contributor names, or replace Thymeleaf with React/Vue in the README if your frontend is separate? I can also auto-generate a `LICENSE` or `.gitignore` file next.
 ```
