@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#java and Maven target#
+*.class
+*.jar
+*.war
+
+#logs
+*.log
+
+#OS
+.DS_Store
+Thumbs.db
+
