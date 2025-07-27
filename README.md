@@ -45,9 +45,6 @@ A complete Spring Boot web application built to streamline and manage all activi
 
 ---
 
-## 📂 Project Structure
-
-
 ---
 
 ## 🧪 Getting Started
@@ -121,8 +118,5 @@ MIT License © 2025 \[Your Name / UIT Team]
 * Spring Boot & Open Source Contributors
 * UI inspiration from various modern web apps
 
----
 
 > Built with 💻 by UIT Students for UIT Freshers 💙
-
-```
