@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get Ready To Enjoy the Events!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(#f0e5ff,#f0e5ff);
+      background-color: wheat;
+      overflow-x: hidden;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    header {
+      padding: 20px 30px;
+      background: linear-gradient(to right, rgba(74, 20, 140, 0.8), rgba(123, 31, 162, 0.9));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 100;
+      backdrop-filter: blur(5px);
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .nav-links a:hover {
+      color: #ff69b4;
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 30px;
+      position: relative;
+      min-height: 80vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; 
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to right, rgba(74, 20, 140, 0.8), rgba(123, 31, 162, 0.9));
+      z-index: 1;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-text {
+      flex: 1;
+      max-width: 600px;
+      animation: fadeInLeft 1.5s ease-out;
+      padding: 30px;
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .hero-text h1 span {
+      color: #ff69b4;
+      display: block;
+    }
+
+    .hero-text p {
+      margin: 20px 0;
+      font-size: 1.1rem;
+      color: #eee;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-text a {
+      display: inline-block;
+      padding: 12px 25px;
+      background-color: #ff69b4;
+      color: white;
+      font-weight: bold;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+    }
+
+    .hero-text a:hover {
+      background-color: #ff1493;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.6);
+    }
+
+    .hero-img {
+      flex: 1;
+      max-width: 400px;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+      opacity: 0.9;
+    }
+
+    .hero-img img {
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .events-section {
+      padding: 80px 20px;
+      background: darkorchid;
+      background-color:darkorchid;
+      text-align: center;
+      position: relative;
+    }
+
+    .events-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom,whitesmoke, rgba(123, 31, 162, 0.8));
+      z-index: -1;
+    }
+
+    .events-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      animation: fadeInUp 1.5s ease;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .events-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .event-box {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      width: 280px;
+      transition: all 0.4s ease;
+      animation: fadeInUp 2s ease;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(255, 105, 180, 0.4);
+      background: darkmagenta;
+    }
+
+    .event-box h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    .event-box p {
+      color: #eee;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .event-box a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .event-box a:hover {
+      background-color: #ff1493;
+      transform: translateY(-3px);
+    }
+
+    /* Animations */
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-content {
+        flex-direction: column;
+      }
+      
+      .hero-img {
+        margin-top: 40px;
+        max-width: 350px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding-top: 120px;
+      }
+
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .events-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .event-box {
+        width: 100%;
+        max-width: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Event Horizon</div>
+    <div class="nav-links">
+      <a href="/Page/home.html">Home</a>
+      <a href="#events">Events</a>
+      <a href="#">Contact</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Get Ready to Enjoy <br><span>The EVENTS</span></h1>
+        <p>Experience unforgettable moments with our exciting event lineup - from mystical tarot readings to electrifying dance performances!</p>
+        <a href="#events">View Events</a>
+      </div>
+      <div class="hero-img">
+        <img src="/images/ghibi.jpg" alt="Event illustration">
+      </div>
+    </div>
+  </section>
+
+  <section class="events-section" id="events">
+    <h2>Our Event Categories</h2>
+    <div class="events-container">
+      <div class="event-box">
+        <h3>🔮 Mystical Tarot</h3>
+        <p>Discover what the cards reveal about your future in our enchanting tarot reading sessions.</p>
+        <a href="tarot.html">Explore Now</a>
+      </div>
+      <div class="event-box">
+        <h3>💃 Electric Dance</h3>
+        <p>Feel the rhythm and move to the beat at our high-energy dance competition.</p>
+        <a href="dance.html">Join the Dance</a>
+      </div>
+      <div class="event-box">
+        <h3>🎤 Starry Singing</h3>
+        <p>Showcase your vocal talent or enjoy soulful performances at our singing night.</p>
+        <a href="sing.html">Participate Now</a>
+      </div>
+      
+      </div>
+  </section>
+
+</body>
+</html>
+

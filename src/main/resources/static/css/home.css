@@ -1,0 +1,137 @@
+body {
+    background: linear-gradient(to bottom, #F2E6EE, #977DFF);
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 0;
+   padding: 0;
+  }
+
+  .special-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.5rem;
+    line-height: 1.2;
+   margin: 0;
+  }
+
+  /*.decoration-box {
+    border: 4px double #000;
+    padding: 20px 40px;
+    width: fit-content;
+    border-radius: 25px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+  }*/
+
+  .rounded-box {
+    border: 2px solid #444;
+    border-radius: 20px;
+    padding: 20px 10px;
+    background-color: #ffffffb9;
+    cursor: pointer;
+    text-align: center;
+    min-height: 180px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rounded-box:hover {
+    background-color: #e8dbf8;
+    transform: scale(1.05);
+  }
+
+  .rounded-box img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+
+  .rounded-box p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+  } 
+
+
+  .banner-wrapper {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .banner-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .banner-full {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  
+  .banner-full img {
+    width: 100%;
+    height: 250px; /* ✅ Adjusted height to be less tall */
+    object-fit: cover;
+    display: block;
+    border-bottom: 4px solid #977DFF; /* optional for styling */
+  }
+
+ /* @media (min-width: 768px) {
+    .row > .col-12.d-flex {
+      margin-top: -10px;
+      margin-bottom: -10px;
+    }
+  }*/
+
+  /*.scroll-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 20px 30px;
+    border: 3px solid black;
+    border-radius: 20px;
+    width: fit-content;
+    margin: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .scroll-text {
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .scroll-banner .special-title {
+    font-size: 2.4rem;
+    line-height: 1;
+  }
+
+  .scroll-banner .logo-font {
+    font-size: 1.8rem;
+    font-family: 'Special Elite', cursive;
+  }
+  
+  .scroll-end {
+    width: 20px;
+    height: 80px;
+    background-color: #fff;
+    border: 3px solid black;
+    border-radius: 50px;
+  }
+  
+  .scroll-end.left {
+    border-right: none;
+    margin-right: -10px;
+  }
+  
+  .scroll-end.right {
+    border-left: none;
+    margin-left: -10px;
+  } */

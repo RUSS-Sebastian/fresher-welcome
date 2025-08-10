@@ -1,0 +1,192 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Times New Roman', serif;
+  overflow: hidden;
+   background: linear-gradient(to bottom, #F2E6EE, #977DFF);
+  color: white;
+}
+
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #5f65d6, #9fa4ff);
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/*h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-shadow: 0 0 30px black;
+}*/
+
+h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  background: linear-gradient(to right, #FFD700, #FF69B4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    2px 2px 0 #000,
+    4px 4px 10px rgba(0, 0, 0, 0.5),
+    0 0 20px #FF69B4;
+  transform: perspective(500px) rotateX(5deg);
+  letter-spacing: 1px;
+}
+
+.btn-ready {
+  background: linear-gradient(to right, #FF69B4, #FFD700);
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.btn-ready:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(238,130,238,0.2) 0%, transparent 70%),
+    radial-gradient(circle at 70% 40%, rgba(238,130,238,0.15) 0%, transparent 70%),
+    radial-gradient(circle at 50% 80%, rgba(238,130,238,0.1) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+  animation: flicker 6s infinite ease-in-out alternate;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.split {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #1a001f;
+  z-index: 3;
+  transition: transform 1s ease-in-out;
+}
+
+.left-split {
+  left: 0;
+  border-right: 2px solid violet;
+}
+
+.right-split {
+  right: 0;
+  border-left: 2px solid violet;
+}
+
+.animate-left {
+  transform: translateX(-100%);
+}
+
+.animate-right {
+  transform: translateX(100%);
+}
+
+.reveal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.reveal-img {
+  max-width: 200px;
+  border: 5px solid violet;
+  border-radius: 10px;
+  box-shadow: 0 0 20px violet;
+}
+
+.reveal-content.fade-in {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+
+body.split-animation {
+  overflow: hidden;
+  position: relative;
+}
+
+body.split-animation::before,
+body.split-animation::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  width: 50vw;
+  height: 100vh;
+  background: #060913; /* or your background */
+  z-index: 9999;
+  transition: transform 1s ease;
+}
+
+body.split-animation::before {
+  left: 0;
+  transform: translateX(0);
+}
+
+body.split-animation::after {
+  right: 0;
+  transform: translateX(0);
+}
+
+/* On animation trigger, slide halves out */
+body.split-animation.active::before {
+  transform: translateX(-100%);
+}
+
+body.split-animation.active::after {
+  transform: translateX(100%);
+}
