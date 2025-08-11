@@ -163,7 +163,7 @@ body {
 
 /* UPDATED GRADIENT COLORS: #efe1ee → #9a80ff */
 .toggle {
-  background: linear-gradient(to right, #efe1ee, #9a80ff);
+  background: #9a80ff;
   color: #fff;
   position: relative;
   left: -100%;
