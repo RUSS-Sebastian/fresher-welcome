@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback Form</title>
+    <link rel="stylesheet" href="/css/feed.css">
+</head>
+<body>
+<div class="feedback-container">
+    <button class="back-btn" onclick="window.location.href='/protected/home'">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <h1>Feedback Form</h1>
+    <p>We'd love to hear your thoughts about our service</p>
+
+    <div class="form-group">
+        <label for="feedback">Your Feedback</label>
+        <textarea id="feedback" placeholder="Please share your experience..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Rating</label>
+        <div class="star-rating">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span> <!-- 6th star -->
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="service">Feedback Type</label>
+        <select id="service">
+            <option value="">Select feedback type</option>
+            <option value="EVENT_EXPERIENCE">Event Experience</option>
+            <option value="EMOTIONAL_MOOD">Emotional / Mood</option>
+            <option value="SYSTEM_PLATFORM">System / Platform</option>
+            <option value="IMPROVEMENT_ORIENTED">Improvement-Oriented</option>
+            <option value="OPEN_ENDED_PERSONAL">Open-Ended / Personal</option>
+        </select>
+    </div>
+
+    <button class="submit-btn">Submit Feedback</button>
+</div>
+
+<script>
+
+    let CURRENT_USER_ID = null;
+    let csrfToken = null;
+    let csrfHeaderName = null;
+    let rating = 0;
+
+    const feedbackTextarea = document.getElementById('feedback');
+    const serviceSelect = document.getElementById('service');
+    const submitBtn = document.querySelector('.submit-btn');
+
+    // Fetch current user and CSRF token when page loads
+    async function initializeFeedbackForm() {
+        try {
+            const userRes = await fetch('/api/users/me');
+            const userData = await userRes.json();
+            CURRENT_USER_ID = userData.id;
+
+            const csrfRes = await fetch('/csrf-token');
+            const csrfData = await csrfRes.json();
+            csrfToken = csrfData.token;
+            csrfHeaderName = csrfData.headerName;
+
+        } catch (err) {
+            console.error("Initialization failed:", err);
+            alert("Failed to initialize form. Please reload the page.");
+        }
+    }
+
+    initializeFeedbackForm();
+
+    // Star rating functionality
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            rating = index + 1; // track star count
+            stars.forEach((s, i) => s.classList.toggle('active', i < rating));
+        });
+    });
+
+    // Submit feedback
+    submitBtn.addEventListener('click', async () => {
+        const comment = feedbackTextarea.value.trim();
+        const feedbackType = serviceSelect.value;
+
+        // First check required initialization data
+        if (!CURRENT_USER_ID || !csrfToken || !csrfHeaderName) {
+            alert("Form not fully initialized. Please reload the page.");
+            return;
+        }
+
+        // Then check user input
+        if (!comment) { alert("Please enter your feedback."); return; }
+        if (!rating || rating < 1 || rating > 6) { alert("Please select a rating (1-6)."); return; }
+        if (!feedbackType) { alert("Please select a feedback type."); return; }
+
+        const feedbackData = {
+            userId: CURRENT_USER_ID,
+            comment: comment,
+            rating: rating,
+            feedbackType: feedbackType
+        };
+;
+        try {
+            const response = await fetch('/api/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeaderName]: csrfToken
+                },
+                body: JSON.stringify(feedbackData)
+            });
+
+            if (response.ok) {
+                alert('Feedback submitted successfully!');
+                window.location.href = '/protected/home';
+            } else {
+                const errText = await response.text();
+                alert('Failed to submit feedback: ' + errText);
+            }
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            alert('Error submitting feedback. See console.');
+        }
+    });
+
+</script>
+</body>
+</html>

@@ -107,18 +107,29 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   const password = document.getElementById('password2').value;
 
   try {
+
+    // First fetch CSRF token
+    const csrfResponse = await fetch('/csrf-token');
+    const csrfData = await csrfResponse.json();
+
     const response = await fetch('http://localhost:8080/api/users/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json',
+        [csrfData.headerName]: csrfData.token
+      },
       body: JSON.stringify({ name, password })
     });
 
     if (response.ok) {
       // Login success: redirect to home.html
-      window.location.href = '/Page/home.html';
+      window.location.href = '/protected/home';
     } else {
       const errorText = await response.text();
-      errorElem.textContent = errorText || 'Login failed';
+      alert(errorText || 'Login failed');
+
+         // Clear form fields
+      document.getElementById('loginForm').reset();
+
     }
   } catch (err) {
     errorElem.textContent = 'Network error: ' + err.message;

@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.util.List;
 
 @Entity
 @Table(name = "users")  // table name in DB
@@ -36,6 +37,18 @@ public class User {
     @NotBlank
     @Pattern(regexp = "male|female|other", message = "Gender must be male, female, or other")
     private String gender;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Feedback> feedbackList;
+
+
+    public List<Feedback> getFeedbackList() {
+        return feedbackList;
+    }
+
+    public void setFeedbackList(List<Feedback> feedbackList) {
+        this.feedbackList = feedbackList;
+    }
 
     // Constructors
     public User() {}

@@ -2,6 +2,8 @@ package com.example.fresherwelcome.service;
 
 import com.example.fresherwelcome.model.User;
 import com.example.fresherwelcome.repository.UserRepo;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -50,4 +52,24 @@ public class UserService {
         // Check raw password matches hashed password stored in DB
         return passwordEncoder.matches(rawPassword, user.getHashedPassword());
     }
+
+
+    public Optional<User> getUserByName(String name) {
+        return userRepo.findByName(name);
+    }
+
+    public User getCurrentUser(Authentication authentication) {
+        // Debug logs
+        System.out.println("=== UserService.getCurrentUser ===");
+        System.out.println("Authentication: " + authentication);
+        System.out.println("Username/email: " + authentication.getName());
+
+        String email = authentication.getName();
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        System.out.println("User fetched from DB: " + user.getName() + " (" + user.getId() + ")");
+        return user;
+    }
+
 }

@@ -20,7 +20,7 @@
       }
 
       else if(section=='feedback'){
-        window.location.href='feed.html';
+        window.location.href='/protected/feed';
       }
 
       else{
