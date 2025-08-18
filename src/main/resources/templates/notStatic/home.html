@@ -60,6 +60,37 @@
     </div>
 </div>
 
+<!-- Admin button -->
+<button id="admin-dashboard-btn" style="display:none;background:none; border:none;">
+    Go to Admin Dashboard
+</button>
+
+<!-- Username display -->
+<div id="username-container">
+    Logged in as: <span id="username-text"></span>
+</div>
+
+
+
+<button type="button" class="logout-button" style="background:none; border:none;">
+    <img src="https://img.icons8.com/ios-filled/24/logout-rounded.png"
+         alt="Logout Icon"
+         style="vertical-align: middle; margin-right: 8px;">
+    Logout
+</button>
+
+
+<!-- Custom Modal -->
+<div id="logout-modal" class="modal-overlay">
+    <div class="modal-content">
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons">
+            <button id="confirm-yes" class="btn-yes">Yes</button>
+            <button id="confirm-no" class="btn-no">No</button>
+        </div>
+    </div>
+</div>
+
 <!-- JS -->
 <script th:src="@{/js/script.js}"></script>
 </body>

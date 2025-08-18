@@ -24,11 +24,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userService.getUserByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
+        // Assign role dynamically based on user.getRole()
+        String role = "ROLE_" + user.getRole().toUpperCase(); // ROLE_ADMIN or ROLE_STUDENT
+        System.out.println(role+" for "+ user.getName());
         // Convert your User to Spring Security's UserDetails
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getHashedPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")) // Assign roles here
+                Collections.singletonList(new SimpleGrantedAuthority(role)) // Assign roles here
         );
     }
 }

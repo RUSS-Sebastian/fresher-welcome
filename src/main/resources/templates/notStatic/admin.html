@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdn.datatables.net/v/dt/dt-2.3.2/datatables.min.css" rel="stylesheet" integrity="sha384-d76uxpdVr9QyCSR9vVSYdOAZeRzNUN8A4JVqUHBVXyGxZ+oOfrZVHC/1Y58mhyNg" crossorigin="anonymous">
+
+    <script src="https://cdn.datatables.net/v/dt/dt-2.3.2/datatables.min.js" integrity="sha384-JRUjeYWWUGO171YFugrU0ksSC6CaWnl4XzwP6mNjnnDh4hfFGRyYbEXwryGwLsEp" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body>
+
+<nav class="navbar navbar-custom d-flex justify-content-between align-items-center bg-white">
+    <div id="menuBtn" class="menu-icon p-3">&#9776;</div>
+
+    <!-- Profile Dropdown (hover-enabled) -->
+    <div class="dropdown-container position-relative d-flex align-items-center gap-2 p-3">
+        <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+        <span class="username text-dark"></span>
+        <i class="bi bi-caret-down-fill dropdown-toggle-icon"></i>
+
+        <!-- Dropdown menu -->
+        <div class="dropdown-menu-custom position-absolute bg-white shadow-sm">
+            <a href="#" class="dropdown-item-custom d-flex align-items-center gap-2 text-decoration-none">
+                <i class="bi bi-person-lines-fill"></i> Profile
+            </a>
+            <a href="#" class="dropdown-item-custom d-flex align-items-center gap-2 text-decoration-none">
+                <i class="bi bi-box-arrow-right"></i> Log out
+            </a>
+            <a href="/protected/home" class="dropdown-item-custom d-flex align-items-center gap-2 text-decoration-none">
+                <i class="bi bi-house-fill"></i> Home
+            </a>
+        </div>
+    </div>
+
+</nav>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar p-2 bg-white">
+    <ul class="list-unstyled">
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-stars px-2"></i>
+                <span class="link-text">Starters</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-people-fill px-2"></i>
+                <span class="link-text">Volunteer</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-basket-fill px-2"></i>
+                <span class="link-text">Food Seller</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-lightning-fill px-2"></i>
+                <span class="link-text">Activity</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-bar-chart-line-fill px-2"></i>
+                <span class="link-text">Voting</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-calendar-event-fill px-2"></i>
+                <span class="link-text">Event</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-chat-left-text-fill px-2"></i>
+                <span class="link-text">Feedback</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+
+
+<div class="content-area d-flex gap-1">
+    <div class="main-content p-4  gap-4">
+        <div class="feature-box" data-name="Volunteer">
+            <span class="title">Volunteer</span>
+            <div class="dropdown-box">Start</div>
+        </div>
+
+        <div class="feature-box" data-name="Food sell">
+            <span class="title">Food sell</span>
+            <div class="dropdown-box">Start</div>
+        </div>
+
+        <div class="feature-box" data-name="Activity">
+            <span class="title">Activity</span>
+            <div class="dropdown-box">Start</div>
+        </div>
+
+        <div class="feature-box" data-name="Voting">
+            <span class="title">Voting</span>
+            <div class="dropdown-box">Start</div>
+        </div>
+    </div>
+
+
+    <!--Events Container-->
+
+    <div id="EventCard" class="EventCard w-100">
+        <table id="eventTable" class="eventTable display w-100">
+            <thead>
+            <tr>
+                <th>Event</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th  id="clickableHeaderRow">Add New <i class="bi bi-plus-circle" style="color:blue;"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Start of sample data -->
+            <tr><td>Annual Tech Meetup</td><td>New York</td><td class="description">Networking event for tech enthusiasts.</td><td>2025-06-11 10:24</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Startup Pitch Night</td><td>San Francisco</td><td class="description">Startups pitch to a panel of investors.</td><td>2025-05-03 18:45</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Design Sprint Bootcamp</td><td>Chicago</td><td class="description">Learn the Google Ventures design sprint process.</td><td>2025-03-14 09:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Cybersecurity Summit</td><td>Austin</td><td class="description">Industry leaders discuss latest cyber threats.</td><td>2025-07-01 13:30</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Blockchain Expo</td><td>Denver</td><td class="description">Explore innovations in blockchain technology.</td><td>2025-01-21 14:15</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Data Science Conference</td><td>Seattle</td><td class="description">Deep dive into modern data science workflows.</td><td>2024-12-04 10:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Product Launch</td><td>Los Angeles</td><td class="description">Introducing our new AI-powered tool.</td><td>2025-02-10 16:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Remote Work Webinar</td><td>Online</td><td class="description">How to lead distributed teams effectively.</td><td>2025-07-20 19:30</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>FOSS Hackathon</td><td>Portland</td><td class="description">48-hour open source hackathon challenge.</td><td>2024-11-16 08:45</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            <tr><td>Marketing Masterclass</td><td>Boston</td><td class="description">Advanced strategies for digital marketing.</td><td>2025-04-28 11:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <!-- Feedback Card Container -->
+    <div id="feedbackCard" class="feedback-card w-50">
+
+        <table id="feedbackTable" class="feedback-table  display">
+            <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Type</th>
+                <th>Time</th>
+                <th>Rating</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+
+
+
+    <!-- Feedback Detail Popup -->
+    <div id="feedbackPopup" class="popup-overlay" style="display:none;">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <p><strong>User ID:</strong> <span id="popupUserId"></span></p>
+            <p>
+                <strong>Feedback Type:</strong>
+                <span id="popupFeedbackType" class="badge">Bug Report</span>
+            </p>
+            <p><strong>Time:</strong> <span id="popupTime"></span></p>
+            <p>
+                <strong>Rating:</strong>
+                <span id="popupStars" class="stars-container"></span>
+            </p>
+            <p><strong>Message:</strong></p>
+            <textarea id="popupMessage" placeholder="User message here..." rows="5" readonly></textarea>
+        </div>
+    </div>
+
+    <!-- ✅ Right: Black container -->
+    <div id="sideInfo" class="bg-white text-dark p-5 rounded">
+        <h2 class="text-dark mb-1 ">Feedback Type Distribution</h2>
+        <canvas id="feedbackPie" class="chart-canvas"></canvas>
+        <div id="feedbackSummary" class="mt-1"></div> <!-- New container for text summary -->
+    </div>
+
+
+
+
+    <div id="kingInfo" class="bg-white text-dark p-5 rounded ">
+        <h5 class="text-dark mb-1 text-center">King Statistics</h5>
+
+        <canvas id="KingPie" class="chart-canvas"></canvas>
+        <div id="KingSummary" class="mt-1"></div>
+    </div>
+
+    <div id="QueenInfo" class="bg-white text-dark p-5 rounded ">
+        <h5 class="text-dark mb-1 text-center">Queen Statistics</h5>
+
+        <canvas id="QueenPie" class="chart-canvas"></canvas>
+        <div id="QueenSummary" class="mt-1"></div>
+    </div>
+
+
+
+    <div id="VoteCard" class="VoteCard mt-3 bg-white rounded w-100">
+        <table id ="voteTable" class="voteTable display p-3">
+
+            <thead>
+            <tr>
+                <th>TNT</th>
+                <th>Voted for (Boy)</th>
+                <th>Voted for (Girl)</th>
+                <th>Voted time</th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>1452</td>
+                <td>James</td>
+                <td>Emily</td>
+                <td>2025-08-09 10:15</td>
+                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
+            </tr>
+            <tr>
+                <td>832</td>
+                <td>Michael</td>
+                <td>Olivia</td>
+                <td>2025-08-09 10:20</td>
+                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
+            </tr>
+            <tr>
+                <td>2107</td>
+                <td>William</td>
+                <td>Ava</td>
+                <td>2025-08-09 10:25</td>
+                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
+            </tr>
+            <tr>
+                <td>677</td>
+                <td>David</td>
+                <td>Sophia</td>
+                <td>2025-08-09 10:30</td>
+                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
+            </tr>
+            <tr>
+                <td>1599</td>
+                <td>Joseph</td>
+                <td>Isabella</td>
+                <td>2025-08-09 10:35</td>
+                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div id="ActivityCard" class="ActivityCard w-100">
+        <table id="activityTable" class="activity-table">
+            <thead class="table-header">
+            <tr>
+                <th>User ID</th>
+                <th>Name (Activity)</th>
+                <th>Duration (MM:SS)</th>
+                <th>Members</th>
+                <th>Telegram Username</th>
+                <th>Activity Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="roleTable">
+            <tr class="table-row">
+                <td class="table-cell">
+                    <span class="user-id">#001</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <span class="font-semibold text-gray-900">Stage Lighting</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <span class="duration">05:30</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">3</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@lightmaster</a>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <p class="description-text text-sm">Responsible for controlling stage lights and effects during the performance to enhance mood and visibility.</p>
+                </td>
+                <td class="table-cell">
+                            <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending
+                            </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveActivity(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectActivity(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    <span class="user-id">#002</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <span class="font-semibold text-gray-900">Lead Singer</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <span class="duration">04:15</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">1</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@vocals_queen</a>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <p class="description-text text-sm">Main vocalist performing the lead parts of the song, engaging the audience, and maintaining energy throughout.</p>
+                </td>
+                <td class="table-cell">
+                            <span class="status-badge status-approved">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                Approved
+                            </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" disabled>
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" disabled>
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    <span class="user-id">#003</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <span class="font-semibold text-gray-900">Sound Engineer</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <span class="duration">06:00</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">2</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@soundguru</a>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <p class="description-text text-sm">Handles microphone levels, background music mixing, and ensures optimal audio output for both stage and livestream.</p>
+                </td>
+                <td class="table-cell">
+                            <span class="status-badge status-rejected">
+                                <i class="fas fa-times-circle mr-1"></i>
+                                Rejected
+                            </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" disabled>
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" disabled>
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="FoodCard" class="FoodCard w-100" tabindex="0">
+        <table id="foodTable" class="food-table">
+            <thead class="table-header">
+            <tr>
+                <th>User ID</th>
+                <th>Telegram Username</th>
+                <th>Legal Name</th>
+                <th>Current Semester</th>
+                <th>Food Name</th>
+                <th>Seller Type</th>
+                <th>Price</th>
+                <th>Preferred Location</th>
+                <th>Is Food Set</th>
+                <th>Food Description</th>
+                <th>Assigned Location</th>
+                <th>Assign Location</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-row">
+                <td class="table-cell">
+                    <span class="user-id">#101</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@foodlover1</a>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <span class="font-semibold text-gray-900">John Doe</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fas fa-graduation-cap text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">3</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+
+                        <span class="font-semibold text-gray-900">Chicken Biryani</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <span class="seller-type seller-individual">Individual Seller</span>
+                </td>
+                <td class="table-cell">
+                    <span class="price">$5.00</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
+                        <span class="text-gray-700">Location 1</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                            <span class="food-set-badge food-set-true">
+                                <i class="fas fa-check mr-1"></i>
+                                Yes
+                            </span>
+                </td>
+                <td class="table-cell">
+                    <p class="description-text text-sm description">Spicy and aromatic biryani af as aosfsuaf ascasjps s asfwa;</p>
+                </td>
+                <td class="table-cell">
+                    <span class="assigned-location assigned-none" data-assigned="None">None</span>
+                </td>
+                <td class="table-cell">
+                    <div class="relative">
+                        <button class="assign-btn" onclick="toggleDropdown(this)">
+                            Assign Location
+                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                        </button>
+                        <div class="dropdown">
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 1')">Location 1</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 2')">Location 2</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 3')">Location 3</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 4')">Location 4</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 5')">Location 5</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="table-cell">
+                            <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending
+                            </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveFood(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    <span class="user-id">#202</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@tastyfoods</a>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <span class="font-semibold text-gray-900">Jane Smith</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fas fa-graduation-cap text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">7</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+
+                        <span class="font-semibold text-gray-900">Vegetable Salad</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                    <span class="seller-type seller-partnership">Partnership</span>
+                </td>
+                <td class="table-cell">
+                    <span class="price">$3.50</span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
+                        <span class="text-gray-700">Location 2</span>
+                    </div>
+                </td>
+                <td class="table-cell">
+                            <span class="food-set-badge food-set-false">
+                                <i class="fas fa-times mr-1"></i>
+                                No
+                            </span>
+                </td>
+                <td class="table-cell">
+                    <p class="description-text text-sm description">Fresh garden vegetables and djsa skpaf a aspw f jap asfhqp</p>
+                </td>
+                <td class="table-cell">
+                    <span class="assigned-location assigned-none" data-assigned="None">None</span>
+                </td>
+                <td class="table-cell">
+                    <div class="relative">
+                        <button class="assign-btn" onclick="toggleDropdown(this)">
+                            Assign Location
+                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                        </button>
+                        <div class="dropdown">
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 1')">Location 1</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 2')">Location 2</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 3')">Location 3</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 4')">Location 4</div>
+                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 5')">Location 5</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="table-cell">
+                            <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending
+                            </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveFood(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <div id="VolCard" class="VolCard w-100">
+        <table id="VolunteerTable" class="VolunteerTable display">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Full Name</th>
+                <th>Username (Telegram)</th>
+                <th>Semester</th>
+                <th>Preferred Role</th>
+                <th>Availability</th>
+                <th>Status</th>
+                <th></th> <!-- No name for this column -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Alice Johnson</td>
+                <td>@alice_j</td>
+                <td>3</td>
+                <td>Event Organizer</td>
+                <td>Weekdays</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
+                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Bob Smith</td>
+                <td>@bob_smith</td>
+                <td>5</td>
+                <td>Social Media</td>
+                <td>Evenings Only</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
+                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Clara Lee</td>
+                <td>@clara_lee</td>
+                <td>2</td>
+                <td>Volunteer Coordinator</td>
+                <td>Flexible Schedule</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
+                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>David Kim</td>
+                <td>@davidkim</td>
+                <td>7</td>
+                <td>Logistics</td>
+                <td>Weekends</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
+                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Emma Brown</td>
+                <td>@emma_b</td>
+                <td>4</td>
+                <td>Support Staff</td>
+                <td>Morning Only</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
+                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Popup container -->
+<div id="location-popup" class="popupFood">
+    <ul>
+        <li>Location 1</li>
+        <li>Location 2</li>
+        <li>Location 3</li>
+        <li>Location 4</li>
+        <li>Location 5</li>
+    </ul>
+</div>
+<!-- The popup -->
+
+<!-- Modal for Adding Event -->
+<div class="modal fade" id="popupEvent" tabindex="-1" aria-labelledby="popupEventLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form id="eventForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="popupEventLabel">Add New Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: aliceblue;"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Event Name -->
+                <div class="mb-3">
+                    <label for="eventName" class="form-label">Event Name</label>
+                    <input type="text" class="form-control" id="eventName" required>
+                </div>
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="eventLocation" class="form-label">Location (Format: Room-123)</label>
+                    <input type="text" class="form-control" id="eventLocation" pattern="Room-\d{3}" required>
+                    <div class="form-text">Format: Room-123</div>
+                </div>
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="eventDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="eventDescription" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save Event</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+<script>
+
+
+
+   $(document).ready(function() {
+       $('#eventTable').DataTable({
+           autoWidth: false
+
+           });  // ← Initializes the table
+   });
+
+
+   document.addEventListener('DOMContentLoaded', function () {
+       const kingLabels = ['King1', 'King2', 'King3', 'King4'];
+       const voteData = [12, 15, 9, 10];  // Number of votes for each
+
+       const totalVotes = voteData.reduce((acc, val) => acc + val, 0);
+       const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'];
+
+       // Create pie chart
+       const ctx = document.getElementById('KingPie').getContext('2d');
+       const kingChart = new Chart(ctx, {
+           type: 'doughnut',
+           data: {
+               labels: kingLabels,
+               datasets: [{
+                   data: voteData,
+                   backgroundColor: backgroundColors,
+               }]
+           },
+           options: {
+               responsive:true,
+               maintainAspectRatio: true,
+               plugins: {
+                   tooltip: {
+                       callbacks: {
+                           label: function(context) {
+                               const label = context.label || '';
+                               const value = context.raw;
+                               const percentage = ((value / totalVotes) * 100).toFixed(1);
+                               return `${label}: ${value} votes (${percentage}%)`;
+                           }
+                       }
+                   },
+                   legend: {
+                       position: 'bottom',
+                   },
+                   datalabels: {
+                       color: '#fff',
+                       formatter: (value, context) => {
+                           const percentage = ((value / totalVotes) * 100).toFixed(1);
+                           return `${percentage}%`;
+                       }
+                   }
+               }
+           },
+           plugins: [ChartDataLabels] // Enable datalabels plugin
+       });
+
+       // Populate summary
+       const summaryDiv = $('#KingSummary');
+       kingLabels.forEach((label, index) => {
+           const votes = voteData[index];
+           const percent = ((votes / totalVotes) * 100).toFixed(1);
+           const color = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'][index]; // sync with chart colors
+
+
+           summaryDiv.append(`
+               <div class="d-flex justify-content-center align-items-center mb-2 ">
+                   <div style="width: 15px; height: 15px; background-color: ${color}; margin-right: 10px; border-radius: 3px;"></div>
+                   <div><strong>${label}</strong>: ${votes} vote${votes !== 1 ? 's' : ''} (${percent}%)</div>
+               </div>
+           `);
+       });
+
+
+
+   });
+
+
+
+   document.addEventListener('DOMContentLoaded', function () {
+       const queenLabels = ['Q1', 'Que2', 'Que3', 'Que4'];
+       const voteData = [32, 10, 28, 20];  // Number of votes for each
+
+       const totalVotes = voteData.reduce((acc, val) => acc + val, 0);
+       const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'];
+
+       // Create pie chart
+       const ctx = document.getElementById('QueenPie').getContext('2d');
+       const queenChart = new Chart(ctx, {
+           type: 'doughnut',
+           data: {
+               labels: queenLabels,
+               datasets: [{
+                   data: voteData,
+                   backgroundColor: backgroundColors,
+               }]
+           },
+           options: {
+               responsive:true,
+               maintainAspectRatio: true,
+               plugins: {
+                   tooltip: {
+                       callbacks: {
+                           label: function(context) {
+                               const label = context.label || '';
+                               const value = context.raw;
+                               const percentage = ((value / totalVotes) * 100).toFixed(1);
+                               return `${label}: ${value} votes (${percentage}%)`;
+                           }
+                       }
+                   },
+                   legend: {
+                       position: 'bottom',
+                   },
+                   datalabels: {
+                       color: '#fff',
+                       formatter: (value, context) => {
+                           const percentage = ((value / totalVotes) * 100).toFixed(1);
+                           return `${percentage}%`;
+                       }
+                   }
+               }
+           },
+           plugins: [ChartDataLabels] // Enable datalabels plugin
+       });
+
+       // Populate summary
+       const summaryDiv = $('#QueenSummary');
+       queenLabels.forEach((label, index) => {
+           const votes = voteData[index];
+           const percent = ((votes / totalVotes) * 100).toFixed(1);
+           const color = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'][index]; // sync with chart colors
+
+
+           summaryDiv.append(`
+               <div class="d-flex justify-content-center align-items-center mb-2 ">
+                   <div style="width: 15px; height: 15px; background-color: ${color}; margin-right: 10px; border-radius: 3px;"></div>
+                   <div><strong>${label}</strong>: ${votes} vote${votes !== 1 ? 's' : ''} (${percent}%)</div>
+               </div>
+           `);
+       });
+
+
+
+   });
+
+
+   $(document).ready(function() {
+       $('#voteTable').DataTable({
+           autoWidth: false
+
+           });  // ← Initializes the table
+   });
+
+
+   $(document).ready(function() {
+       $('#activityTable').DataTable({
+           autoWidth: false
+
+           });  // ← Initializes the table
+   });
+
+
+   $(document).ready(function() {
+       $('#foodTable').DataTable({
+           autoWidth: false
+
+           });  // ← Initializes the table
+   });
+
+
+   $(document).ready(function() {
+       $('#VolunteerTable').DataTable({
+           autoWidth: false
+
+           });  // ← Initializes the table
+   });
+
+   (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d7527a616a448a',t:'MTc1NDkxMTAwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
+</script>
+<script th:src="@{/js/admin.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+</body>
+</html>

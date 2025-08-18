@@ -18,4 +18,5 @@ public class TemplateController {
         System.out.println("Feedback Page Requested");
         return "notStatic/feed";
     }
+
 }

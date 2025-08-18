@@ -82,56 +82,111 @@ body {
     border-bottom: 4px solid #977DFF; /* optional for styling */
   }
 
- /* @media (min-width: 768px) {
-    .row > .col-12.d-flex {
-      margin-top: -10px;
-      margin-bottom: -10px;
-    }
-  }*/
+   /* Dark theme button */
+ .logout-button {
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   padding: 10px 18px;
+   background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+   color: black;
+   font-weight: bold;
+   font-size: 16px;
+   border-radius: 30px;
+   text-decoration: none;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+   transition: all 0.3s ease;
+   z-index: 1000;
+ }
 
-  /*.scroll-banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    padding: 20px 30px;
-    border: 3px solid black;
-    border-radius: 20px;
-    width: fit-content;
-    margin: auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-  }
+ #admin-dashboard-btn {
+    position: fixed;
+    bottom: 80px; /* above logout button */
+    right: 20px;
+    padding: 10px 18px;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    cursor: pointer;
+ }
 
-  .scroll-text {
-    text-align: center;
-    padding: 0 20px;
-  }
+#username-container {
+   position: fixed;
+   right: 20px;
+   padding: 10px 18px;
+   color: black;
+   font-weight: bold;
+   font-size: 16px;
+   border-radius: 30px;
+   text-decoration: none;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+   transition: all 0.3s ease;
+   z-index: 1000;
+   display:block;
+}
 
-  .scroll-banner .special-title {
-    font-size: 2.4rem;
-    line-height: 1;
-  }
 
-  .scroll-banner .logo-font {
-    font-size: 1.8rem;
-    font-family: 'Special Elite', cursive;
-  }
-  
-  .scroll-end {
-    width: 20px;
-    height: 80px;
-    background-color: #fff;
-    border: 3px solid black;
-    border-radius: 50px;
-  }
-  
-  .scroll-end.left {
-    border-right: none;
-    margin-right: -10px;
-  }
-  
-  .scroll-end.right {
-    border-left: none;
-    margin-left: -10px;
-  } */
+ .logout-button:hover {
+   transform: scale(1.05);
+   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+ }
+
+ /* Modal styles */
+ .modal-overlay {
+   display: none;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(15, 15, 15, 0.85);
+   z-index: 2000;
+   justify-content: center;
+   align-items: center;
+ }
+
+ .modal-content {
+   background: #2c2c2c;
+   padding: 20px 30px;
+   border-radius: 12px;
+   text-align: center;
+   color: #fff;
+   box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+ }
+
+ .modal-buttons {
+   margin-top: 20px;
+ }
+
+ .btn-yes, .btn-no {
+   padding: 10px 20px;
+   margin: 0 10px;
+   font-weight: bold;
+   border: none;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 14px;
+ }
+
+ .btn-yes {
+   background-color: #28a745;
+   color: white;
+ }
+
+ .btn-no {
+   background-color: #dc3545;
+   color: white;
+ }
+
+ .btn-yes:hover {
+   background-color: #218838;
+ }
+
+ .btn-no:hover {
+   background-color: #c82333;
+ }
