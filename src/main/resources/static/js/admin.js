@@ -181,69 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
-/*const popup = document.getElementById("feedbackPopup");
-const popupUserId = document.getElementById("popupUserId");
-const popupFeedbackType = document.getElementById("popupFeedbackType");
-const popupTime = document.getElementById("popupTime");
-const popupStars = document.getElementById("popupStars");
-const popupMessage = document.getElementById("popupMessage");
-const closePopup = document.querySelector(".close-popup");
-
-// Fake sample message
-const sampleMessage = "This is a detailed message submitted by the user about the issue or suggestion.";
-
-function setStars(rating) {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  let html = "";
-
-  for (let i = 0; i < 5; i++) {
-    if (i < fullStars) html += "★";
-    else if (i === fullStars && halfStar) html += "☆"; // you can use a half-star if you have icon
-    else html += "<span class='empty'>★</span>";
-  }
-
-  popupStars.innerHTML = html;
-}*/
-
-// Click handler for each table row
-// Click handler for each table row in #feedbackTable
-/* document.querySelectorAll("#feedbackTable tbody tr").forEach(row => {
-  row.addEventListener("click", () => {
-    const cols = row.querySelectorAll("td");
-    if (cols.length === 0) return;
-
-    const [userId, type, time, rating] = [
-      cols[0].textContent.trim(),
-      cols[1].textContent.trim(),
-      cols[2].textContent.trim(),
-      parseFloat(cols[3].textContent)
-    ];
-
-    // Fill popup
-    popupUserId.textContent = userId;
-    popupFeedbackType.textContent = type;
-    popupTime.textContent = time;
-    popupMessage.value = sampleMessage;
-    setStars(rating);
-
-    // Show popup
-    popup.style.display = "flex";
-  });
-});
-
-// Close popup
-closePopup.addEventListener("click", () => {
-  popup.style.display = "none";
-});
-*/
-
-
-
-
-
-
 document.getElementById('clickableHeaderRow').addEventListener('click', () => {
     const popup = new bootstrap.Modal(document.getElementById('popupEvent'));
     popup.show();
@@ -262,55 +199,10 @@ function getLocalDatetime() {
 }
 
 
-  // Handle form submission
-document.getElementById('eventForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const name = document.getElementById('eventName').value.trim();
-    const location = document.getElementById('eventLocation').value.trim();
-    const description = document.getElementById('eventDescription').value.trim();
-
-    // Validate location format: Room-123
-    if (!/^Room-\d{3}$/.test(location)) {
-      alert("Location must be in the format Room-123");
-      return;
-    }
-
-    const now = new Date();
-    const createdAt = getLocalDatetime();
-
-    const table = document.getElementById('eventTable').getElementsByTagName('tbody')[0];
-    const newRow = table.insertRow();
-
-    newRow.innerHTML = `
-      <td>${name}</td>
-      <td>${location}</td>
-      <td>${description}</td>
-      <td>${createdAt}</td>
-      <td>
-        <span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span>
-        <span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span>
-      </td>
-    `;
-
-    // Clear form
-    this.reset();
-
-    // Hide modal
-    bootstrap.Modal.getInstance(document.getElementById('popupEvent')).hide();
-});
 
 
 
-document.querySelector('#eventTable tbody').addEventListener('click', function (e) {
-    if (e.target.closest('.delete-icon')) {
-      const confirmed = confirm("Are you sure you want to delete?");
-      if (confirmed) {
-        const row = e.target.closest('tr');
-        row.remove();
-      }
-    }
-});
+
 
 
 document.querySelector('#voteTable tbody').addEventListener('click', function (e) {
@@ -322,49 +214,6 @@ document.querySelector('#voteTable tbody').addEventListener('click', function (e
       }
     }
 });
-
-
-document.querySelector('#eventTable tbody').addEventListener('click', function (e) {
-    const editIcon = e.target.closest('.edit-icon');
-    if (!editIcon) return;
-
-    const row = editIcon.closest('tr');
-    const cells = row.querySelectorAll('td');
-
-    // Make only first 3 columns editable: Event, Location, Description
-    for (let i = 0; i < 3; i++) {
-      cells[i].setAttribute('contenteditable', 'true');
-      cells[i].classList.add('editing-cell');
-    }
-
-    // Focus the first editable cell
-    cells[0].focus();
-
-    // Handle saving on Enter
-    row.addEventListener('keydown', function handler(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-
-        // Remove editable state
-        for (let i = 0; i < 3; i++) {
-          cells[i].removeAttribute('contenteditable');
-          cells[i].classList.remove('editing-cell');
-        }
-
-        // Remove the listener so it doesn't stack
-        row.removeEventListener('keydown', handler);
-      }
-    });
-});
-
-//... text
-document.querySelectorAll('.description').forEach(cell => {
-  cell.addEventListener('click', () => {
-    cell.classList.toggle('full');
-  });
-});
-
-
 
 // Handle approve/reject clicks
 document.querySelectorAll('.approve').forEach(btn => {
@@ -539,86 +388,6 @@ async function showUsername() {
 window.addEventListener("DOMContentLoaded", showUsername);
 
 
-/*$(document).ready(function () {
-           // Initialize DataTable
-           const table = $('#feedbackTable').DataTable();
-
-           // Extract feedback types from table
-           const feedbackTypeCounts = {};
-
-           table.rows().every(function () {
-               const feedbackType = this.data()[1]; // Column 1 = Feedback Type
-               if (feedbackTypeCounts[feedbackType]) {
-                   feedbackTypeCounts[feedbackType]++;
-               } else {
-                   feedbackTypeCounts[feedbackType] = 1;
-               }
-           });
-
-           // Prepare chart data
-           const labels = Object.keys(feedbackTypeCounts);
-           const data = Object.values(feedbackTypeCounts);
-           const total = data.reduce((a, b) => a + b, 0);
-
-            // Register plugin
-           Chart.register(ChartDataLabels);
-
-           // Render Chart.js pie chart
-           const ctx = document.getElementById('feedbackPie').getContext('2d');
-           new Chart(ctx, {
-               type: 'doughnut',
-               data: {
-                   labels: labels,
-                   datasets: [{
-                       data: data,
-                       backgroundColor: [
-                           '#6610f2', // Bug Report
-                           '#198754', // Feature Request
-                           '#fd7e14', // UI Feedback
-                           '#dc3545'  // Other
-                       ],
-                   }]
-               },
-               options: {
-                   cutout: '50%', // ✅ Controls the thickness of arcs (inner hole)
-                   plugins: {
-                       legend: {
-                           labels: {
-                           color: '#000000' // white text for dark bg
-                           }
-                       },
-                       datalabels: {
-                           color: '#ffffff',
-                           formatter: function (value, context) {
-                               const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                               const percentage = ((value / total) * 100).toFixed(1) + '%';
-                               return percentage;
-                           },
-                           font: {
-                               weight: 'bold',
-                               size: 14
-                           }
-                       }
-                   }
-               },
-               plugins: [ChartDataLabels]
-           });
-
-           // Generate summary text below chart
-           const summaryContainer = $('#feedbackSummary');
-           labels.forEach((label, index) => {
-               const count = data[index];
-               const percent = ((count / total) * 100).toFixed(1);
-               const color = ['#6610f2', '#198754', '#fd7e14', '#dc3545'][index]; // sync with chart colors
-               summaryContainer.append(`
-                   <div class="d-flex align-items-center mb-2">
-                       <div style="width: 15px; height: 15px; background-color: ${color}; margin-right: 10px; border-radius: 3px;"></div>
-                       <div><strong>${label}:</strong> ${count} (${percent}%)</div>
-                   </div>
-               `);
-           });
-    });*/
-
 
 // Initialize DataTable
 const table = $('#feedbackTable').DataTable({
@@ -669,13 +438,15 @@ const table = $('#feedbackTable').DataTable({
         { data: "comment", visible : false},
         { data: "rating" , title : 'Rating'},
         { data: "feedbackType", title : 'Type' },
-        { data: "submittedAt" , title : 'TIme' }
+        { data: "submittedAt" , title : 'Time' }
     ],
     pageLength: 10,          // default rows per page
     lengthMenu: [5, 10, 25, 50],  // user-selectable options
     order: [[4, "desc"]],// default sort: submittedAt descending
     searching : false
 });
+
+
 
 // ✅ Row click event to open popup
 $('#feedbackTable tbody').on('click', 'tr', function () {
@@ -758,4 +529,294 @@ function renderFeedbackChart() {
 
 $(document).ready(function() {
     renderFeedbackChart();
+});
+
+ // Handle form submission
+document.getElementById("eventForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const eventName = document.getElementById("eventName").value.trim();
+    const location = document.getElementById("eventLocation").value.trim();
+    const description = document.getElementById("eventDescription").value.trim();
+
+    // Manual validation
+    if (!eventName || !location || !description) {
+        alert("⚠️ Please fill in all fields.");
+        return;
+    }
+
+    const roomPattern = /^Room-\d{3}$/;
+    if (!roomPattern.test(location)) {
+        alert("⚠️ Location must follow format Room-123");
+        return;
+    }
+
+    try {
+        // Get current user
+        const userResponse = await fetch("/api/users/me");
+        if (!userResponse.ok) {
+            alert("❌ Unable to fetch current user. Please login again.");
+            return;
+        }
+        const currentUser = await userResponse.json();
+        const userId = currentUser.id;
+        if (!userId) {
+            alert("❌ Invalid user. Please login again.");
+            return;
+        }
+
+        // CSRF token
+        const csrfResponse = await fetch("/csrf-token");
+        const csrfData = await csrfResponse.json();
+
+        // Save event
+        const response = await fetch("/api/event", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                [csrfData.headerName]: csrfData.token
+            },
+            body: JSON.stringify({
+                eventName,
+                description,
+                location,
+                userId
+            })
+        });
+
+        if (response.ok) {
+            alert("✅ Event saved successfully!");
+            document.getElementById("eventForm").reset();
+
+            // Close modal
+            const modalElement = document.getElementById("popupEvent");
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
+            table1.ajax.reload(null, false);
+        } else {
+            const err = await response.text();
+            alert("❌ Failed to save event: " + err);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("❌ Error saving event!");
+    }
+});
+
+
+const table1 = $('#eventTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: function(data, callback) {
+        console.log("🔍 DataTables request object:", data);
+
+        const page = Math.floor(data.start / data.length);
+        const size = data.length;
+
+        let sortBy = "event_name";
+        let direction = "desc";
+        if (data.order && data.order.length > 0) {
+            sortBy = data.columns[data.order[0].column].data;
+            direction = data.order[0].dir;
+        }
+
+        fetch(`/api/event/all?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`)
+            .then(res => res.json())
+            .then(json => {
+                callback({
+                    data: json.content,
+                    recordsTotal: json.totalElements,
+                    recordsFiltered: json.totalElements
+                });
+            })
+            .catch(err => console.error("❌ Error fetching data:", err));
+    },
+    columns: [
+        {
+            data: "eventName",
+            render: function(data) {
+                return `
+                    <div class="event-cell">
+                        <span>${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "location",
+            render: function(data) {
+                return `
+                    <div class="location-cell">
+                        <i class="bi bi-geo-alt location-icon"></i>
+                        <span>${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "description",
+            className: "description",
+            render: function(data) {
+                return `${data}`;
+            }
+        },
+        {
+            data: "userName", // or userId if you’re actually showing the date
+            render: function(data) {
+                return `
+                    <div class="person-cell">
+                        <i class="bi bi-person person-icon"></i>
+                        <span>${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: null, // no data from backend, we create buttons
+            orderable: false,
+            render: function() {
+                return `
+                    <span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span>
+                    <span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span>
+                `;
+            }
+        },
+        {
+
+            data:"eventId",visible : false
+        }
+    ],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50],
+    order: [[0, "desc"]], // default sort by submittedAt descending
+    searching : false
+});
+
+
+
+
+document.querySelector('#eventTable tbody').addEventListener('click', function (e) {
+    const editIcon = e.target.closest('.edit-icon');
+    if (!editIcon) return;
+
+    const row = editIcon.closest('tr');
+    const cells = row.querySelectorAll('td');
+
+    // Make only first 3 columns editable: Event, Location, Description
+    for (let i = 0; i < 3; i++) {
+      cells[i].setAttribute('contenteditable', 'true');
+      cells[i].classList.add('editing-cell');
+    }
+
+    // Focus the first editable cell
+    cells[0].focus();
+    console.log("I am here");
+    // Handle saving on Enter
+    row.addEventListener('keydown', async function handler(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+
+        // Grab updated values
+        const updatedData = {
+            eventName: cells[0].innerText.trim(),
+            location: cells[1].innerText.trim(),
+            description: cells[2].innerText.trim()
+        };
+
+        // Get hidden eventId from last column
+        const rowData = table1.row(row).data();
+        const eventId = rowData.eventId;
+        try {
+            // CSRF token
+            const csrfResponse = await fetch("/csrf-token");
+            const csrfData = await csrfResponse.json();
+
+            console.log("🔍 Sending update for Event ID:", eventId, updatedData);
+
+            // Send PATCH request
+            const res = await fetch(`/api/event/${eventId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfData.headerName]: csrfData.token
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (!res.ok) {
+                throw new Error(`Server error: ${res.status}`);
+            }
+
+            const data = await res.json();
+            console.log("✅ Update successful:", data);
+
+            // reload DataTable without resetting pagination
+            table1.ajax.reload(null, false);
+
+        } catch (err) {
+            console.error("❌ Update failed:", err);
+        }
+
+        // Remove editable state
+        for (let i = 0; i < 3; i++) {
+            cells[i].removeAttribute('contenteditable');
+            cells[i].classList.remove('editing-cell');
+        }
+
+        // Remove listener to prevent stacking
+        row.removeEventListener('keydown', handler);
+      }
+    });
+});
+
+document.querySelector('#eventTable tbody').addEventListener('click', async function (e) {
+  const deleteBtn = e.target.closest('.delete-icon');
+  if (!deleteBtn) return;
+
+  const confirmed = confirm("Are you sure you want to delete this event?");
+  if (!confirmed) return;
+
+  // Get the row and eventId from DataTable
+  const row = deleteBtn.closest('tr');
+  const rowData = table1.row(row).data(); // Assuming you use DataTables variable 'table1'
+  const eventId = rowData.eventId;
+
+  console.log(eventId);
+  try {
+    // Fetch CSRF token first
+    const csrfResponse = await fetch("/csrf-token");
+    const csrfData = await csrfResponse.json();
+
+    // Send DELETE request to backend
+    const res = await fetch(`/api/event/${eventId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        [csrfData.headerName]: csrfData.token
+      }
+    });
+
+    if (!res.ok) throw new Error(`Delete failed with status ${res.status}`);
+
+    const data = await res.json();
+    console.log("✅ Event deleted:", data);
+
+    // Remove row from DataTable
+    table1.row(row).remove().draw(false);
+
+  } catch (err) {
+    console.error("❌ Failed to delete event:", err);
+    alert("Failed to delete event. Check console for details.");
+  }
+});
+
+
+
+// Use tbody of the table as the static parent
+document.querySelector('#eventTable tbody').addEventListener('click', (e) => {
+  // Find the nearest ancestor with class 'description' (could be the target itself)
+  const descCell = e.target.closest('.description');
+  if (descCell) {
+    descCell.classList.toggle('full'); // toggle your CSS class
+  }
 });

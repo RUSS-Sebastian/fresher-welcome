@@ -124,29 +124,16 @@
     <!--Events Container-->
 
     <div id="EventCard" class="EventCard w-100">
-        <table id="eventTable" class="eventTable display w-100">
+        <table id="eventTable" class="eventTable display">
             <thead>
-            <tr>
-                <th>Event</th>
-                <th>Location</th>
-                <th>Description</th>
-                <th>Created At</th>
-                <th  id="clickableHeaderRow">Add New <i class="bi bi-plus-circle" style="color:blue;"></i></th>
-            </tr>
+                <tr>
+                    <th>Event</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Created By</th>
+                    <th id="clickableHeaderRow">Add New <i class="bi bi-plus-circle"></i></th>
+                </tr>
             </thead>
-            <tbody>
-            <!-- Start of sample data -->
-            <tr><td>Annual Tech Meetup</td><td>New York</td><td class="description">Networking event for tech enthusiasts.</td><td>2025-06-11 10:24</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Startup Pitch Night</td><td>San Francisco</td><td class="description">Startups pitch to a panel of investors.</td><td>2025-05-03 18:45</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Design Sprint Bootcamp</td><td>Chicago</td><td class="description">Learn the Google Ventures design sprint process.</td><td>2025-03-14 09:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Cybersecurity Summit</td><td>Austin</td><td class="description">Industry leaders discuss latest cyber threats.</td><td>2025-07-01 13:30</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Blockchain Expo</td><td>Denver</td><td class="description">Explore innovations in blockchain technology.</td><td>2025-01-21 14:15</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Data Science Conference</td><td>Seattle</td><td class="description">Deep dive into modern data science workflows.</td><td>2024-12-04 10:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Product Launch</td><td>Los Angeles</td><td class="description">Introducing our new AI-powered tool.</td><td>2025-02-10 16:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Remote Work Webinar</td><td>Online</td><td class="description">How to lead distributed teams effectively.</td><td>2025-07-20 19:30</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>FOSS Hackathon</td><td>Portland</td><td class="description">48-hour open source hackathon challenge.</td><td>2024-11-16 08:45</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            <tr><td>Marketing Masterclass</td><td>Boston</td><td class="description">Advanced strategies for digital marketing.</td><td>2025-04-28 11:00</td><td><span class="icon-button edit-icon"><i class="bi bi-pen-fill"></i></span><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td></tr>
-            </tbody>
         </table>
     </div>
 
@@ -191,7 +178,7 @@
     </div>
 
     <!-- ✅ Right: Black container -->
-    <div id="sideInfo" class="bg-white text-dark p-5 rounded">
+    <div id="sideInfo" class="bg-white text-dark p-5 rounded ">
         <h2 class="text-dark mb-1 ">Feedback Type Distribution</h2>
         <canvas id="feedbackPie" class="chart-canvas"></canvas>
         <div id="feedbackSummary" class="mt-1"></div> <!-- New container for text summary -->
@@ -714,7 +701,7 @@
 <!-- The popup -->
 
 <!-- Modal for Adding Event -->
-<div class="modal fade" id="popupEvent" tabindex="-1" aria-labelledby="popupEventLabel" aria-hidden="true">
+<div class="modal fade" id="popupEvent" tabindex="-1" aria-labelledby="popupEventLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered">
         <form id="eventForm" class="modal-content">
             <div class="modal-header">
@@ -750,15 +737,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 
 <script>
-
-
-
-   $(document).ready(function() {
-       $('#eventTable').DataTable({
-           autoWidth: false
-
-           });  // ← Initializes the table
-   });
 
 
    document.addEventListener('DOMContentLoaded', function () {

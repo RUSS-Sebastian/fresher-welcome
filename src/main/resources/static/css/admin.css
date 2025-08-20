@@ -610,12 +610,6 @@ button.assign-btn {
     background-color: #dc2626;
 }
 
-.description-text {
-    max-width: 280px;
-    line-height: 1.5;
-    color: #6b7280;
-}
-
 .user-id {
     font-family: 'Monaco', 'Menlo', monospace;
     font-weight: 600;
@@ -740,3 +734,184 @@ button.assign-btn {
     font-style: italic;
 }
 
+/*event table*/
+.eventTable {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.eventTable thead {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+.eventTable th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+    white-space: nowrap;
+    border: none;
+}
+
+.eventTable th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.eventTable th:last-child {
+    border-top-right-radius: 12px;
+}
+
+#clickableHeaderRow {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+#clickableHeaderRow:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#clickableHeaderRow i {
+    color: #60a5fa !important;
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+}
+
+#clickableHeaderRow:hover i {
+    transform: scale(1.1);
+}
+
+.eventTable tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.eventTable tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.eventTable tbody tr:last-child {
+    border-bottom: none;
+}
+
+.eventTable tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.eventTable tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+.eventTable td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+    border: none;
+}
+
+.eventTable td:first-child {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.eventTable td:nth-child(2) {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+
+.eventTable td:nth-child(4) {
+    font-family: 'Monaco', 'Menlo', monospace;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    margin: 0 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.edit-icon {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+}
+
+.edit-icon:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.delete-icon {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.delete-icon:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+.icon-button i {
+    font-size: 0.75rem;
+}
+
+/* Location styling with icon */
+.location-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.location-icon {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Event name styling with icon */
+.event-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.event-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Time styling with icon */
+.person-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.person-icon {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
