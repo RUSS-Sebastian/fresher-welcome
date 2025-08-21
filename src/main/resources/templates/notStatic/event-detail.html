@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -24,7 +24,7 @@
       background-color: wheat;
       transition: all 0.5s ease;
       overflow-x: hidden;
-      
+
     }
 
     .neon-mode {
@@ -54,7 +54,7 @@
       margin: 0 0 50px 0;
       text-decoration: #0a0415;
       text-transform: uppercase;
-     
+
       color:rgba(255,255,255,0.9);
 
       transition: all 0.5s ease;
@@ -233,86 +233,90 @@
   </style>
 </head>
 <body>
-  <div class="event-container" id="eventContainer">
-    <!-- Dance emoji decorations -->
-    <div class="dance-emoji" style="top: 10%; left: 5%;">💃</div>
-    <div class="dance-emoji" style="top: 15%; right: 8%;">🕺</div>
-    <div class="dance-emoji" style="bottom: 20%; left: 10%;">💃</div>
-    <div class="dance-emoji" style="bottom: 15%; right: 5%;">🕺</div>
-    <div class="dance-emoji" style="top: 30%; left: 50%;">💃</div>
-    <div class="dance-emoji" style="bottom: 30%; right: 50%;">🕺</div>
+<div class="event-container" id="eventContainer">
+  <!-- Dance emoji decorations -->
+  <div class="dance-emoji" style="top: 10%; left: 5%;">💃</div>
+  <div class="dance-emoji" style="top: 15%; right: 8%;">🕺</div>
+  <div class="dance-emoji" style="bottom: 20%; left: 10%;">💃</div>
+  <div class="dance-emoji" style="bottom: 15%; right: 5%;">🕺</div>
+  <div class="dance-emoji" style="top: 30%; left: 50%;">💃</div>
+  <div class="dance-emoji" style="bottom: 30%; right: 50%;">🕺</div>
 
-    <!-- Balloon decorations -->
-    <div class="balloon" style="width: 120px; height: 120px; background: #ff6b6b; top: 10%; left: 15%; animation-delay: 0s;"></div>
-    <div class="balloon" style="width: 80px; height: 80px; background: #48dbfb; top: 20%; right: 20%; animation-delay: 2s;"></div>
-    <div class="balloon" style="width: 100px; height: 100px; background: #1dd1a1; bottom: 15%; left: 20%; animation-delay: 4s;"></div>
-    <div class="balloon" style="width: 60px; height: 60px; background: #feca57; bottom: 25%; right: 15%; animation-delay: 1s;"></div>
-    <div class="balloon" style="width: 90px; height: 90px; background: #5f27cd; top: 40%; right: 30%; animation-delay: 3s;"></div>
+  <!-- Balloon decorations -->
+  <div class="balloon" style="width: 120px; height: 120px; background: #ff6b6b; top: 10%; left: 15%; animation-delay: 0s;"></div>
+  <div class="balloon" style="width: 80px; height: 80px; background: #48dbfb; top: 20%; right: 20%; animation-delay: 2s;"></div>
+  <div class="balloon" style="width: 100px; height: 100px; background: #1dd1a1; bottom: 15%; left: 20%; animation-delay: 4s;"></div>
+  <div class="balloon" style="width: 60px; height: 60px; background: #feca57; bottom: 25%; right: 15%; animation-delay: 1s;"></div>
+  <div class="balloon" style="width: 90px; height: 90px; background: #5f27cd; top: 40%; right: 30%; animation-delay: 3s;"></div>
 
-    <!-- Sparkles -->
-    <div class="sparkle" style="top: 20%; left: 30%; animation-delay: 0.5s;"></div>
-    <div class="sparkle" style="top: 40%; left: 70%; animation-delay: 1.2s;"></div>
-    <div class="sparkle" style="top: 60%; left: 20%; animation-delay: 0.8s;"></div>
-    <div class="sparkle" style="top: 30%; left: 50%; animation-delay: 1.5s;"></div>
-    <div class="sparkle" style="top: 70%; left: 60%; animation-delay: 0.3s;"></div>
+  <!-- Sparkles -->
+  <div class="sparkle" style="top: 20%; left: 30%; animation-delay: 0.5s;"></div>
+  <div class="sparkle" style="top: 40%; left: 70%; animation-delay: 1.2s;"></div>
+  <div class="sparkle" style="top: 60%; left: 20%; animation-delay: 0.8s;"></div>
+  <div class="sparkle" style="top: 30%; left: 50%; animation-delay: 1.5s;"></div>
+  <div class="sparkle" style="top: 70%; left: 60%; animation-delay: 0.3s;"></div>
 
-    <h1 class="event-title">Mystical Tarot Reading</h1>
-    
-    <div class="info-boxes">
-      
-      <div class="info-box">
-        <div class="box-title">Description</div>
-        <div class="box-content">An electrifying evening with performances by UIT's dance teams, DJ sets, glow accessories, and special surprises. Dress in neon for the best experience!</div>
-      </div>
-      
-      <div class="info-box">
-        <div class="box-title">Location</div>
-        <div class="box-content">UIT Main Auditorium<br>University of Information Technology Campus<br>Ho Chi Minh City<br>7:00 PM onwards</div>
+  <h1 class="event-title" th:text="${event.eventName}">EVENT NAME</h1>
+
+  <div class="info-boxes">
+
+    <div class="info-box">
+      <div class="box-title">Description</div>
+      <div class="box-content" th:text="${event.description}">
+        Event description goes here
       </div>
     </div>
 
-    <a href="view.html" class="fixed-back-button">Back to View Events</a>
+    <div class="info-box">
+      <div class="box-title">Location</div>
+      <div class="box-content" th:text="${event.location}">
+        Event location goes here
+      </div>
+    </div>
   </div>
 
-  <script>
-    // Create more sparkles dynamically
-    function createSparkles() {
-      const container = document.getElementById('eventContainer');
-      for (let i = 0; i < 15; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.top = Math.random() * 100 + '%';
-        sparkle.style.left = Math.random() * 100 + '%';
-        sparkle.style.animationDelay = Math.random() * 2 + 's';
-        container.appendChild(sparkle);
-      }
-    }
+  <a href="/protected/view" class="fixed-back-button">Back to View Events</a>
+</div>
 
-    // Create more balloons dynamically
-    function createBalloons() {
-      const container = document.getElementById('eventContainer');
-      const colors = ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#5f27cd', '#ff9ff3'];
-      
-      for (let i = 0; i < 8; i++) {
-        const balloon = document.createElement('div');
-        balloon.className = 'balloon';
-        const size = Math.random() * 60 + 40;
-        balloon.style.width = size + 'px';
-        balloon.style.height = size + 'px';
-        balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-        balloon.style.top = Math.random() * 80 + 10 + '%';
-        balloon.style.left = Math.random() * 80 + 10 + '%';
-        balloon.style.animationDelay = Math.random() * 5 + 's';
-        balloon.style.animationDuration = (Math.random() * 10 + 10) + 's';
-        container.appendChild(balloon);
-      }
+<script>
+  // Create more sparkles dynamically
+  function createSparkles() {
+    const container = document.getElementById('eventContainer');
+    for (let i = 0; i < 15; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.top = Math.random() * 100 + '%';
+      sparkle.style.left = Math.random() * 100 + '%';
+      sparkle.style.animationDelay = Math.random() * 2 + 's';
+      container.appendChild(sparkle);
     }
+  }
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      createSparkles();
-      createBalloons();
-    });
-  </script>
+  // Create more balloons dynamically
+  function createBalloons() {
+    const container = document.getElementById('eventContainer');
+    const colors = ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#5f27cd', '#ff9ff3'];
+
+    for (let i = 0; i < 8; i++) {
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+      const size = Math.random() * 60 + 40;
+      balloon.style.width = size + 'px';
+      balloon.style.height = size + 'px';
+      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+      balloon.style.top = Math.random() * 80 + 10 + '%';
+      balloon.style.left = Math.random() * 80 + 10 + '%';
+      balloon.style.animationDelay = Math.random() * 5 + 's';
+      balloon.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      container.appendChild(balloon);
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    createSparkles();
+    createBalloons();
+  });
+</script>
 </body>
 </html>

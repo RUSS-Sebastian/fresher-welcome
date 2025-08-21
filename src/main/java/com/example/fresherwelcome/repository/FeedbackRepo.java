@@ -36,4 +36,8 @@ public interface FeedbackRepo extends JpaRepository<Feedback, Long>{
     @Query("SELECT f.feedbackType AS type, COUNT(f) AS count " +
             "FROM Feedback f GROUP BY f.feedbackType")
     List<FeedbackTypeCount> countByFeedbackType();
+
+    @Query("SELECT f FROM Feedback f JOIN f.user u")
+    Page<Feedback> findAllWithUser(Pageable pageable);
+
 }

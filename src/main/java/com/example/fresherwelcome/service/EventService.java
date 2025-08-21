@@ -99,6 +99,15 @@ public class EventService {
                 .orElseThrow(() -> new RuntimeException("Event not found with ID " + eventId));
         eventRepository.delete(event);
     }
+
+    public List<Event> getAllEvents(){
+        return eventRepository.findAll();
+    }
+
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found with id " + id));
+    }
 }
 
 

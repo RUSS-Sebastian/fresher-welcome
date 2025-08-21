@@ -13,7 +13,7 @@ function handleClick(section){
   }
 
   else if(section=='activities'){
-    window.location.href='view.html';
+    window.location.href='/protected/view';
   }
 
   else if(section=='feedback'){

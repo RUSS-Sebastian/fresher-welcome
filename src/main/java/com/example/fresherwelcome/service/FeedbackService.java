@@ -59,22 +59,41 @@ public class FeedbackService {
     }*/
 
     public Page<FeedbackDto> getAllFeedback(int page, int size, String sortBy, String direction, String search) {
-        Sort sort = direction.equalsIgnoreCase("asc")
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-
-        Pageable pageable = PageRequest.of(page, size, sort);
-
+        Pageable pageable;
         Page<Feedback> feedbackPage;
 
-        if (search != null && !search.trim().isEmpty()) {
-            feedbackPage = feedbackRepository.search(search, pageable);
+        if ("username".equalsIgnoreCase(sortBy)) {
+            // build sort for related entity
+            Sort sort = direction.equalsIgnoreCase("asc")
+                    ? Sort.by("user.name").ascending()
+                    : Sort.by("user.name").descending();
+
+            pageable = PageRequest.of(page, size, sort);
+
+            if (search != null && !search.trim().isEmpty()) {
+                feedbackPage = feedbackRepository.search(search, pageable);
+            } else {
+                feedbackPage = feedbackRepository.findAllWithUser(pageable); // join user
+            }
+
         } else {
-            feedbackPage = feedbackRepository.findAll(pageable);
+            // normal sort
+            Sort sort = direction.equalsIgnoreCase("asc")
+                    ? Sort.by(sortBy).ascending()
+                    : Sort.by(sortBy).descending();
+
+            pageable = PageRequest.of(page, size, sort);
+
+            if (search != null && !search.trim().isEmpty()) {
+                feedbackPage = feedbackRepository.search(search, pageable);
+            } else {
+                feedbackPage = feedbackRepository.findAll(pageable);
+            }
         }
 
         return feedbackPage.map(FeedbackMapper::toDto);
     }
+
 
     public Map<FeedbackType, Long> getFeedbackTypeCounts() {
         List<FeedbackTypeCount> counts = feedbackRepository.countByFeedbackType();

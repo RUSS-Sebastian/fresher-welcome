@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,7 +70,7 @@
 
     .hero::before {
       content: '';
-      position: absolute; 
+      position: absolute;
       top: 0;
       left: 0;
       right: 0;
@@ -250,7 +250,7 @@
       .hero-content {
         flex-direction: column;
       }
-      
+
       .hero-img {
         margin-top: 40px;
         max-width: 350px;
@@ -265,16 +265,16 @@
       .hero-text h1 {
         font-size: 2.2rem;
       }
-      
+
       .nav-links {
         display: none;
       }
-      
+
       .events-container {
         flex-direction: column;
         align-items: center;
       }
-      
+
       .event-box {
         width: 100%;
         max-width: 350px;
@@ -284,49 +284,39 @@
 </head>
 <body>
 
-  <header>
-    <div class="logo">Event Horizon</div>
-    <div class="nav-links">
-      <a href="/Page/home.html">Home</a>
-      <a href="#events">Events</a>
-      <a href="#">Contact</a>
-    </div>
-  </header>
+<header>
+  <div class="logo">Event Horizon</div>
+  <div class="nav-links">
+    <a href="/protected/home">Home</a>
+    <a href="#events">Events</a>
+    <a href="#">Contact</a>
+  </div>
+</header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <div class="hero-text">
-        <h1>Get Ready to Enjoy <br><span>The EVENTS</span></h1>
-        <p>Experience unforgettable moments with our exciting event lineup - from mystical tarot readings to electrifying dance performances!</p>
-        <a href="#events">View Events</a>
-      </div>
-      <div class="hero-img">
-        <img src="/images/ghibi.jpg" alt="Event illustration">
-      </div>
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Get Ready to Enjoy <br><span>The EVENTS</span></h1>
+      <p>Experience unforgettable moments with our exciting event lineup - from mystical tarot readings to electrifying dance performances!</p>
+      <a href="#events">View Events</a>
     </div>
-  </section>
+    <div class="hero-img">
+      <img src="/images/ghibi.jpg" alt="Event illustration">
+    </div>
+  </div>
+</section>
 
-  <section class="events-section" id="events">
-    <h2>Our Event Categories</h2>
-    <div class="events-container">
-      <div class="event-box">
-        <h3>🔮 Mystical Tarot</h3>
-        <p>Discover what the cards reveal about your future in our enchanting tarot reading sessions.</p>
-        <a href="tarot.html">Explore Now</a>
-      </div>
-      <div class="event-box">
-        <h3>💃 Electric Dance</h3>
-        <p>Feel the rhythm and move to the beat at our high-energy dance competition.</p>
-        <a href="dance.html">Join the Dance</a>
-      </div>
-      <div class="event-box">
-        <h3>🎤 Starry Singing</h3>
-        <p>Showcase your vocal talent or enjoy soulful performances at our singing night.</p>
-        <a href="sing.html">Participate Now</a>
-      </div>
-      
-      </div>
-  </section>
+<section class="events-section" id="events">
+  <h2>Our Event Categories</h2>
+  <div class="events-container">
+    <!-- 🔹 Thymeleaf loop for events -->
+    <div class="event-box" th:each="event : ${events}">
+      <h3 th:text="${event.eventName}">Sample Event</h3>
+      <p th:text="${event.description}">Sample description</p>
+      <a th:href="@{/protected/event/{id}(id=${event.eventId})}" class="explore-btn">Explore Now</a>
+    </div>
+  </div>
+</section>
 
 </body>
 </html>
