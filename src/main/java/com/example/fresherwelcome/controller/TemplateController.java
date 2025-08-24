@@ -1,5 +1,6 @@
 package com.example.fresherwelcome.controller;
 import com.example.fresherwelcome.model.Event;
+import com.example.fresherwelcome.service.AdminButtonService;
 import com.example.fresherwelcome.service.EventService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,11 @@ import java.util.List;
 public class TemplateController {
 
     private final EventService eventService;
+    private final AdminButtonService adminButtonService;
 
-    public TemplateController(EventService eventService) {
+    public TemplateController(EventService eventService,AdminButtonService adminButtonService) {
         this.eventService = eventService;
+        this.adminButtonService =  adminButtonService;
     }
 
     @GetMapping("/home")
@@ -49,4 +52,39 @@ public class TemplateController {
         model.addAttribute("event", event);
         return "notStatic/event-detail"; // will create event-detail.html
     }
+
+
+    @GetMapping("/index")
+    public String index() {
+        System.out.println("Registration Page Requested");
+        return "notStatic/index";
+    }
+
+    @GetMapping("/activity-form")
+    public String activity() {
+        System.out.println("Activity Form Requested");
+        return "notStatic/activity-form";
+    }
+
+    @GetMapping("/food")
+    public String food() {
+        System.out.println("Food Seller Form Requested");
+        return "notStatic/food-seller-form";
+    }
+
+    @GetMapping("/volunteer")
+    public String volunteer() {
+        boolean isOpen = adminButtonService.getStatus("volunteer_form_button");
+
+        if (!isOpen) {
+
+            return "redirect:/error/access-denied";
+            // or return "redirect:/";
+        }
+        System.out.println("Volunteer Form Requested");
+        return "notStatic/volunteer-form";
+    }
+
+
+
 }

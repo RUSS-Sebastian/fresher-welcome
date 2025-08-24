@@ -39,7 +39,10 @@ public class SecurityConfig {
                         // Feedback requires login (any role)
                         .requestMatchers(HttpMethod.POST, "/api/feedback").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/event").hasRole("ADMIN")
-                        .requestMatchers("/api/event/all","api/event/{id}").authenticated()
+                        .requestMatchers("/api/event/all","api/event/{id}","api/admin-buttons/{buttonName}").authenticated()
+
+                        .requestMatchers(HttpMethod.POST,"/api/volunteers").hasAnyRole("ADMIN","STUDENT")
+
                         // Logout requires login
                         .requestMatchers(HttpMethod.POST,"/logout").authenticated()
 

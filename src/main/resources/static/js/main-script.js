@@ -194,41 +194,67 @@ function createHoverRipple(e, card) {
   }, 800);
 }
 
-function navigateToForm(formType) {
+async function navigateToForm(formType) {
   const card = document.querySelector(`[data-form="${formType}"]`);
-  
-  // Enhanced exit animation
+
+  // Exit animation
   if (card) {
     card.style.transform = 'scale(0.9) rotateY(10deg)';
     card.style.opacity = '0.7';
     card.style.filter = 'blur(2px)';
   }
-  
-  // Show enhanced loading state
+
+  // Show loading
   showNavigationLoading(formType);
-  
-  // Determine target page
+
+  // Target page
   let targetPage;
   switch (formType) {
     case 'volunteer':
-      targetPage = 'volunteer-form.html';
+      targetPage = '/protected/volunteer';
       break;
     case 'activity':
-      targetPage = 'activity-form.html';
+      targetPage = '/protected/activity-form';
       break;
     case 'food-seller':
-      targetPage = 'food-seller-form.html';
+      targetPage = '/protected/food';
       break;
     default:
       console.error('Unknown form type:', formType);
       return;
   }
-  
-  // Navigate with enhanced transition
-  setTimeout(() => {
-    window.location.href = targetPage;
-  }, 400);
+
+    if (formType === "volunteer") {
+      try {
+        const response = await fetch(`/api/admin-buttons/volunteer_form_button`);
+        const allowed = await response.json(); // this is already true/false
+        console.log(allowed);
+        if (!allowed) {
+          alert("Admin hasn't approved users to submit the volunteer form yet.");
+
+          // Reset UI because navigation is cancelled
+          if (card) {
+            card.style.transform = '';
+            card.style.opacity = '';
+            card.style.filter = '';
+          }
+          hideNavigationLoading(formType);
+          return;
+        }else{
+            window.location.href = targetPage;
+        }
+      } catch (err) {
+        console.error("Error checking volunteer form access:", err);
+        alert("Something went wrong. Please try again later.");
+        hideNavigationLoading(formType);
+        return;
+      }
+    }else{
+        setTimeout(() => { window.location.href = targetPage; }, 400);
+    }
+
 }
+
 
 function showNavigationLoading(formType) {
   const formNames = {
@@ -267,6 +293,24 @@ function showNavigationLoading(formType) {
     }
   }, 10);
 }
+
+
+function hideNavigationLoading(formType) {
+  const loadingOverlay = document.querySelector('.navigation-loading');
+  if (loadingOverlay) {
+    // Smooth fade out
+    loadingOverlay.style.opacity = '0';
+    loadingOverlay.style.transition = 'opacity 0.3s ease';
+
+    // Remove from DOM after fade out
+    setTimeout(() => {
+      if (loadingOverlay.parentNode) {
+        loadingOverlay.parentNode.removeChild(loadingOverlay);
+      }
+    }, 300);
+  }
+}
+
 
 function setupAnimations() {
   // Enhanced Intersection Observer for scroll animations

@@ -5,7 +5,7 @@ function handleClick(section){
   }
 
   else if(section=='registration'){
-    window.location.href='index.html';
+    window.location.href='/protected/index';
   }
 
   else if(section=='food'){

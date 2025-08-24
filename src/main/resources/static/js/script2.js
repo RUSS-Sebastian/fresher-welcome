@@ -1,3 +1,6 @@
+let currentUser = null;
+let csrfToken = null;
+let csrfHeaderName = null;
 // Enhanced form handling with modern interactions and advanced features
 document.addEventListener('DOMContentLoaded', function() {
   initializeForm();
@@ -9,8 +12,27 @@ document.addEventListener('DOMContentLoaded', function() {
   setupSmartSuggestions();
   setupMicroInteractions();
   setupAdvancedProgress();
+  loadCurrentUser();
+  getCsrfToken();
 });
 
+async function getCsrfToken(){
+
+  const csrfResponse = await fetch("/csrf-token");
+  const csrfData = await csrfResponse.json();
+  csrfToken = csrfData.token;
+  csrfHeaderName = csrfData.headerName;
+  console.log("CSRF Token Loaded:", csrfHeaderName, csrfToken);
+}
+async function loadCurrentUser() {
+  try {
+    const response = await fetch("/api/users/me");
+    currentUser = await response.json();
+    console.log("Current User Loaded:", currentUser.id,currentUser.name);
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+  }
+}
 // Advanced progress tracking
 let formCompletionData = {
   totalFields: 0,
@@ -19,67 +41,142 @@ let formCompletionData = {
 };
 
 // Main form submission handler with enhanced features
-const forms = ['volunteerForm', 'activityForm', 'foodSellerForm'];
-forms.forEach(formId => {
-  const form = document.getElementById(formId);
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      triggerSubmissionSequence();
-    });
-  }
-});
+// Volunteer Form
+// Volunteer Form
+const volunteerForm = document.getElementById('volunteerForm');
+if (volunteerForm) {
+  volunteerForm.addEventListener('submit',async function(e) {
+    e.preventDefault();
+    triggerSubmissionSequence('volunteerForm');
+  });
+}
 
-function triggerSubmissionSequence() {
+// Activity Form
+const activityForm = document.getElementById('activityForm');
+if (activityForm) {
+  activityForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    triggerSubmissionSequence('activityForm');
+  });
+}
+
+// Food Seller Form
+const foodSellerForm = document.getElementById('foodSellerForm');
+if (foodSellerForm) {
+  foodSellerForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    triggerSubmissionSequence('foodSellerForm');
+  });
+}
+
+
+function triggerSubmissionSequence(formId) {
+  const currentForm = document.getElementById(formId);
+
+  if (!currentForm) {
+    console.error('Form not found:', formId);
+    return;
+  }
+
   // Phase 1: Validate with visual feedback
   if (!performAdvancedValidation()) {
     showValidationErrors();
     return;
   }
-  
+
   // Phase 2: Show enhanced loading state
   showEnhancedLoadingState();
-  
+
   // Phase 3: Animate progress completion
   animateProgressCompletion();
-  
-     // Phase 4: Collect and process data
-   const currentForm = document.querySelector('#volunteerForm, #activityForm, #foodSellerForm');
-   const formData = new FormData(currentForm);
-   const enhancedData = collectEnhancedFormData(formData);
-   
-   console.log('🚀 Enhanced Registration Data:', enhancedData);
-  
-  // Phase 5: Simulate processing with realistic timing
-  setTimeout(() => {
-    showEnhancedSuccessMessage();
-    createAdvancedCelebrationEffect();
-  }, 2000);
-  
-  // Phase 6: Auto-reset after extended display
-  setTimeout(() => {
-    resetFormEnhanced();
-  }, 7000);
+
+  // Phase 4: DYNAMIC PROCESSING - Volunteer form gets special handling
+  if (formId === 'volunteerForm') {
+    processVolunteerFormWithBackend();
+  } else {
+    // Keep existing processing for other forms
+    const formData = new FormData(currentForm);
+    const enhancedData = collectEnhancedFormData(formData);
+    console.log('🚀 Enhanced Data for', formId, ':', enhancedData);
+
+    // Continue with simulated success for other forms
+    setTimeout(() => {
+      showEnhancedSuccessMessage();
+      createAdvancedCelebrationEffect();
+    }, 2000);
+  }
+
+  // Phase 6: Auto-reset only for non-volunteer forms
+  // (Volunteer form reset will be handled after backend response)
+  if (formId !== 'volunteerForm') {
+    setTimeout(() => {
+      resetFormEnhanced();
+    }, 7000);
+  }
 }
+
+async function processVolunteerFormWithBackend() {
+  // Collect form data
+
+  const experienceEl = document.getElementById("experience");
+  const motivationEl = document.getElementById("motivation");
+
+  const data = {
+    fullName: document.getElementById("name").value.trim(),
+    telegramUsername: document.getElementById("telegram").value.trim(),
+    currentSemester: document.getElementById("semester").value,
+    preferredRole: document.getElementById("role").value,
+    availability: document.getElementById("availability").value,
+    skillsExperience: experienceEl ? experienceEl.value.trim() || null : null,
+    reason: motivationEl ? motivationEl.value.trim() || null : null,
+    userId: currentUser?.id // ensure currentUser is defined
+  };
+
+  // Basic validation
+  if (!data.fullName || !data.telegramUsername || !data.currentSemester || !data.preferredRole || !data.userId || !data.availability) {
+    alert("Please fill all required fields correctly.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/volunteers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        [csrfHeaderName]: csrfToken
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+      // Success animations
+      setTimeout(() => {
+        showEnhancedSuccessMessage();
+        createAdvancedCelebrationEffect();
+      }, 2000);
+
+      // Reset form after animation
+      setTimeout(() => {
+        resetFormEnhanced();
+      }, 7000);
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      alert(errorData.error || "Failed to submit form. Please try again.");
+      resetFormEnhanced();
+    }
+  } catch (err) {
+    console.error("Request failed", err);
+    alert("Something went wrong. Please try again.");
+  }
+}
+
+
 
 function collectEnhancedFormData(formData) {
   const data = Object.fromEntries(formData);
   return {
     ...data,
-    submission: {
-      timestamp: new Date().toISOString(),
-      sessionId: generateSessionId(),
-      completionTime: calculateCompletionTime(),
-      userInteractions: getUserInteractionData(),
-      deviceInfo: getDeviceInfo(),
-      formVersion: '2.0-enhanced'
-    },
-    analytics: {
-      fieldsCompleted: formCompletionData.completedFields,
-      totalFields: formCompletionData.totalFields,
-      completionPercentage: Math.round((formCompletionData.completedFields / formCompletionData.totalFields) * 100),
-      sectionProgress: formCompletionData.sectionProgress
-    }
+
   };
 }
 
@@ -189,14 +286,39 @@ function createInteractiveTooltip(element, text) {
     // Add interaction handlers
     const trigger = tooltip.querySelector('.tooltip-trigger');
     const content = tooltip.querySelector('.tooltip-content');
-    
+
+    let hideTimeout = null;
+
     trigger.addEventListener('mouseenter', () => {
-      content.classList.add('visible');
-      createTooltipParticles(trigger);
+      // Clear any pending hide timeout
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+        content.classList.add('visible');
+        createTooltipParticles(trigger);
     });
     
     trigger.addEventListener('mouseleave', () => {
-      setTimeout(() => content.classList.remove('visible'), 200);
+      // Set a timeout to hide the tooltip, but store the ID
+        hideTimeout = setTimeout(() => {
+          content.classList.remove('visible');
+          hideTimeout = null;
+        }, 200);
+    });
+
+    content.addEventListener('mouseenter', () => {
+          if (hideTimeout) {
+            clearTimeout(hideTimeout);
+            hideTimeout = null;
+          }
+    });
+
+    content.addEventListener('mouseleave', () => {
+      hideTimeout = setTimeout(() => {
+        content.classList.remove('visible');
+        hideTimeout = null;
+      }, 200);
     });
   }
 }
@@ -511,6 +633,25 @@ function validateFieldAdvanced(field) {
     if (field.value.length < 3) {
       isValid = false;
       errorMessage = 'Telegram username too short';
+    }
+  }
+
+
+  if (field.id === "studentNumber" && field.value) {
+        const studentNumberRegex = /^\d{4}$/;
+        if (!studentNumberRegex.test(field.value)) {
+          isValid = false;
+          errorMessage = "Student Number must be exactly 4 digits";
+        }
+  }
+
+
+  // ✅ Name: only letters and spaces
+  if (field.id === "name" && field.value) {
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(field.value)) {
+      isValid = false;
+      errorMessage = "Name must only contain letters";
     }
   }
   
@@ -1099,7 +1240,8 @@ function showEnhancedSuccessMessage() {
    const form = document.querySelector('#volunteerForm, #activityForm, #foodSellerForm');
    if (!form) return;
    const successMessage = document.getElementById('successMessage');
-  
+   const submitBtn = document.querySelector('.enhanced-submit-btn');
+
   // Reset form with animation
   form.classList.add('resetting');
   
@@ -1107,6 +1249,17 @@ function showEnhancedSuccessMessage() {
     form.reset();
     successMessage.style.display = 'none';
     successMessage.classList.remove('enhanced-success');
+
+
+    if (submitBtn) {
+          submitBtn.disabled = false; // Re-enable it
+          submitBtn.classList.remove('loading'); // Remove loading styles
+          // Restore the original button content (adjust text as needed)
+          submitBtn.querySelector('.btn-content').innerHTML = `
+            <i class="fas fa-rocket"></i>
+            <span class="btn-text">Submit Application</span>
+          `;
+    }
     
     // Reset all states
     document.querySelectorAll('.form-group').forEach(group => {
@@ -1230,7 +1383,7 @@ enhancedStyles.textContent = `
   .tooltip-content {
     position: absolute;
     top: -40px;
-    right: -10px;
+    left: -10px;
     background: var(--surface);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
@@ -1242,7 +1395,7 @@ enhancedStyles.textContent = `
     visibility: hidden;
     transform: translateY(10px);
     transition: all 0.3s ease;
-    z-index: 1000;
+     z-index: 2147483647 !important;
   }
   
   .tooltip-content.visible {
@@ -1254,7 +1407,7 @@ enhancedStyles.textContent = `
   .tooltip-arrow {
     position: absolute;
     bottom: -6px;
-    right: 20px;
+    left: 20px;
     width: 12px;
     height: 12px;
     background: var(--surface);
@@ -1777,7 +1930,6 @@ additionalAnimations.textContent = `
   }
   
   /* Form resetting animation */
-  .volunteer-form.resetting {
     opacity: 0.7;
     transform: scale(0.98);
     transition: all 0.5s ease;

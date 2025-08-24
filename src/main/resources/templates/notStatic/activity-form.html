@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <title>Activity Registration | Caged Coder</title>
+</head>
+
+<body>
+<!-- Enhanced animated background to match welcome page -->
+<div class="welcome-background">
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+  <div class="floating-orb orb-4"></div>
+  <div class="floating-orb orb-5"></div>
+  <div class="floating-orb orb-6"></div>
+
+  <!-- Dynamic geometric shapes -->
+  <div class="geometric-shape triangle-1"></div>
+  <div class="geometric-shape circle-1"></div>
+  <div class="geometric-shape square-1"></div>
+  <div class="geometric-shape triangle-2"></div>
+
+  <!-- Particle system -->
+  <div class="particles-container">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+</div>
+
+<!-- Welcome-style container structure -->
+<div class="welcome-container">
+  <!-- Back Navigation -->
+  <div class="back-navigation">
+    <button class="back-btn" onclick="window.location.href='/protected/index'">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Forms</span>
+    </button>
+  </div>
+
+  <!-- Hero-style header section -->
+  <div class="form-hero-section">
+    <div class="form-hero-content">
+      <!-- Enhanced logo section -->
+      <div class="form-logo-section">
+        <div class="main-logo-container">
+          <div class="logo-orbits">
+            <div class="orbit orbit-1">
+              <div class="orbit-dot"></div>
+            </div>
+            <div class="orbit orbit-2">
+              <div class="orbit-dot"></div>
+            </div>
+            <div class="orbit orbit-3">
+              <div class="orbit-dot"></div>
+            </div>
+          </div>
+          <div class="main-logo-inner">
+            <i class="fas fa-music"></i>
+            <div class="logo-pulse"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced welcome text -->
+      <div class="form-welcome-text">
+        <h1 class="form-title">
+          <span class="title-line">Register Your</span>
+          <span class="title-main">Creative Activity</span>
+          <span class="title-accent">Showcase Your Talent</span>
+        </h1>
+
+        <div class="form-subtitle">
+          <div class="subtitle-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <p>Share your performances and creative activities</p>
+        </div>
+
+        <div class="form-description">
+          <p>Whether it's music, dance, drama, or any creative expression - let your talent shine in our community.</p>
+        </div>
+      </div>
+
+      <!-- Enhanced progress indicator -->
+      <div class="form-progress-section">
+        <div class="progress-indicator">
+          <div class="progress-step active" data-step="1">
+            <div class="step-circle">
+              <i class="fas fa-info-circle"></i>
+            </div>
+            <span class="step-label">Activity Info</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2">
+            <div class="step-circle">
+              <i class="fas fa-users"></i>
+            </div>
+            <span class="step-label">Team Details</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3">
+            <div class="step-circle">
+              <i class="fas fa-check"></i>
+            </div>
+            <span class="step-label">Complete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form section with glassmorphism container -->
+  <div class="form-registration-section">
+    <!-- Success message -->
+    <div class="success-message" id="successMessage">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Activity Registered Successfully!</h3>
+      <p>Your creative activity has been submitted. We'll contact you soon via Telegram!</p>
+    </div>
+
+    <!-- Glassmorphism form container -->
+    <div class="form-glass-container">
+      <form class="volunteer-form" id="activityForm">
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-tag"></i>
+              Activity Information
+            </h2>
+            <p class="section-description">Tell us about your creative activity</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="input-container">
+                <input type="text" id="activityName" name="name" required>
+                <label for="activityName">
+                  <i class="fas fa-music"></i>
+                  Activity Name
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="select-container">
+                <select id="activityType" name="type" required>
+                  <option value="" disabled selected></option>
+                  <option value="song">🎵 Song Performance</option>
+                  <option value="dance">💃 Dance Performance</option>
+                  <option value="drama">🎭 Drama/Theater</option>
+                  <option value="music">🎸 Music Instrumental</option>
+                  <option value="comedy">😄 Comedy/Stand-up</option>
+                  <option value="poetry">📝 Poetry/Spoken Word</option>
+                  <option value="art">🎨 Art Exhibition</option>
+                  <option value="other">🎯 Other</option>
+                </select>
+                <label for="activityType">
+                  <i class="fas fa-list"></i>
+                  Activity Type
+                </label>
+                <span class="select-arrow"></span>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="input-container">
+                <input type="text" id="duration" name="duration_of_song" pattern="^([0-9]|[1-9][0-9]):[0-5][0-9]$" maxlength="5" required>
+                <label for="duration">
+                  <i class="fas fa-clock"></i>
+                  Duration (MM:SS)
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-container">
+                <input type="number" id="members" name="number_of_members" min="1" max="50" required>
+                <label for="members">
+                  <i class="fas fa-users"></i>
+                  Number of Members
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-user-circle"></i>
+              Contact Information
+            </h2>
+            <p class="section-description">How can we reach you?</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="input-container">
+                <input type="text" id="telegramAcc" name="tele_acc" required>
+                <label for="telegramAcc">
+                  <i class="fab fa-telegram"></i>
+                  Telegram Username
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-container">
+                <input type="number" id="userId" name="user_id" required>
+                <label for="userId">
+                  <i class="fas fa-id-badge"></i>
+                  User ID
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="textarea-container">
+                <textarea id="description" name="description" rows="4"></textarea>
+                <label for="description">
+                  <i class="fas fa-align-left"></i>
+                  Activity Description
+                </label>
+                <span class="input-highlight"></span>
+                <div class="textarea-helper">
+                  Describe your activity, what makes it special, any props needed, etc...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms section -->
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-shield-alt"></i>
+              Terms & Conditions
+            </h2>
+            <p class="section-description">Please review and accept our guidelines</p>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="activityTerms" name="terms" required>
+              <label for="activityTerms">
+                    <span class="checkbox-text">
+                      I agree to the <strong>activity guidelines</strong> and <strong>performance terms</strong>
+                      <span class="required-indicator">*</span>
+                    </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="mediaConsent" name="media_consent" checked>
+              <label for="mediaConsent">
+                    <span class="checkbox-text">
+                      I consent to recording and sharing of my performance for promotional purposes
+                    </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="originalContent" name="original_content">
+              <label for="originalContent">
+                    <span class="checkbox-text">
+                      I confirm this is original content or I have rights to perform it
+                    </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced submit section -->
+        <div class="form-submit-section">
+          <button type="submit" class="enhanced-submit-btn">
+                <span class="btn-content">
+                  <i class="fas fa-star"></i>
+                  <span class="btn-text">Register Activity</span>
+                </span>
+            <div class="btn-bg"></div>
+            <div class="btn-ripple"></div>
+          </button>
+
+          <p class="submit-note">
+            <i class="fas fa-lock"></i>
+            Your activity information is secure and will be reviewed by our team.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Enhanced footer -->
+  <div class="form-footer">
+    <div class="footer-content">
+      <p>
+        <i class="fas fa-heart"></i>
+        Share your creativity with our amazing community
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="/js/script2.js"></script>
+</body>
+</html>

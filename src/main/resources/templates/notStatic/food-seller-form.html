@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <title>Food Seller Registration | Caged Coder</title>
+</head>
+
+<body>
+<!-- Enhanced animated background to match welcome page -->
+<div class="welcome-background">
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+  <div class="floating-orb orb-4"></div>
+  <div class="floating-orb orb-5"></div>
+  <div class="floating-orb orb-6"></div>
+
+  <!-- Dynamic geometric shapes -->
+  <div class="geometric-shape triangle-1"></div>
+  <div class="geometric-shape circle-1"></div>
+  <div class="geometric-shape square-1"></div>
+  <div class="geometric-shape triangle-2"></div>
+
+  <!-- Particle system -->
+  <div class="particles-container">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+</div>
+
+<!-- Welcome-style container structure -->
+<div class="welcome-container">
+  <!-- Back Navigation -->
+  <div class="back-navigation">
+    <button class="back-btn" onclick="window.location.href='/protected/index'">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Forms</span>
+    </button>
+  </div>
+
+  <!-- Hero-style header section -->
+  <div class="form-hero-section">
+    <div class="form-hero-content">
+      <!-- Enhanced logo section -->
+      <div class="form-logo-section">
+        <div class="main-logo-container">
+          <div class="logo-orbits">
+            <div class="orbit orbit-1">
+              <div class="orbit-dot"></div>
+            </div>
+            <div class="orbit orbit-2">
+              <div class="orbit-dot"></div>
+            </div>
+            <div class="orbit orbit-3">
+              <div class="orbit-dot"></div>
+            </div>
+          </div>
+          <div class="main-logo-inner">
+            <i class="fas fa-utensils"></i>
+            <div class="logo-pulse"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced welcome text -->
+      <div class="form-welcome-text">
+        <h1 class="form-title">
+          <span class="title-line">Become a</span>
+          <span class="title-main">Food Seller</span>
+          <span class="title-accent">Share Your Cuisine</span>
+        </h1>
+
+        <div class="form-subtitle">
+          <div class="subtitle-icon">
+            <i class="fas fa-utensils"></i>
+          </div>
+          <p>Join our food marketplace and delight taste buds</p>
+        </div>
+
+        <div class="form-description">
+          <p>Register as a food vendor and share your delicious creations with our hungry community members.</p>
+        </div>
+      </div>
+
+      <!-- Enhanced progress indicator -->
+      <div class="form-progress-section">
+        <div class="progress-indicator">
+          <div class="progress-step active" data-step="1">
+            <div class="step-circle">
+              <i class="fas fa-user"></i>
+            </div>
+            <span class="step-label">Personal Info</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2">
+            <div class="step-circle">
+              <i class="fas fa-store"></i>
+            </div>
+            <span class="step-label">Business Info</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3">
+            <div class="step-circle">
+              <i class="fas fa-check"></i>
+            </div>
+            <span class="step-label">Complete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form section with glassmorphism container -->
+  <div class="form-registration-section">
+    <!-- Success message -->
+    <div class="success-message" id="successMessage">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Food Seller Registration Successful!</h3>
+      <p>Your application has been submitted. We'll review and contact you soon via Telegram!</p>
+    </div>
+
+    <!-- Glassmorphism form container -->
+    <div class="form-glass-container">
+      <form class="volunteer-form" id="foodSellerForm">
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-user-circle"></i>
+              Personal Information
+            </h2>
+            <p class="section-description">Tell us about yourself</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="input-container">
+                <input type="number" id="userId" name="user_id" required>
+                <label for="userId">
+                  <i class="fas fa-id-badge"></i>
+                  User ID
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-container">
+                <input type="text" id="legalName" name="name" required>
+                <label for="legalName">
+                  <i class="fas fa-user"></i>
+                  Legal Name
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="input-container">
+                <input type="text" id="telegram" name="telegram" required>
+                <label for="telegram">
+                  <i class="fab fa-telegram"></i>
+                  Telegram Username
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="select-container">
+                <select id="semester" name="sem" required>
+                  <option value="" disabled selected></option>
+                  <option value="1">1st Semester</option>
+                  <option value="2">2nd Semester</option>
+                  <option value="3">3rd Semester</option>
+                  <option value="4">4th Semester</option>
+                  <option value="5">5th Semester</option>
+                  <option value="6">6th Semester</option>
+                  <option value="7">7th Semester</option>
+                  <option value="8">8th Semester</option>
+                  <option value="9+">9th Semester or Higher</option>
+                </select>
+                <label for="semester">
+                  <i class="fas fa-graduation-cap"></i>
+                  Current Semester
+                </label>
+                <span class="select-arrow"></span>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section business-section">
+          <div class="section-header enhanced-header">
+            <div class="header-icon-wrapper">
+              <i class="fas fa-store"></i>
+            </div>
+            <div class="header-content">
+              <h2 class="section-title">Business Information</h2>
+              <p class="section-description">Share details about your food business</p>
+            </div>
+          </div>
+
+          <!-- Business Details Card -->
+          <div class="business-details-card">
+            <div class="card-header">
+              <h3><i class="fas fa-info-circle"></i> Basic Business Details</h3>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="input-container">
+                  <input type="text" id="foodName" name="food_name" required>
+                  <label for="foodName">
+                    <i class="fas fa-hamburger"></i>
+                    Food Name/Specialty
+                  </label>
+                  <span class="input-highlight"></span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="select-container">
+                  <select id="sellerType" name="is_seller" required>
+                    <option value="" disabled selected></option>
+                    <option value="individual">👤 Individual Seller</option>
+                    <option value="business">🏢 Business/Company</option>
+                    <option value="student">🎓 Student Entrepreneur</option>
+                    <option value="partnership">🤝 Partnership</option>
+                  </select>
+                  <label for="sellerType">
+                    <i class="fas fa-briefcase"></i>
+                    Seller Type
+                  </label>
+                  <span class="select-arrow"></span>
+                  <span class="input-highlight"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="input-container">
+                  <input type="number" id="price" name="price" min="100" max="3500" required>
+                  <label for="price">
+                    <i class="fas fa-dollar-sign"></i>
+                    Price (Kyats)
+                  </label>
+                  <span class="input-highlight"></span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="input-container">
+                  <input type="number" id="shopId" name="shop_id">
+                  <label for="shopId">
+                    <i class="fas fa-store-alt"></i>
+                    Shop ID (if applicable)
+                  </label>
+                  <span class="input-highlight"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location Selection Card -->
+          <div class="location-card">
+            <div class="card-header">
+              <h3><i class="fas fa-map-marker-alt"></i> Business Location</h3>
+              <p>Choose your preferred business location</p>
+            </div>
+
+            <div class="form-group full-width">
+              <div class="location-selector-container">
+                <div class="location-images-grid">
+                  <div class="location-option" data-location="Amarin Plaza Food Court">
+                    <img src="/images/amarin-plaza-food-court.jpg" alt="Amarin Plaza Food Court">
+                    <span class="location-name">Amarin Plaza Food Court</span>
+                  </div>
+                  <div class="location-option" data-location="Downtown Yangon">
+                    <img src="/images/1576548262194.jpg" alt="Downtown Yangon">
+                    <span class="location-name">Downtown Yangon</span>
+                  </div>
+                  <div class="location-option" data-location="University Campus">
+                    <img src="/images/5c015d77a310eff36908eb02.jpeg" alt="University Campus">
+                    <span class="location-name">University Campus</span>
+                  </div>
+                </div>
+                <input type="hidden" id="location" name="location" required>
+                <div class="selected-location-display">
+                  <span class="selected-text">Select a location</span>
+                </div>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Options Card -->
+          <div class="options-card">
+            <div class="card-header">
+              <h3><i class="fas fa-cog"></i> Additional Options</h3>
+            </div>
+
+            <div class="form-group full-width">
+              <div class="checkbox-container-inline">
+                <div class="custom-checkbox">
+                  <input type="checkbox" id="foodSet" name="is_food_set">
+                  <label for="foodSet">
+                        <span class="checkmark">
+                          <i class="fas fa-check"></i>
+                        </span>
+                    <span class="checkbox-text">
+                          <i class="fas fa-box"></i>
+                          Offers Food Sets/Combos
+                        </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Card -->
+          <div class="description-card">
+            <div class="card-header">
+              <h3><i class="fas fa-align-left"></i> Food Description & Menu</h3>
+              <p>Tell customers about your delicious offerings</p>
+            </div>
+
+            <div class="form-group full-width">
+              <div class="textarea-container">
+                <textarea id="description" name="description" rows="4"></textarea>
+                <label for="description">
+                  <i class="fas fa-align-left"></i>
+                  Describe your food items, ingredients, and special features...
+                </label>
+                <span class="input-highlight"></span>
+                <div class="textarea-helper">
+                  Include dietary information, special ingredients, cooking methods, and any unique selling points...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms section -->
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-shield-alt"></i>
+              Terms & Conditions
+            </h2>
+            <p class="section-description">Please review and accept our food safety guidelines</p>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="foodSellerTerms" name="terms" required>
+              <label for="foodSellerTerms">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
+                <span class="checkbox-text">
+                      I agree to the <strong>food safety guidelines</strong> and <strong>seller terms</strong>
+                      <span class="required-indicator">*</span>
+                    </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="healthCompliance" name="health_compliance" required>
+              <label for="healthCompliance">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
+                <span class="checkbox-text">
+                      I comply with health and safety regulations for food preparation
+                      <span class="required-indicator">*</span>
+                    </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="qualityAssurance" name="quality_assurance" checked>
+              <label for="qualityAssurance">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
+                <span class="checkbox-text">
+                      I commit to maintaining high food quality and customer service standards
+                    </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="marketingConsent" name="marketing_consent">
+              <label for="marketingConsent">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
+                <span class="checkbox-text">
+                      I consent to my food being featured in promotional materials
+                    </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced submit section -->
+        <div class="form-submit-section">
+          <button type="submit" class="enhanced-submit-btn">
+                <span class="btn-content">
+                  <i class="fas fa-store"></i>
+                  <span class="btn-text">Register as Food Seller</span>
+                </span>
+            <div class="btn-bg"></div>
+            <div class="btn-ripple"></div>
+          </button>
+
+          <p class="submit-note">
+            <i class="fas fa-lock"></i>
+            Your business information is secure and will be reviewed by our marketplace team.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Enhanced footer -->
+  <div class="form-footer">
+    <div class="footer-content">
+      <p>
+        <i class="fas fa-heart"></i>
+        Bring delicious food to our community
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="/js/script2.js"></script>
+</body>
+</html>

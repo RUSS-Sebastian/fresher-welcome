@@ -99,7 +99,41 @@
 
 <div class="content-area d-flex gap-1">
     <div class="main-content p-4  gap-4">
-        <div class="feature-box" data-name="Volunteer">
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-900">Volunteer Form Control</h2>
+                <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+            </div>
+
+            <div class="text-center space-y-6">
+                <!-- Status Display -->
+                <div class="status-indicator" id="statusDisplay">
+                    <div class="text-4xl mb-2" id="statusEmoji">🔴</div>
+                    <div class="text-lg font-medium text-gray-700" id="statusText">Form Closed</div>
+                    <div class="text-sm text-gray-500" id="statusSubtext">Volunteers cannot submit applications</div>
+                </div>
+
+                <!-- Toggle Switch -->
+                <div class="flex justify-center">
+                    <div class="toggle-switch" id="toggleSwitch" onclick="toggleForm()">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button
+                        id="actionButton"
+                        onclick="confirmAction()"
+                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
+                >
+                    Open Form
+                </button>
+            </div>
+        </div>
+
+
+        <!--<div class="feature-box" data-name="Volunteer">
             <span class="title">Volunteer</span>
             <div class="dropdown-box">Start</div>
         </div>
@@ -117,7 +151,7 @@
         <div class="feature-box" data-name="Voting">
             <span class="title">Voting</span>
             <div class="dropdown-box">Start</div>
-        </div>
+        </div>-->
     </div>
 
 
@@ -604,7 +638,7 @@
 
     <div id="VolCard" class="VolCard w-100">
         <table id="VolunteerTable" class="VolunteerTable display">
-            <thead>
+            <thead class="table-header">
             <tr>
                 <th>No.</th>
                 <th>Full Name</th>
@@ -613,77 +647,138 @@
                 <th>Preferred Role</th>
                 <th>Availability</th>
                 <th>Status</th>
-                <th></th> <!-- No name for this column -->
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>Alice Johnson</td>
-                <td>@alice_j</td>
-                <td>3</td>
-                <td>Event Organizer</td>
-                <td>Weekdays</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
-                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+            <tr class="table-row">
+                <td class="table-cell user-id">1</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Alice Jhonson</span></td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@alice_j</a>
+                    </div>
+                </td>
+                <td class="table-cell user-id">3</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Event Organizer</span></td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Weekdays</span></td>
+                <td class="table-cell">
+                    <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending
+                    </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveFood(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Bob Smith</td>
-                <td>@bob_smith</td>
-                <td>5</td>
-                <td>Social Media</td>
-                <td>Evenings Only</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
-                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+            <tr class="table-row">
+                <td class="table-cell user-id">2</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Bob Smith</span></td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@bob_smith</a>
+                    </div>
+                </td>
+                <td class="table-cell user-id">5</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Social Media</span></td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Evenings Only</span></td>
+                <td class="table-cell">
+                    <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending
+                    </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveFood(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
-            <tr>
-                <td>3</td>
-                <td>Clara Lee</td>
-                <td>@clara_lee</td>
-                <td>2</td>
-                <td>Volunteer Coordinator</td>
-                <td>Flexible Schedule</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
-                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+            <tr class="table-row">
+                <td class="table-cell user-id">3</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Clara Lee</span></td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@claralee</a>
+                    </div>
+                </td>
+                <td class="table-cell user-id">2</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Volunteer Coordinater</span></td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Flexible Schedule</span></td>
+                <td class="table-cell">
+                    <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending
+                    </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveFood(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
-            <tr>
-                <td>4</td>
-                <td>David Kim</td>
-                <td>@davidkim</td>
-                <td>7</td>
-                <td>Logistics</td>
-                <td>Weekends</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
-                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+            <tr class="table-row">
+                <td class="table-cell user-id">4</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">David Kim</span></td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">@davidkim</a>
+                    </div>
                 </td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Emma Brown</td>
-                <td>@emma_b</td>
-                <td>4</td>
-                <td>Support Staff</td>
-                <td>Morning Only</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td class="action-buttons">
-                    <button class="btn btn-success btn-sm approve"><i class="bi bi-check-circle"></i></button>
-                    <button class="btn btn-danger btn-sm reject"><i class="bi bi-x-circle"></i></button>
+                <td class="table-cell user-id">7</td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Logistics</span></td>
+                <td class="table-cell"><span class="font-semibold text-gray-900">Weekends</span></td>
+                <td class="table-cell">
+                    <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending
+                    </span>
+                </td>
+                <td class="table-cell">
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveFood(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" id="VolNum">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Active Volunteers</h3>
+            <div class="text-2xl">👥</div>
+        </div>
+        <div class="text-3xl font-bold text-green-600 mb-2">89</div>
+        <div class="text-sm text-gray-500">Currently active</div>
     </div>
 </div>
 

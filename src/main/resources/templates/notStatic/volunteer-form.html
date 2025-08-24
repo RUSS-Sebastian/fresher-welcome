@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <title>Volunteer Registration | Caged Coder</title>
+</head>
+
+<body>
+<!-- Enhanced animated background to match welcome page -->
+<div class="welcome-background">
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+  <div class="floating-orb orb-4"></div>
+  <div class="floating-orb orb-5"></div>
+  <div class="floating-orb orb-6"></div>
+
+  <!-- Dynamic geometric shapes -->
+  <div class="geometric-shape triangle-1"></div>
+  <div class="geometric-shape circle-1"></div>
+  <div class="geometric-shape square-1"></div>
+  <div class="geometric-shape triangle-2"></div>
+
+  <!-- Particle system -->
+  <div class="particles-container">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+</div>
+
+<!-- Welcome-style container structure -->
+<div class="welcome-container">
+  <!-- Back Navigation -->
+  <div class="back-navigation">
+    <button class="back-btn" onclick="window.location.href='/protected/index'">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Forms</span>
+    </button>
+  </div>
+
+  <!-- Hero-style header section -->
+  <div class="form-hero-section">
+    <div class="form-hero-content">
+      <!-- Enhanced logo section -->
+      <div class="form-logo-section">
+        <div class="main-logo-container">
+          <div class="logo-orbits">
+            <div class="orbit orbit-1">
+              <div class="orbit-dot"></div>
+            </div>
+            <div class="orbit orbit-2">
+              <div class="orbit-dot"></div>
+            </div>
+            <div class="orbit orbit-3">
+              <div class="orbit-dot"></div>
+            </div>
+          </div>
+          <div class="main-logo-inner">
+            <i class="fas fa-hands-helping"></i>
+            <div class="logo-pulse"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced welcome text -->
+      <div class="form-welcome-text">
+        <h1 class="form-title">
+          <span class="title-line">Join Our</span>
+          <span class="title-main">Volunteer Team</span>
+          <span class="title-accent">Make a Difference</span>
+        </h1>
+
+        <div class="form-subtitle">
+          <div class="subtitle-icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <p>Transform lives through technology and compassion</p>
+        </div>
+
+        <div class="form-description">
+          <p>Join our mission to create positive change in the community. Your skills and passion can make a real difference.</p>
+        </div>
+      </div>
+
+      <!-- Enhanced progress indicator -->
+      <div class="form-progress-section">
+        <div class="progress-indicator">
+          <div class="progress-step active" data-step="1">
+            <div class="step-circle">
+              <i class="fas fa-user"></i>
+            </div>
+            <span class="step-label">Personal Info</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2">
+            <div class="step-circle">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <span class="step-label">Preferences</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3">
+            <div class="step-circle">
+              <i class="fas fa-check"></i>
+            </div>
+            <span class="step-label">Complete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form section with glassmorphism container -->
+  <div class="form-registration-section">
+    <!-- Success message with enhanced design -->
+    <div class="success-message" id="successMessage">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Registration Successful!</h3>
+      <p>We'll contact you soon via Telegram. Welcome to our volunteer family!</p>
+    </div>
+
+    <!-- Glassmorphism form container -->
+    <div class="form-glass-container">
+      <form class="volunteer-form" id="volunteerForm">
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-user-circle"></i>
+              Personal Information
+            </h2>
+            <p class="section-description">Tell us about yourself</p>
+          </div>
+
+          <div class="form-row">
+            <!--<div class="form-group">
+              <div class="input-container">
+                <input type="text" id="studentNumber" name="student_number" required>
+                <label for="studentNumber">
+                  <i class="fas fa-id-card"></i>
+                  Student Number
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>-->
+
+            <div class="form-group">
+              <div class="input-container">
+                <input type="text" id="name" name="name" required>
+                <label for="name">
+                  <i class="fas fa-user"></i>
+                  Full Name
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-container">
+                <input type="text" id="telegram" name="telegram" required>
+                <label for="telegram">
+                  <i class="fab fa-telegram"></i>
+                  Telegram Username
+                </label>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+
+
+            <div class="form-group">
+              <div class="select-container">
+                <select id="semester" name="sem" required>
+                  <option value="" disabled selected></option>
+                  <option value="1 Sem">1st Semester</option>
+                  <option value="2 Sem">2nd Semester</option>
+                  <option value="3 Sem">3rd Semester</option>
+                  <option value="4 Sem">4th Semester</option>
+                  <option value="5 Sem">5th Semester</option>
+                  <option value="6 Sem">6th Semester</option>
+                  <option value="7 Sem">7th Semester</option>
+                  <option value="8 Sem">8th Semester</option>
+                  <option value="9 Sem">9th Semester</option>
+                  <option value="10 Sem">10th Semester</option>
+                  <option value="Higher">Higher</option>
+                </select>
+                <label for="semester">
+                  <i class="fas fa-graduation-cap"></i>
+                  Current Semester
+                </label>
+                <span class="select-arrow"></span>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-cogs"></i>
+              Volunteer Preferences
+            </h2>
+            <p class="section-description">Share your interests and availability</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="select-container">
+                <select id="role" name="role" required>
+                  <option value="" disabled selected></option>
+                  <option value="Program & Stage">&#127098; Program & Stage</option>
+                  <option value="Logistics & Setup">&#128736; Logistics & Setup</option>
+                  <option value="Hospitality & Reception">&#129309; Hospitality & Reception</option>
+                  <option value="Food & Refreshments">&#127860; Food & Refreshments</option>
+                  <option value="Games & Activity">👨‍&#127922; Games & Activity</option>
+                  <option value="Media & Documentation">&#128248; Media & Documentation</option>
+                  <option value="Other">🎯 Other</option>
+                </select>
+                <label for="role">
+                  <i class="fas fa-briefcase"></i>
+                  Preferred Role
+                </label>
+                <span class="select-arrow"></span>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="select-container">
+                <select id="availability" name="availability">
+                  <option value="" disabled selected></option>
+                  <option value="Weekdays (Mon-Fri)">🏢 Weekdays (Mon-Fri)</option>
+                  <option value="Weekends (Sat-Sun)">🌞 Weekends (Sat-Sun)</option>
+                  <option value="Evenings only">🌙 Evenings Only</option>
+                  <option value="Morning Hours">☀️ Morning Hours</option>
+                  <option value="Flexible Schedule">⏰ Flexible Schedule</option>
+                  <option value="During Breaks Only">🏖️ During Breaks Only</option>
+                </select>
+                <label for="availability">
+                  <i class="fas fa-clock"></i>
+                  Availability
+                </label>
+                <span class="select-arrow"></span>
+                <span class="input-highlight"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="textarea-container">
+                <textarea id="experience" name="experience" rows="4"></textarea>
+                <label for="experience">
+                  <i class="fas fa-star"></i>
+                  Skills & Experience
+                </label>
+                <span class="input-highlight"></span>
+                <div class="textarea-helper">
+                  Tell us about your programming languages, previous experience, or special talents...
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="textarea-container">
+                <textarea id="motivation" name="motivation" rows="4"></textarea>
+                <label for="motivation">
+                  <i class="fas fa-heart"></i>
+                  Why do you want to volunteer?
+                </label>
+                <span class="input-highlight"></span>
+                <div class="textarea-helper">
+                  Share your motivation and how you hope to contribute to our community...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced checkbox section -->
+        <div class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-shield-alt"></i>
+              Terms & Preferences
+            </h2>
+            <p class="section-description">Please review and accept our terms</p>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="terms" name="terms" required>
+              <label for="terms">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
+                <span class="checkbox-text">
+                      I agree to the <strong>terms and conditions</strong> and <strong>privacy policy</strong>
+                      <span class="required-indicator">*</span>
+                    </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="newsletter" name="newsletter" checked>
+              <label for="newsletter">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
+                <span class="checkbox-text">
+                      Receive updates about volunteer opportunities via Telegram
+                    </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="dataUsage" name="data_usage">
+              <label for="dataUsage">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
+                <span class="checkbox-text">
+                      Consent to information usage for volunteer coordination
+                    </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced submit section -->
+        <div class="form-submit-section">
+          <button type="submit" class="enhanced-submit-btn">
+                <span class="btn-content">
+                  <i class="fas fa-rocket"></i>
+                  <span class="btn-text">Submit Application</span>
+                </span>
+            <div class="btn-bg"></div>
+            <div class="btn-ripple"></div>
+          </button>
+
+          <p class="submit-note">
+            <i class="fas fa-lock"></i>
+            Your information is secure and will only be used for volunteer coordination.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Enhanced footer -->
+  <div class="form-footer">
+    <div class="footer-content">
+      <p>
+        <i class="fas fa-heart"></i>
+        Join our mission to build a better community
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="/js/script2.js"></script>
+</body>
+</html>

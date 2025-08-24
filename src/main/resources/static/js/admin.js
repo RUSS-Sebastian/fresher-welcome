@@ -6,6 +6,41 @@ const content_area = document.querySelector('.content-area');
 const eventCard = document.getElementById('EventCard');
 const foodCard = document.getElementById('FoodCard');
 const vCard = document.getElementById('VolCard');
+const vNum = document.getElementById('VolNum');
+let formIsOpen = false;
+let csrfToken = null;
+let csrfHeaderName = null;
+let currentUser = null;
+
+window.addEventListener("DOMContentLoaded", async () => {
+      // 1. Fetch CSRF token
+      const csrfResponse = await fetch("/csrf-token");
+      const csrfData = await csrfResponse.json();
+      csrfToken = csrfData.token;
+      csrfHeaderName = csrfData.headerName;
+      console.log("CSRF Token Loaded:", csrfHeaderName, csrfToken);
+});
+
+async function loadCurrentUser() {
+  try {
+    const response = await fetch("/api/users/me");
+    currentUser = await response.json();
+    console.log("Current User Loaded:", currentUser);
+
+    // Once ready, show the username
+    showUsername();
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+  }
+}
+function showUsername() {
+  if (currentUser) {
+    document.querySelector(".username").textContent = currentUser.name;
+  }
+}
+
+// Run on page load
+window.addEventListener("DOMContentLoaded", loadCurrentUser());
 
 menuBtn.addEventListener('click', () => {
     menuBtn.classList.add('rotate-once');
@@ -59,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
             aCard.style.display = "none";
             foodCard.style.display = "none";
             vCard.style.display = "none";
+            vNum.style.display = "none";
 
         }else if(text == "Volunteer"){
           mainContent.style.display = "none";
@@ -71,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
           aCard.style.display = "none";
           foodCard.style.display = "none";
           vCard.style.display = "block";
+          vNum.style.display = "block";
+
 
         } else if (text === "Feedback") {
             mainContent.style.display = "none";
@@ -83,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
             aCard.style.display = "none";
             foodCard.style.display = "none";
             vCard.style.display = "none";
+            vNum.style.display = "none";
 
         }else if(text == "Event"){
             mainContent.style.display = "none";
@@ -95,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
             aCard.style.display = "none";
             foodCard.style.display = "none";
             vCard.style.display = "none";
+            vNum.style.display = "none";
 
         }else if(text == "Voting"){
             king.style.display = "flex";
@@ -107,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
             aCard.style.display = "none";
             foodCard.style.display = "none";
             vCard.style.display = "none";
+            vNum.style.display = "none";
 
         }else if(text == "Activity"){
           mainContent.style.display = "none";
@@ -119,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
           aCard.style.display = "block";
           foodCard.style.display = "none";
           vCard.style.display = "none";
+          vNum.style.display = "none";
 
         }else if(text == "Food Seller"){
           mainContent.style.display = "none";
@@ -131,6 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
           aCard.style.display = "none";
           foodCard.style.display = "block";
           vCard.style.display = "none";
+          vNum.style.display = "none";
 
         }else {
             mainContent.style.display = "none";
@@ -143,6 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
             aCard.style.display = "none";
             foodCard.style.display = "none";
             vCard.style.display = "none";
+            vNum.style.display = "none";
         }
     }
 
@@ -159,6 +203,91 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+
+function updateUI() {
+    const toggleSwitch = document.getElementById('toggleSwitch');
+    const statusEmoji = document.getElementById('statusEmoji');
+    const statusText = document.getElementById('statusText');
+    const statusSubtext = document.getElementById('statusSubtext');
+    const actionButton = document.getElementById('actionButton');
+    const statusDisplay = document.getElementById('statusDisplay');
+
+    // Add fade effect
+    statusDisplay.classList.add('fade-in');
+    setTimeout(() => statusDisplay.classList.remove('fade-in'), 500);
+
+    if (formIsOpen) {
+        // Form is open
+        toggleSwitch.classList.add('active');
+        statusEmoji.textContent = '🟢';
+        statusText.textContent = 'Form Open';
+        statusSubtext.textContent = 'Volunteers can submit applications';
+        actionButton.textContent = 'Close Form';
+        actionButton.className = 'w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200';
+    } else {
+        // Form is closed
+        toggleSwitch.classList.remove('active');
+        statusEmoji.textContent = '🔴';
+        statusText.textContent = 'Form Closed';
+        statusSubtext.textContent = 'Volunteers cannot submit applications';
+        actionButton.textContent = 'Open Form';
+        actionButton.className = 'w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200';
+    }
+}
+
+
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch("/api/admin-buttons/volunteer_form_button");
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        formIsOpen = await response.json(); // true / false from backend
+        updateUI();
+    } catch (error) {
+        console.error("Error fetching button status:", error);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch("/api/admin-buttons/volunteer_form_button");
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        formIsOpen = await response.json(); // true / false from backend
+        updateUI();
+    } catch (error) {
+        console.error("Error fetching button status:", error);
+    }
+});
+
+async function toggleForm() {
+    formIsOpen = !formIsOpen;
+    updateUI();
+
+
+    try {
+        await fetch(`/api/admin-buttons/volunteer_form_button?status=${formIsOpen}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                [csrfHeaderName]: csrfToken,
+            }
+        });
+    } catch (err) {
+        console.error("Error updating button:", err);
+    }
+}
+
+function confirmAction() {
+    const action = formIsOpen ? 'close' : 'open';
+    if (confirm(`Are you sure you want to ${action} the volunteer form?`)) {
+        toggleForm();
+    }
+}
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -370,22 +499,6 @@ function rejectFood(button) {
 
 
 
-async function showUsername() {
-    try {
-        // Fetch current user info
-        const res = await fetch("/api/users/me", { credentials: "include" });
-        if (!res.ok) return;
-
-        const user = await res.json();
-
-        document.querySelector(".username").textContent = user.name; // or user.username
-    } catch (err) {
-        console.error("Error fetching current user:", err);
-    }
-}
-
-// Run on page load
-window.addEventListener("DOMContentLoaded", showUsername);
 
 
 
@@ -552,29 +665,19 @@ document.getElementById("eventForm").addEventListener("submit", async function (
     }
 
     try {
-        // Get current user
-        const userResponse = await fetch("/api/users/me");
-        if (!userResponse.ok) {
-            alert("❌ Unable to fetch current user. Please login again.");
-            return;
-        }
-        const currentUser = await userResponse.json();
+
         const userId = currentUser.id;
         if (!userId) {
             alert("❌ Invalid user. Please login again.");
             return;
         }
 
-        // CSRF token
-        const csrfResponse = await fetch("/csrf-token");
-        const csrfData = await csrfResponse.json();
-
         // Save event
         const response = await fetch("/api/event", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                [csrfData.headerName]: csrfData.token
+                [csrfHeaderName]: csrfToken,
             },
             body: JSON.stringify({
                 eventName,
@@ -728,8 +831,7 @@ document.querySelector('#eventTable tbody').addEventListener('click', function (
         const eventId = rowData.eventId;
         try {
             // CSRF token
-            const csrfResponse = await fetch("/csrf-token");
-            const csrfData = await csrfResponse.json();
+
 
             console.log("🔍 Sending update for Event ID:", eventId, updatedData);
 
@@ -738,7 +840,7 @@ document.querySelector('#eventTable tbody').addEventListener('click', function (
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    [csrfData.headerName]: csrfData.token
+                    [csrfHeaderName]: csrfToken,
                 },
                 body: JSON.stringify(updatedData)
             });
@@ -783,16 +885,14 @@ document.querySelector('#eventTable tbody').addEventListener('click', async func
 
   console.log(eventId);
   try {
-    // Fetch CSRF token first
-    const csrfResponse = await fetch("/csrf-token");
-    const csrfData = await csrfResponse.json();
+
 
     // Send DELETE request to backend
     const res = await fetch(`/api/event/${eventId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        [csrfData.headerName]: csrfData.token
+        [csrfHeaderName]: csrfToken,
       }
     });
 
