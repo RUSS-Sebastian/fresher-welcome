@@ -39,12 +39,18 @@ public class SecurityConfig {
                         // Feedback requires login (any role)
                         .requestMatchers(HttpMethod.POST, "/api/feedback").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/event").hasRole("ADMIN")
-                        .requestMatchers("/api/event/all","api/event/{id}","api/admin-buttons/{buttonName}").authenticated()
+                        .requestMatchers("/api/event/all","/api/event/{id}","/api/admin-buttons/{buttonName}","/api/volunteers/pending")
+                            .authenticated()
+
+                        .requestMatchers("/api/volunteers/{id}/status","/api/volunteers/approved").authenticated()
 
                         .requestMatchers(HttpMethod.POST,"/api/volunteers").hasAnyRole("ADMIN","STUDENT")
 
                         // Logout requires login
                         .requestMatchers(HttpMethod.POST,"/logout").authenticated()
+
+
+                        .requestMatchers(HttpMethod.POST,"/api/messages").hasRole("ADMIN")
 
                         .requestMatchers("/api/feedback/**").authenticated()
 
@@ -52,7 +58,8 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         // Pages accessible by both ADMIN and STUDENT
-                        .requestMatchers("/protected/**", "/api/users/me").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/protected/**", "/api/users/me","/api/messages/user/{userId}","/api/messages/count/{userId}","/api/messages/read")
+                            .hasAnyRole("ADMIN", "STUDENT")
 
                         // Everything else
                         .anyRequest().permitAll()

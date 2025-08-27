@@ -640,9 +640,8 @@
         <table id="VolunteerTable" class="VolunteerTable display">
             <thead class="table-header">
             <tr>
-                <th>No.</th>
                 <th>Full Name</th>
-                <th>Username (Telegram)</th>
+                <th>Username</th>
                 <th>Semester</th>
                 <th>Preferred Role</th>
                 <th>Availability</th>
@@ -650,129 +649,26 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
-            <tr class="table-row">
-                <td class="table-cell user-id">1</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Alice Jhonson</span></td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@alice_j</a>
-                    </div>
-                </td>
-                <td class="table-cell user-id">3</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Event Organizer</span></td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Weekdays</span></td>
-                <td class="table-cell">
-                    <span class="status-badge status-pending">
-                                <i class="fas fa-clock mr-1"></i>
-                                Pending
-                    </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" onclick="approveFood(this)">
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <tr class="table-row">
-                <td class="table-cell user-id">2</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Bob Smith</span></td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@bob_smith</a>
-                    </div>
-                </td>
-                <td class="table-cell user-id">5</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Social Media</span></td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Evenings Only</span></td>
-                <td class="table-cell">
-                    <span class="status-badge status-pending">
-                                <i class="fas fa-clock mr-1"></i>
-                                Pending
-                    </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" onclick="approveFood(this)">
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <tr class="table-row">
-                <td class="table-cell user-id">3</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Clara Lee</span></td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@claralee</a>
-                    </div>
-                </td>
-                <td class="table-cell user-id">2</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Volunteer Coordinater</span></td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Flexible Schedule</span></td>
-                <td class="table-cell">
-                    <span class="status-badge status-pending">
-                                <i class="fas fa-clock mr-1"></i>
-                                Pending
-                    </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" onclick="approveFood(this)">
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <tr class="table-row">
-                <td class="table-cell user-id">4</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">David Kim</span></td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@davidkim</a>
-                    </div>
-                </td>
-                <td class="table-cell user-id">7</td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Logistics</span></td>
-                <td class="table-cell"><span class="font-semibold text-gray-900">Weekends</span></td>
-                <td class="table-cell">
-                    <span class="status-badge status-pending">
-                                <i class="fas fa-clock mr-1"></i>
-                                Pending
-                    </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" onclick="approveFood(this)">
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
         </table>
     </div>
 
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" id="VolNum">
+    <div id="ApprovedCard" class="ApprovedCard w-75">
+        <table id="ApprovedTable" class="ApprovedTable display">
+            <thead class="table-header">
+            <tr>
+                <th>Full Name</th>
+                <th>Username (Telegram)</th>
+                <th>Semester</th>
+                <th>Preferred Role</th>
+                <th>Availability</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" id="VolNum" style="max-height:200px">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900">Active Volunteers</h3>
             <div class="text-2xl">👥</div>
@@ -780,6 +676,7 @@
         <div class="text-3xl font-bold text-green-600 mb-2">89</div>
         <div class="text-sm text-gray-500">Currently active</div>
     </div>
+
 </div>
 
 
@@ -832,7 +729,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 
 <script>
-
 
    document.addEventListener('DOMContentLoaded', function () {
        const kingLabels = ['King1', 'King2', 'King3', 'King4'];
@@ -995,12 +891,7 @@
    });
 
 
-   $(document).ready(function() {
-       $('#VolunteerTable').DataTable({
-           autoWidth: false
 
-           });  // ← Initializes the table
-   });
 
    (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d7527a616a448a',t:'MTc1NDkxMTAwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
 </script>

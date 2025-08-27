@@ -74,13 +74,7 @@ public class TemplateController {
 
     @GetMapping("/volunteer")
     public String volunteer() {
-        boolean isOpen = adminButtonService.getStatus("volunteer_form_button");
 
-        if (!isOpen) {
-
-            return "redirect:/error/access-denied";
-            // or return "redirect:/";
-        }
         System.out.println("Volunteer Form Requested");
         return "notStatic/volunteer-form";
     }

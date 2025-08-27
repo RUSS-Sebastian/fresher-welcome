@@ -44,6 +44,31 @@ public class User {
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
     private List<Event> eventList;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Volunteer> volunteerForms;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserMessage> userMessageList;
+
+
+
+    public List<UserMessage> getUserMessageList() {
+        return userMessageList;
+    }
+
+    public void setUserMessageList(List<UserMessage> userMessageList) {
+        this.userMessageList = userMessageList;
+    }
+
+    public List<Volunteer> getVolunteerForms() {
+        return volunteerForms;
+    }
+
+    public void setVolunteerForms(List<Volunteer> volunteerForms) {
+        this.volunteerForms = volunteerForms;
+    }
+
     public List<Event> getEventList() {
         return eventList;
     }

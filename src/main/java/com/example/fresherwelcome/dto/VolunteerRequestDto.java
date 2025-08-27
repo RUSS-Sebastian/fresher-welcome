@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Size;
 
 public class VolunteerRequestDto {
 
-    @NotBlank(message = "Full name is required")
-    private String fullName;
-
     @NotBlank(message = "Telegram username is required")
     private String telegramUsername;
 
@@ -34,13 +31,6 @@ public class VolunteerRequestDto {
 
 
     // --- Getters & Setters ---
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public Long getUserId() {
         return userId;

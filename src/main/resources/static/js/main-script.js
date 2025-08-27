@@ -206,7 +206,6 @@ async function navigateToForm(formType) {
 
   // Show loading
   showNavigationLoading(formType);
-
   // Target page
   let targetPage;
   switch (formType) {
@@ -226,7 +225,8 @@ async function navigateToForm(formType) {
 
     if (formType === "volunteer") {
       try {
-        const response = await fetch(`/api/admin-buttons/volunteer_form_button`);
+        console.log("working")
+        const response = await fetch(`/api/admin-buttons/{volunteer_form_button}`);
         const allowed = await response.json(); // this is already true/false
         console.log(allowed);
         if (!allowed) {

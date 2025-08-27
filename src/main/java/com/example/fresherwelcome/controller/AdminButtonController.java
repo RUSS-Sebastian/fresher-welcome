@@ -17,7 +17,6 @@ public class AdminButtonController {
     }
 
     // ✅ Get button status
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{buttonName}")
     public ResponseEntity<Boolean> getButtonStatus(@PathVariable String buttonName) {
         boolean status = service.getStatus(buttonName);

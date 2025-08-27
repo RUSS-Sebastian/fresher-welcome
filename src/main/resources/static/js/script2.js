@@ -122,7 +122,6 @@ async function processVolunteerFormWithBackend() {
   const motivationEl = document.getElementById("motivation");
 
   const data = {
-    fullName: document.getElementById("name").value.trim(),
     telegramUsername: document.getElementById("telegram").value.trim(),
     currentSemester: document.getElementById("semester").value,
     preferredRole: document.getElementById("role").value,
@@ -133,7 +132,7 @@ async function processVolunteerFormWithBackend() {
   };
 
   // Basic validation
-  if (!data.fullName || !data.telegramUsername || !data.currentSemester || !data.preferredRole || !data.userId || !data.availability) {
+  if (!data.telegramUsername || !data.currentSemester || !data.preferredRole || !data.userId || !data.availability) {
     alert("Please fill all required fields correctly.");
     return;
   }
@@ -637,7 +636,7 @@ function validateFieldAdvanced(field) {
   }
 
 
-  if (field.id === "studentNumber" && field.value) {
+  /*if (field.id === "studentNumber" && field.value) {
         const studentNumberRegex = /^\d{4}$/;
         if (!studentNumberRegex.test(field.value)) {
           isValid = false;
@@ -653,7 +652,7 @@ function validateFieldAdvanced(field) {
       isValid = false;
       errorMessage = "Name must only contain letters";
     }
-  }
+  }*/
   
   // Update visual state
   updateFieldValidationState(container, isValid, errorMessage);

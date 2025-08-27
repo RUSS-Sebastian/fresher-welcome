@@ -7,6 +7,7 @@ const eventCard = document.getElementById('EventCard');
 const foodCard = document.getElementById('FoodCard');
 const vCard = document.getElementById('VolCard');
 const vNum = document.getElementById('VolNum');
+const approvedVCard = document.getElementById('ApprovedCard');
 let formIsOpen = false;
 let csrfToken = null;
 let csrfHeaderName = null;
@@ -95,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             foodCard.style.display = "none";
             vCard.style.display = "none";
             vNum.style.display = "none";
+            approvedVCard.style.display = "none";
 
         }else if(text == "Volunteer"){
           mainContent.style.display = "none";
@@ -108,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
           foodCard.style.display = "none";
           vCard.style.display = "block";
           vNum.style.display = "block";
-
+          approvedVCard.style.display = "block";
 
         } else if (text === "Feedback") {
             mainContent.style.display = "none";
@@ -122,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             foodCard.style.display = "none";
             vCard.style.display = "none";
             vNum.style.display = "none";
+            approvedVCard.style.display = "none";
 
         }else if(text == "Event"){
             mainContent.style.display = "none";
@@ -135,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
             foodCard.style.display = "none";
             vCard.style.display = "none";
             vNum.style.display = "none";
+            approvedVCard.style.display = "none";
 
         }else if(text == "Voting"){
             king.style.display = "flex";
@@ -148,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
             foodCard.style.display = "none";
             vCard.style.display = "none";
             vNum.style.display = "none";
+            approvedVCard.style.display = "none";
 
         }else if(text == "Activity"){
           mainContent.style.display = "none";
@@ -161,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
           foodCard.style.display = "none";
           vCard.style.display = "none";
           vNum.style.display = "none";
+          approvedVCard.style.display = "none";
 
         }else if(text == "Food Seller"){
           mainContent.style.display = "none";
@@ -174,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
           foodCard.style.display = "block";
           vCard.style.display = "none";
           vNum.style.display = "none";
+          approvedVCard.style.display = "none";
 
         }else {
             mainContent.style.display = "none";
@@ -187,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
             foodCard.style.display = "none";
             vCard.style.display = "none";
             vNum.style.display = "none";
+            approvedVCard.style.display = "none";
         }
     }
 
@@ -474,6 +482,131 @@ function approveFood(button) {
         row.style.backgroundColor = '';
     }, 1000);
 }
+
+async function approveVol(vId, uId, button) {
+    const row = button.closest('tr');
+    const statusCell = row.querySelector('.status-badge');
+    const buttons = row.querySelectorAll('.action-btn');
+
+    // Disable buttons & update UI
+    buttons.forEach(btn => btn.disabled = true);
+    statusCell.className = 'status-badge status-approved';
+    statusCell.innerHTML = '<i class="fas fa-check-circle mr-1"></i>Approved';
+    row.style.backgroundColor = '#d1fae5';
+    setTimeout(() => row.style.backgroundColor = '', 1000);
+
+    try {
+        // Approve volunteer
+        const volunteerRes = await fetch(`/api/volunteers/${vId}/status?status=APPROVED`, {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+        });
+
+        if (!volunteerRes.ok) throw new Error("Failed to approve volunteer");
+
+        console.log("✅ Volunteer approved");
+
+        // Send message separately
+        const msgResult = await sendUserMessage(uId, "Approved Volunteer", "Admin approved your volunteer request successfully.");
+
+        if (!msgResult.success) {
+            alert("Volunteer approved but failed to send message: " + msgResult.message);
+        } else {
+            alert("Volunteer approved and user notified successfully!");
+        }
+
+        window.location.href = "/admin/dashboard";
+
+    } catch (err) {
+        console.error("❌ Error in approval flow:", err);
+
+        // Rollback UI
+        statusCell.className = 'status-badge status-pending';
+        statusCell.innerHTML = '<i class="fas fa-clock mr-1"></i>Pending';
+        buttons.forEach(btn => btn.disabled = false);
+
+        alert("Failed to approve volunteer. Please try again.");
+    }
+}
+
+async function rejectVol(vId, uId, button) {
+    console.log("Reject clicked for vId:", vId);
+
+    const row = button.closest('tr');
+    const statusCell = row.querySelector('.status-badge');
+    const buttons = row.querySelectorAll('.action-btn');
+
+    // Disable buttons & update UI
+    buttons.forEach(btn => btn.disabled = true);
+    statusCell.className = 'status-badge status-rejected';
+    statusCell.innerHTML = '<i class="fas fa-times-circle mr-1"></i>Rejected';
+    row.style.backgroundColor = '#fee2e2';
+    setTimeout(() => row.style.backgroundColor = '', 1000);
+
+    try {
+        // Reject volunteer
+        const volunteerRes = await fetch(`/api/volunteers/${vId}/status?status=REJECTED`, {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+        });
+
+        if (!volunteerRes.ok) throw new Error("Failed to reject volunteer");
+        console.log("❌ Volunteer rejected");
+
+        // Send message to user
+        const msgResult = await sendUserMessage(uId, "Volunteer Rejected", "Admin rejected your volunteer request.");
+
+        if (!msgResult.success) {
+            alert("Volunteer rejected but failed to send message: " + msgResult.message);
+        } else {
+            alert("Volunteer rejected and user notified successfully!");
+        }
+
+        window.location.href = "/admin/dashboard";
+
+    } catch (err) {
+        console.error("❌ Error in rejection flow:", err);
+
+        // Rollback UI
+        statusCell.className = 'status-badge status-pending';
+        statusCell.innerHTML = '<i class="fas fa-clock mr-1"></i>Pending';
+        buttons.forEach(btn => btn.disabled = false);
+
+        alert("Failed to reject volunteer. Please try again.");
+    }
+}
+
+
+
+async function sendUserMessage(uId, title, content) {
+    try {
+        const messagePayload = { userId: uId, title, content };
+
+        const res = await fetch("/api/messages", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeaderName]: csrfToken,
+            },
+            body: JSON.stringify(messagePayload)
+        });
+
+        if (!res.ok) {
+            const errText = await res.text();
+            console.warn("⚠️ Message API failed:", errText);
+            return { success: false, message: errText };
+        }
+
+        const msgText = await res.text(); // plain string response
+        console.log("✅ Message sent:", msgText);
+        return { success: true, message: msgText };
+
+    } catch (err) {
+        console.error("❌ Error sending message:", err);
+        return { success: false, message: err.message };
+    }
+}
+
 
 
 function rejectFood(button) {
@@ -796,6 +929,202 @@ const table1 = $('#eventTable').DataTable({
 });
 
 
+const table2 = $('#VolunteerTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: function(data, callback) {
+        console.log("🔍 DataTables request object:", data);
+
+        const page = Math.floor(data.start / data.length);
+        const size = data.length;
+
+        let sortBy = "submitted_time";
+        let direction = "desc";
+        if (data.order && data.order.length > 0) {
+            sortBy = data.columns[data.order[0].column].data;
+            direction = data.order[0].dir;
+        }
+
+        fetch(`/api/volunteers/pending?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`)
+            .then(res => res.json())
+            .then(json => {
+                callback({
+                    data: json.content,
+                    recordsTotal: json.totalElements,
+                    recordsFiltered: json.totalElements
+                });
+            })
+            .catch(err => console.error("❌ Error fetching data:", err));
+    },
+    columns: [
+        {
+            data: "fullName",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "telegramUsername",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">${data}</a>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "currentSemester",
+            className:"table-cell user-id",
+            render: function(data) {
+                return `${data}`;
+            }
+        },
+        {
+            data: "preferredRole",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "availability",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "isVolunteer",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="status-badge status-pending">
+                                <i class="fas fa-clock mr-1"></i>
+                                ${data}
+                    </span>
+                `;
+            }
+        },
+        {
+            data: null, // no data from backend, we create buttons
+            orderable: false,
+            className:"table-cell",
+            render: function(data,type,row) {
+                return `
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveVol(${row.volunteer_id},${row.user_id},this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectVol(${row.volunteer_id},${row.user_id},this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                `;
+            }
+        },
+        {
+             data:"volunteer_id",visible : false
+        },
+        {
+            data:"user_id",visible : false
+        }
+    ],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50],
+    order: [[2, "desc"]],
+    searching : false
+});
+
+const table3 = $('#ApprovedTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: function(data, callback) {
+        console.log("🔍 DataTables request object:", data);
+
+        const page = Math.floor(data.start / data.length);
+        const size = data.length;
+
+        let sortBy = "current_semester";
+        let direction = "desc";
+        if (data.order && data.order.length > 0) {
+            sortBy = data.columns[data.order[0].column].data;
+            direction = data.order[0].dir;
+        }
+
+        fetch(`/api/volunteers/approved?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`)
+            .then(res => res.json())
+            .then(json => {
+                callback({
+                    data: json.content,
+                    recordsTotal: json.totalElements,
+                    recordsFiltered: json.totalElements
+                });
+            })
+            .catch(err => console.error("❌ Error fetching data:", err));
+    },
+    columns: [
+        {
+            data: "fullName",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "telegramUsername",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">${data}</a>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "currentSemester",
+            className:"table-cell user-id",
+            render: function(data) {
+                return `${data}`;
+            }
+        },
+        {
+            data: "preferredRole",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "availability",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+    ],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50],
+    order: [[2, "desc"]],
+    searching : false
+});
 
 
 document.querySelector('#eventTable tbody').addEventListener('click', function (e) {
@@ -919,4 +1248,15 @@ document.querySelector('#eventTable tbody').addEventListener('click', (e) => {
   if (descCell) {
     descCell.classList.toggle('full'); // toggle your CSS class
   }
+});
+
+//volunteer count
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("/api/volunteers/count/approved")
+        .then(res => res.json())
+        .then(count => {
+            // target the <div class="text-3xl ..."> inside #VolNum
+            document.querySelector("#VolNum .text-3xl").textContent = count;
+        })
+        .catch(err => console.error("Error loading approved count:", err));
 });

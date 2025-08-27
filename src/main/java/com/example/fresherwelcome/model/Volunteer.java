@@ -3,6 +3,8 @@ package com.example.fresherwelcome.model;
 import jakarta.persistence.*;
 import com.example.fresherwelcome.model.User;
 
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "volunteer")
@@ -13,10 +15,7 @@ public class Volunteer {
     @Column(name = "volunteer_id")
     private Long volunteerId;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
-
-    @Column(name = "telegram_username", nullable = false, unique = true)
+    @Column(name = "telegram_username", nullable = false)
     private String telegramUsername;
 
     @Convert(converter = SemesterConverter.class)
@@ -27,8 +26,9 @@ public class Volunteer {
     @Column(name = "preferred_role", nullable = false)
     private Role preferredRole;
 
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false) // foreign key in volunteer table
     private User user;
 
     @Convert(converter = AvailabilityConverter.class)
@@ -45,7 +45,16 @@ public class Volunteer {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,name = "is_volunteer")
-    private VolunteerStatus is_volunteer = VolunteerStatus.PENDING; // default
+    private VolunteerStatus isVolunteer = VolunteerStatus.PENDING; // default
+
+
+    @Column(name = "submitted_time", nullable = false, updatable = false)
+    private LocalDateTime submittedTime;
+
+
+    public Volunteer(){
+        this.submittedTime = LocalDateTime.now();
+    }
 
     // --- Enums with labels ---
 
@@ -191,14 +200,6 @@ public class Volunteer {
         this.volunteerId = volunteerId;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     public String getTelegramUsername() {
         return telegramUsername;
     }
@@ -247,12 +248,20 @@ public class Volunteer {
         this.reason = reason;
     }
 
-    public VolunteerStatus getIs_volunteer() {
-        return is_volunteer;
+    public VolunteerStatus getIsVolunteer() {
+        return isVolunteer;
     }
 
-    public void setIs_volunteer(VolunteerStatus is_volunteer) {
-        this.is_volunteer = is_volunteer;
+    public void setIsVolunteer(VolunteerStatus isVolunteer) {
+        this.isVolunteer = isVolunteer;
+    }
+
+    public LocalDateTime getSubmittedTime() {
+        return submittedTime;
+    }
+
+    public void setSubmittedTime(LocalDateTime submittedTime) {
+        this.submittedTime = submittedTime;
     }
 }
 
