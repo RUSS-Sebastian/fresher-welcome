@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/volunteers")
-public class VolunteerController {
+public class  VolunteerController {
 
     private final VolunteerService volunteerService;
 

@@ -1,10 +1,8 @@
 package com.example.fresherwelcome.service;
 
-import com.example.fresherwelcome.dto.EventDtos;
 import com.example.fresherwelcome.dto.VolApprovedDto;
 import com.example.fresherwelcome.dto.VolunteerRequestDto;
 import com.example.fresherwelcome.dto.VolunteerResponseDto;
-import com.example.fresherwelcome.model.Event;
 import com.example.fresherwelcome.model.User;
 import com.example.fresherwelcome.model.Volunteer;
 import com.example.fresherwelcome.model.VolunteerStatus;

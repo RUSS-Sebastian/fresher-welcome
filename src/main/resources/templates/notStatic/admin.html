@@ -100,7 +100,7 @@
 <div class="content-area d-flex gap-1">
     <div class="main-content p-4  gap-4">
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div id="volunteerFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-lg font-semibold text-gray-900">Volunteer Form Control</h2>
                 <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -108,50 +108,60 @@
 
             <div class="text-center space-y-6">
                 <!-- Status Display -->
-                <div class="status-indicator" id="statusDisplay">
-                    <div class="text-4xl mb-2" id="statusEmoji">🔴</div>
-                    <div class="text-lg font-medium text-gray-700" id="statusText">Form Closed</div>
-                    <div class="text-sm text-gray-500" id="statusSubtext">Volunteers cannot submit applications</div>
+                <div class="status-indicator statusDisplay">
+                    <div class="text-4xl mb-2 statusEmoji">🔴</div>
+                    <div class="text-lg font-medium text-gray-700 statusText">Form Closed</div>
+                    <div class="text-sm text-gray-500 statusSubtext">Volunteers cannot submit applications</div>
                 </div>
 
                 <!-- Toggle Switch -->
                 <div class="flex justify-center">
-                    <div class="toggle-switch" id="toggleSwitch" onclick="toggleForm()">
+                    <div class="toggle-switch toggleSwitch"  onclick="toggleForm('volunteerFormContainer', 'volunteer_form_button')">
                         <div class="toggle-knob"></div>
                     </div>
                 </div>
 
                 <!-- Action Button -->
                 <button
-                        id="actionButton"
-                        onclick="confirmAction()"
-                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
+                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 actionButton"
+                        onclick="confirmAction('volunteerFormContainer', 'volunteer_form_button')"
                 >
                     Open Form
                 </button>
             </div>
         </div>
 
+        <div id="activityFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-900">Activity Form Control</h2>
+                <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+            </div>
 
-        <!--<div class="feature-box" data-name="Volunteer">
-            <span class="title">Volunteer</span>
-            <div class="dropdown-box">Start</div>
+            <div class="text-center space-y-6">
+                <!-- Status Display -->
+                <div class="status-indicator statusDisplay">
+                    <div class="text-4xl mb-2 statusEmoji">🔴</div>
+                    <div class="text-lg font-medium text-gray-700 statusText">Form Closed</div>
+                    <div class="text-sm text-gray-500 statusSubtext">Volunteers cannot submit applications</div>
+                </div>
+
+                <!-- Toggle Switch -->
+                <div class="flex justify-center">
+                    <div class="toggle-switch toggleSwitch"  onclick="toggleForm('activityFormContainer', 'activity_form_button')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button
+                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 actionButton"
+                        onclick="confirmAction('activityFormContainer', 'activity_form_button')"
+                >
+                    Open Form
+                </button>
+            </div>
         </div>
 
-        <div class="feature-box" data-name="Food sell">
-            <span class="title">Food sell</span>
-            <div class="dropdown-box">Start</div>
-        </div>
-
-        <div class="feature-box" data-name="Activity">
-            <span class="title">Activity</span>
-            <div class="dropdown-box">Start</div>
-        </div>
-
-        <div class="feature-box" data-name="Voting">
-            <span class="title">Voting</span>
-            <div class="dropdown-box">Start</div>
-        </div>-->
     </div>
 
 

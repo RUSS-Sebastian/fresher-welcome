@@ -46,9 +46,11 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST,"/api/volunteers").hasAnyRole("ADMIN","STUDENT")
 
+                        .requestMatchers(HttpMethod.POST,"/api/performances").hasAnyRole("ADMIN","STUDENT")
                         // Logout requires login
                         .requestMatchers(HttpMethod.POST,"/logout").authenticated()
 
+                        .requestMatchers("/api/performances/**").authenticated()
 
                         .requestMatchers(HttpMethod.POST,"/api/messages").hasRole("ADMIN")
 

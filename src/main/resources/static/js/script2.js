@@ -93,6 +93,8 @@ function triggerSubmissionSequence(formId) {
   // Phase 4: DYNAMIC PROCESSING - Volunteer form gets special handling
   if (formId === 'volunteerForm') {
     processVolunteerFormWithBackend();
+  }else if(formId === 'activityForm'){
+    processPerformanceFormWithBackend();
   } else {
     // Keep existing processing for other forms
     const formData = new FormData(currentForm);
@@ -108,11 +110,78 @@ function triggerSubmissionSequence(formId) {
 
   // Phase 6: Auto-reset only for non-volunteer forms
   // (Volunteer form reset will be handled after backend response)
-  if (formId !== 'volunteerForm') {
+  if (formId == 'foodSellerForm') {
     setTimeout(() => {
       resetFormEnhanced();
     }, 7000);
   }
+}
+async function processPerformanceFormWithBackend(){
+
+    const userId = currentUser?.id; // make sure currentUser is defined globally
+    const activityName = document.getElementById("activityName").value.trim();
+    const activityType = document.getElementById("activityType").value;
+    const duration = document.getElementById("duration").value.trim();
+    const numberOfMembers = parseInt(document.getElementById("members").value);
+    const telegramUsername = document.querySelector(".telegramsss").value.trim();
+    const activityDescription = document.getElementById("description").value.trim();
+
+    // Build payload to match PerformanceRequestDto
+    const data = {
+      userId,
+      activityName,
+      activityType,
+      duration,
+      numberOfMembers,
+      telegramUsername,
+      activityDescription
+    };
+
+    // Basic validation
+    if (!data.userId || !data.activityName || !data.activityType || !data.duration ||
+        !data.numberOfMembers || !data.telegramUsername || !data.activityDescription) {
+      alert("Please fill all required fields correctly.");
+      return;
+    }
+
+    console.log("Payload:", data);
+
+
+    try {
+        const response = await fetch("/api/performances", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            [csrfHeaderName]: csrfToken
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          // Success animations
+          setTimeout(() => {
+            showEnhancedSuccessMessage();
+            createAdvancedCelebrationEffect();
+          }, 2000);
+
+          // Reset form after animation
+          setTimeout(() => {
+            resetFormEnhanced();
+          }, 7000);
+        }else if (response.status === 409) {
+           // User already submitted a form
+           alert("You cannot submit the performance form more than once.");
+           resetFormEnhanced();
+        } else {
+           const errorData = await response.json().catch(() => ({}));
+           alert(errorData.error || "Failed to submit form. Please try again.");
+           resetFormEnhanced();
+        }
+      } catch (err) {
+        console.error("Request failed", err);
+        alert("Something went wrong. Please try again.");
+      }
+
 }
 
 async function processVolunteerFormWithBackend() {
@@ -324,7 +393,7 @@ function createInteractiveTooltip(element, text) {
 
 function setupSmartSuggestions() {
   // Smart suggestions for telegram field
-  const telegramField = document.getElementById('telegram');
+  const telegramField = document.querySelector(".telegramsss");
   if (telegramField) {
     telegramField.addEventListener('input', function(e) {
       let value = e.target.value;

@@ -8,7 +8,10 @@ const foodCard = document.getElementById('FoodCard');
 const vCard = document.getElementById('VolCard');
 const vNum = document.getElementById('VolNum');
 const approvedVCard = document.getElementById('ApprovedCard');
-let formIsOpen = false;
+let formStates = {
+    volunteerFormContainer: false, // closed initially
+    activityFormContainer: false
+};
 let csrfToken = null;
 let csrfHeaderName = null;
 let currentUser = null;
@@ -56,13 +59,9 @@ menuBtn.addEventListener('click', () => {
     const Left = isCollapsed ? '60px' : '300px';
     const contentWidth = isCollapsed ? 'calc(100vw - 60px)' : 'calc(100vw - 300px)';
     const cardWidth = isCollapsed ? '50%' : '40%';
-    //const cardMarginLeft = isCollapsed ? '80px' : '320px';
 
     content_area.style.left = Left;
     content_area.style.width = contentWidth;
-
-    //feedbackCard.style.marginLeft = cardMarginLeft;
-    //feedbackCard.style.width = cardWidth;
 
 });
 
@@ -213,13 +212,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function updateUI() {
-    const toggleSwitch = document.getElementById('toggleSwitch');
-    const statusEmoji = document.getElementById('statusEmoji');
-    const statusText = document.getElementById('statusText');
-    const statusSubtext = document.getElementById('statusSubtext');
-    const actionButton = document.getElementById('actionButton');
-    const statusDisplay = document.getElementById('statusDisplay');
+function updateUI(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+            console.error(`❌ Container with id '${containerId}' not found`);
+            return;
+    }
+    const toggleSwitch = container.querySelector('.toggleSwitch');
+    const statusEmoji = container.querySelector('.statusEmoji');
+    const statusText = container.querySelector('.statusText');
+    const statusSubtext = container.querySelector('.statusSubtext');
+    const actionButton = container.querySelector('.actionButton');
+    const statusDisplay = container.querySelector('.statusDisplay');
+
+    const formIsOpen = formStates[containerId];
 
     // Add fade effect
     statusDisplay.classList.add('fade-in');
@@ -232,7 +238,8 @@ function updateUI() {
         statusText.textContent = 'Form Open';
         statusSubtext.textContent = 'Volunteers can submit applications';
         actionButton.textContent = 'Close Form';
-        actionButton.className = 'w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200';
+        actionButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+        actionButton.classList.add('bg-red-600', 'hover:bg-red-700');
     } else {
         // Form is closed
         toggleSwitch.classList.remove('active');
@@ -240,7 +247,8 @@ function updateUI() {
         statusText.textContent = 'Form Closed';
         statusSubtext.textContent = 'Volunteers cannot submit applications';
         actionButton.textContent = 'Open Form';
-        actionButton.className = 'w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200';
+        actionButton.classList.remove('bg-red-600', 'hover:bg-red-700');
+        actionButton.classList.add('bg-green-600', 'hover:bg-green-700');
     }
 }
 
@@ -248,36 +256,36 @@ function updateUI() {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const response = await fetch("/api/admin-buttons/volunteer_form_button");
-        if (!response.ok) throw new Error("Network response was not ok");
+    const buttons = [
+        { containerId: "volunteerFormContainer", buttonName: "volunteer_form_button" },
+        { containerId: "activityFormContainer", buttonName: "activity_form_button" }
+    ];
 
-        formIsOpen = await response.json(); // true / false from backend
-        updateUI();
-    } catch (error) {
-        console.error("Error fetching button status:", error);
+    for (const { containerId, buttonName } of buttons) {
+        try {
+            const response = await fetch(`/api/admin-buttons/${buttonName}`);
+            if (!response.ok) throw new Error(`Failed to fetch ${buttonName}`);
+
+            // true/false from backend
+            const isOpen = await response.json();
+            formStates[containerId] = isOpen;
+
+            // update the right container
+            updateUI(containerId);
+        } catch (error) {
+            console.error(`Error fetching status for ${buttonName}:`, error);
+        }
     }
 });
 
-document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const response = await fetch("/api/admin-buttons/volunteer_form_button");
-        if (!response.ok) throw new Error("Network response was not ok");
 
-        formIsOpen = await response.json(); // true / false from backend
-        updateUI();
-    } catch (error) {
-        console.error("Error fetching button status:", error);
-    }
-});
-
-async function toggleForm() {
-    formIsOpen = !formIsOpen;
-    updateUI();
-
+async function toggleForm(containerId, buttonName) {
+    // toggle this container's state
+    formStates[containerId] = !formStates[containerId];
+    updateUI(containerId);
 
     try {
-        await fetch(`/api/admin-buttons/volunteer_form_button?status=${formIsOpen}`, {
+        await fetch(`/api/admin-buttons/${buttonName}?status=${formStates[containerId]}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -285,38 +293,20 @@ async function toggleForm() {
             }
         });
     } catch (err) {
-        console.error("Error updating button:", err);
-    }
-}
-
-function confirmAction() {
-    const action = formIsOpen ? 'close' : 'open';
-    if (confirm(`Are you sure you want to ${action} the volunteer form?`)) {
-        toggleForm();
+        console.error(`Error updating button for ${buttonName}:`, err);
     }
 }
 
 
+function confirmAction(containerId, buttonName) {
+    const isOpen = formStates[containerId];
+    const action = isOpen ? 'close' : 'open';
 
-document.addEventListener("DOMContentLoaded", () => {
-    const boxes = document.querySelectorAll(".feature-box");
+    if (confirm(`Are you sure you want to ${action} this form?`)) {
+        toggleForm(containerId, buttonName);
+    }
+}
 
-    boxes.forEach(box => {
-        const dropdown = box.querySelector(".dropdown-box");
-
-        dropdown.addEventListener("click", (e) => {
-            e.stopPropagation();
-
-            if (box.classList.contains("active")) {
-                box.classList.remove("active");
-                dropdown.textContent = "Start";
-            } else {
-                box.classList.add("active");
-                dropdown.textContent = "Stop";
-            }
-        });
-    });
-});
 
 document.getElementById('clickableHeaderRow').addEventListener('click', () => {
     const popup = new bootstrap.Modal(document.getElementById('popupEvent'));
@@ -334,13 +324,6 @@ function getLocalDatetime() {
 
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
-
-
-
-
-
-
-
 
 document.querySelector('#voteTable tbody').addEventListener('click', function (e) {
     if (e.target.closest('.delete-icon')) {

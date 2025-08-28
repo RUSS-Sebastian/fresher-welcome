@@ -161,14 +161,14 @@
               <div class="select-container">
                 <select id="activityType" name="type" required>
                   <option value="" disabled selected></option>
-                  <option value="song">🎵 Song Performance</option>
-                  <option value="dance">💃 Dance Performance</option>
-                  <option value="drama">🎭 Drama/Theater</option>
-                  <option value="music">🎸 Music Instrumental</option>
-                  <option value="comedy">😄 Comedy/Stand-up</option>
-                  <option value="poetry">📝 Poetry/Spoken Word</option>
-                  <option value="art">🎨 Art Exhibition</option>
-                  <option value="other">🎯 Other</option>
+                  <option value="SONG_PERFORMANCE">🎵 Song Performance</option>
+                  <option value="DANCE_PERFORMANCE">💃 Dance Performance</option>
+                  <option value="DRAMA_THEATER">🎭 Drama/Theater</option>
+                  <option value="MUSIC_INSTRUMENTAL">🎸 Music Instrumental</option>
+                  <option value="COMEDY_STANDUP">😄 Comedy/Stand-up</option>
+                  <option value="POETRY_SPOKEN_WORD">📝 Poetry/Spoken Word</option>
+                  <option value="ART_EXHIBITION">🎨 Art Exhibition</option>
+                  <option value="OTHER">🎯 Other</option>
                 </select>
                 <label for="activityType">
                   <i class="fas fa-list"></i>
@@ -217,7 +217,7 @@
           <div class="form-row">
             <div class="form-group">
               <div class="input-container">
-                <input type="text" id="telegramAcc" name="tele_acc" required>
+                <input type="text" id="telegramAcc" name="tele_acc" class="telegramsss" required>
                 <label for="telegramAcc">
                   <i class="fab fa-telegram"></i>
                   Telegram Username
@@ -226,16 +226,6 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="input-container">
-                <input type="number" id="userId" name="user_id" required>
-                <label for="userId">
-                  <i class="fas fa-id-badge"></i>
-                  User ID
-                </label>
-                <span class="input-highlight"></span>
-              </div>
-            </div>
           </div>
 
           <div class="form-row">
@@ -269,6 +259,9 @@
             <div class="custom-checkbox">
               <input type="checkbox" id="activityTerms" name="terms" required>
               <label for="activityTerms">
+                    <span class="checkmark">
+                        <i class="fas fa-check"></i>
+                    </span>
                     <span class="checkbox-text">
                       I agree to the <strong>activity guidelines</strong> and <strong>performance terms</strong>
                       <span class="required-indicator">*</span>
@@ -281,6 +274,9 @@
             <div class="custom-checkbox">
               <input type="checkbox" id="mediaConsent" name="media_consent" checked>
               <label for="mediaConsent">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
                     <span class="checkbox-text">
                       I consent to recording and sharing of my performance for promotional purposes
                     </span>
@@ -292,6 +288,9 @@
             <div class="custom-checkbox">
               <input type="checkbox" id="originalContent" name="original_content">
               <label for="originalContent">
+                    <span class="checkmark">
+                      <i class="fas fa-check"></i>
+                    </span>
                     <span class="checkbox-text">
                       I confirm this is original content or I have rights to perform it
                     </span>

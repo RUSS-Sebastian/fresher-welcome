@@ -225,8 +225,8 @@ async function navigateToForm(formType) {
 
     if (formType === "volunteer") {
       try {
-        console.log("working")
-        const response = await fetch(`/api/admin-buttons/{volunteer_form_button}`);
+        console.log("working volunteer")
+        const response = await fetch(`/api/admin-buttons/${"volunteer_form_button"}`);
         const allowed = await response.json(); // this is already true/false
         console.log(allowed);
         if (!allowed) {
@@ -249,6 +249,32 @@ async function navigateToForm(formType) {
         hideNavigationLoading(formType);
         return;
       }
+    }else if(formType === 'activity'){
+        try {
+            console.log("working activity")
+            const response = await fetch(`/api/admin-buttons/${"activity_form_button"}`);
+            const allowed = await response.json(); // this is already true/false
+            console.log(allowed);
+            if (!allowed) {
+              alert("Admin hasn't approved users to submit the performance register form yet.");
+
+              // Reset UI because navigation is cancelled
+              if (card) {
+                card.style.transform = '';
+                card.style.opacity = '';
+                card.style.filter = '';
+              }
+              hideNavigationLoading(formType);
+              return;
+            }else{
+                window.location.href = targetPage;
+            }
+          } catch (err) {
+            console.error("Error checking volunteer form access:", err);
+            alert("Something went wrong. Please try again later.");
+            hideNavigationLoading(formType);
+            return;
+          }
     }else{
         setTimeout(() => { window.location.href = targetPage; }, 400);
     }
