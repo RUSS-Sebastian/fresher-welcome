@@ -126,6 +126,7 @@ async function processPerformanceFormWithBackend(){
     const telegramUsername = document.querySelector(".telegramsss").value.trim();
     const activityDescription = document.getElementById("description").value.trim();
 
+
     // Build payload to match PerformanceRequestDto
     const data = {
       userId,
@@ -143,7 +144,7 @@ async function processPerformanceFormWithBackend(){
       alert("Please fill all required fields correctly.");
       return;
     }
-
+    console.log("Duration is " + data.duration);
     console.log("Payload:", data);
 
 
@@ -1054,7 +1055,8 @@ function getValidationMessage(field) {
       return 'Duration is required';
     }
     if (validity.patternMismatch) {
-      return 'Please enter duration in MM:SS format (e.g., 3:45)';
+      return "Please enter duration in MM:SS format — minutes can be 0 to 99, and seconds must be 00 to 59 (e.g., 3:45)."
+
     }
     return 'Please enter a valid duration';
   }

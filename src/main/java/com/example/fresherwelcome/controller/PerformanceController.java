@@ -32,15 +32,25 @@ public class  PerformanceController {
             return ResponseEntity.ok(Map.of("message", "Performance form submitted successfully!"));
         } catch (IllegalStateException e) {
             // One-to-one violation
+            System.out.println("Illegal Stat Exception ");
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("error", e.getMessage()));
         } catch (IllegalArgumentException e) {
+            System.out.println("Illegal Argunment Exception");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
+            // Print the stacktrace so you see the root cause in logs
+            e.printStackTrace();
+
+            // Return the exception class + message in the response
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Something went wrong"));
+                    .body(Map.of(
+                            "error", "Unexpected error: " + e.getClass().getSimpleName(),
+                            "message", e.getMessage() != null ? e.getMessage() : "No message"
+                    ));
         }
+
     }
 
 
@@ -49,7 +59,7 @@ public class  PerformanceController {
     public ResponseEntity<Map<String, Object>> getVolunteerForms(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "submitted_time") String sortBy,
+            @RequestParam(defaultValue = "submittedTime") String sortBy,
             @RequestParam(defaultValue = "desc") String direction
     ) {
         Page<PerformanceResponseDto> pPage = performanceService.getAllPending(page, size, sortBy, direction);
@@ -68,7 +78,7 @@ public class  PerformanceController {
     public ResponseEntity<Map<String, Object>> getApprovedForms(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "activity_name") String sortBy,
+            @RequestParam(defaultValue = "activityName") String sortBy,
             @RequestParam(defaultValue = "desc") String direction
     ) {
         Page<PerApprovedDto> pPage = performanceService.getAllApprovedPerformances(page, size, sortBy, direction);

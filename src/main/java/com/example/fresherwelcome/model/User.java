@@ -51,8 +51,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserMessage> userMessageList;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Performance performance;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Performance> performances;
 
 
 
@@ -123,12 +124,14 @@ public class User {
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
 
-    public Performance getPerformance() {
-        return performance;
+    public List<Performance> getPerformances() {
+        return performances;
     }
 
-    public void setPerformance(Performance performance) {
-        this.performance = performance;
+    public void setPerformances(List<Performance> performances) {
+        this.performances = performances;
     }
+
+
 
 }

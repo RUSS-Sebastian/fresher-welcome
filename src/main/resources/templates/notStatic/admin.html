@@ -317,142 +317,6 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody id="roleTable">
-            <tr class="table-row">
-                <td class="table-cell">
-                    <span class="user-id">#001</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <span class="font-semibold text-gray-900">Stage Lighting</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <span class="duration">05:30</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fas fa-users text-gray-400 mr-2"></i>
-                        <span class="font-medium text-gray-900">3</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@lightmaster</a>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <p class="description-text text-sm">Responsible for controlling stage lights and effects during the performance to enhance mood and visibility.</p>
-                </td>
-                <td class="table-cell">
-                            <span class="status-badge status-pending">
-                                <i class="fas fa-clock mr-1"></i>
-                                Pending
-                            </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" onclick="approveActivity(this)">
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectActivity(this)">
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="table-row">
-                <td class="table-cell">
-                    <span class="user-id">#002</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <span class="font-semibold text-gray-900">Lead Singer</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <span class="duration">04:15</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fas fa-users text-gray-400 mr-2"></i>
-                        <span class="font-medium text-gray-900">1</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@vocals_queen</a>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <p class="description-text text-sm">Main vocalist performing the lead parts of the song, engaging the audience, and maintaining energy throughout.</p>
-                </td>
-                <td class="table-cell">
-                            <span class="status-badge status-approved">
-                                <i class="fas fa-check-circle mr-1"></i>
-                                Approved
-                            </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" disabled>
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" disabled>
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="table-row">
-                <td class="table-cell">
-                    <span class="user-id">#003</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <span class="font-semibold text-gray-900">Sound Engineer</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <span class="duration">06:00</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fas fa-users text-gray-400 mr-2"></i>
-                        <span class="font-medium text-gray-900">2</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@soundguru</a>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <p class="description-text text-sm">Handles microphone levels, background music mixing, and ensures optimal audio output for both stage and livestream.</p>
-                </td>
-                <td class="table-cell">
-                            <span class="status-badge status-rejected">
-                                <i class="fas fa-times-circle mr-1"></i>
-                                Rejected
-                            </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" disabled>
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" disabled>
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
         </table>
     </div>
 
@@ -677,10 +541,34 @@
         </table>
     </div>
 
+    <div id="ApprovedCard2" class="ApprovedCard w-75">
+        <table id="ApprovedTable2" class="ApprovedTable display">
+            <thead class="table-header">
+            <tr>
+                <th>User ID</th>
+                <th>Name(Activity)</th>
+                <th>Duration(MM:SS)</th>
+                <th>Members</th>
+                <th>Username (Telegram)</th>
+                <th>Activity Description</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" id="VolNum" style="max-height:200px">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900">Active Volunteers</h3>
+            <div class="text-2xl">👥</div>
+        </div>
+        <div class="text-3xl font-bold text-green-600 mb-2">89</div>
+        <div class="text-sm text-gray-500">Currently active</div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" id="perNum" style="max-height:200px">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Active Performances</h3>
             <div class="text-2xl">👥</div>
         </div>
         <div class="text-3xl font-bold text-green-600 mb-2">89</div>
@@ -879,14 +767,6 @@
 
    $(document).ready(function() {
        $('#voteTable').DataTable({
-           autoWidth: false
-
-           });  // ← Initializes the table
-   });
-
-
-   $(document).ready(function() {
-       $('#activityTable').DataTable({
            autoWidth: false
 
            });  // ← Initializes the table

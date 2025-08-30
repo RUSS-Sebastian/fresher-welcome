@@ -65,11 +65,11 @@ public class  VolunteerController {
     public ResponseEntity<Map<String, Object>> getApprovedForms(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "current_semester") String sortBy,
+            @RequestParam(defaultValue = "currentSemester") String sortBy,
             @RequestParam(defaultValue = "desc") String direction
     ) {
         Page<VolApprovedDto> volPage = volunteerService.getAllApprovedVolunteers(page, size, sortBy, direction);
-
+        System.out.println(sortBy);
         Map<String, Object> response = new HashMap<>();
         response.put("content", volPage.getContent());
         response.put("totalElements", volPage.getTotalElements());

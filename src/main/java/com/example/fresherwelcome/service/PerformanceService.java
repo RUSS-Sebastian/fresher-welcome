@@ -86,7 +86,8 @@ public class PerformanceService {
                 p.getNumberOfMembers(),
                 p.getTelegramUsername(),
                 p.getActivityDescription(),
-                p.getStatus()
+                p.getStatus(),
+                p.getActivityId()
         ));
 
     }
@@ -135,7 +136,8 @@ public class PerformanceService {
                 p.getNumberOfMembers(),
                 p.getTelegramUsername(),
                 p.getActivityDescription(),
-                p.getStatus()
+                p.getStatus(),
+                p.getActivityId()
         );
     }
 

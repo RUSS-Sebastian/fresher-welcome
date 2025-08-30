@@ -7,7 +7,9 @@ const eventCard = document.getElementById('EventCard');
 const foodCard = document.getElementById('FoodCard');
 const vCard = document.getElementById('VolCard');
 const vNum = document.getElementById('VolNum');
+const pNum = document.getElementById('perNum');
 const approvedVCard = document.getElementById('ApprovedCard');
+const approvedVCard2 = document.getElementById('ApprovedCard2');
 let formStates = {
     volunteerFormContainer: false, // closed initially
     activityFormContainer: false
@@ -95,7 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
             foodCard.style.display = "none";
             vCard.style.display = "none";
             vNum.style.display = "none";
+            pNum.style.display = "none";
             approvedVCard.style.display = "none";
+            approvedVCard2.style.display = "none";
 
         }else if(text == "Volunteer"){
           mainContent.style.display = "none";
@@ -110,6 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
           vCard.style.display = "block";
           vNum.style.display = "block";
           approvedVCard.style.display = "block";
+          pNum.style.display = "none";
+          approvedVCard2.style.display = "none";
 
         } else if (text === "Feedback") {
             mainContent.style.display = "none";
@@ -124,6 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
             vCard.style.display = "none";
             vNum.style.display = "none";
             approvedVCard.style.display = "none";
+            pNum.style.display = "none";
+            approvedVCard2.style.display = "none";
 
         }else if(text == "Event"){
             mainContent.style.display = "none";
@@ -138,6 +146,8 @@ document.addEventListener("DOMContentLoaded", () => {
             vCard.style.display = "none";
             vNum.style.display = "none";
             approvedVCard.style.display = "none";
+            pNum.style.display = "none";
+            approvedVCard2.style.display = "none";
 
         }else if(text == "Voting"){
             king.style.display = "flex";
@@ -152,6 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
             vCard.style.display = "none";
             vNum.style.display = "none";
             approvedVCard.style.display = "none";
+            pNum.style.display = "none";
+            approvedVCard2.style.display = "none";
 
         }else if(text == "Activity"){
           mainContent.style.display = "none";
@@ -166,6 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
           vCard.style.display = "none";
           vNum.style.display = "none";
           approvedVCard.style.display = "none";
+          pNum.style.display = "block";
+          approvedVCard2.style.display = "block";
 
         }else if(text == "Food Seller"){
           mainContent.style.display = "none";
@@ -180,6 +194,8 @@ document.addEventListener("DOMContentLoaded", () => {
           vCard.style.display = "none";
           vNum.style.display = "none";
           approvedVCard.style.display = "none";
+          pNum.style.display = "none";
+          approvedVCard2.style.display = "none";
 
         }else {
             mainContent.style.display = "none";
@@ -194,6 +210,8 @@ document.addEventListener("DOMContentLoaded", () => {
             vCard.style.display = "none";
             vNum.style.display = "none";
             approvedVCard.style.display = "none";
+            pNum.style.display = "none";
+            approvedVCard2.style.display = "none";
         }
     }
 
@@ -358,38 +376,104 @@ document.querySelectorAll('.reject').forEach(btn => {
 
 //Activity approve or reject
 /* approve activity table*/
-function approveActivity(button) {
+
+async function approveActivity(pId, uId, button) {
     const row = button.closest('tr');
     const statusCell = row.querySelector('.status-badge');
     const buttons = row.querySelectorAll('.action-btn');
 
+    // Disable buttons & update UI
+    buttons.forEach(btn => btn.disabled = true);
     statusCell.className = 'status-badge status-approved';
     statusCell.innerHTML = '<i class="fas fa-check-circle mr-1"></i>Approved';
-
-    buttons.forEach(btn => btn.disabled = true);
-
-    // Success animation
     row.style.backgroundColor = '#d1fae5';
-    setTimeout(() => {
-        row.style.backgroundColor = '';
-    }, 1000);
+    setTimeout(() => row.style.backgroundColor = '', 1000);
+
+    try {
+
+        const performanceRes = await fetch(`/api/performances/${pId}/status?status=APPROVED`, {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+        });
+
+        if (!performanceRes.ok) throw new Error("Failed to approve performance");
+
+        console.log("✅ Performance approved");
+
+        // Send message separately
+        const msgResult = await sendUserMessage(uId, "Approved Performance", "Admin approved your performance request successfully.");
+
+        if (!msgResult.success) {
+            alert("Performance approved but failed to send message: " + msgResult.message);
+        } else {
+            alert("Performance approved and user notified successfully!");
+        }
+
+        // Reload data from server and redraw the table
+        table4.ajax.reload(null, false);
+        table5.ajax.reload(null,false);
+        loadApprovedCount();
+
+
+    } catch (err) {
+        console.error("❌ Error in approval flow:", err);
+
+        // Rollback UI
+        statusCell.className = 'status-badge status-pending';
+        statusCell.innerHTML = '<i class="fas fa-clock mr-1"></i>Pending';
+        buttons.forEach(btn => btn.disabled = false);
+
+        alert("Failed to approve performance. Please try again.");
+    }
 }
 
-function rejectActivity(button) {
+async function rejectActivity(pId, uId, button) {
+    console.log("Reject clicked for pId:", pId);
+
     const row = button.closest('tr');
     const statusCell = row.querySelector('.status-badge');
     const buttons = row.querySelectorAll('.action-btn');
 
+    // Disable buttons & update UI
+    buttons.forEach(btn => btn.disabled = true);
     statusCell.className = 'status-badge status-rejected';
     statusCell.innerHTML = '<i class="fas fa-times-circle mr-1"></i>Rejected';
-
-    buttons.forEach(btn => btn.disabled = true);
-
-    // Rejection animation
     row.style.backgroundColor = '#fee2e2';
-    setTimeout(() => {
-        row.style.backgroundColor = '';
-    }, 1000);
+    setTimeout(() => row.style.backgroundColor = '', 1000);
+
+    try {
+        // Reject performance
+        const performanceRes = await fetch(`/api/performances/${pId}/status?status=REJECTED`, {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+        });
+
+        if (!performanceRes.ok) throw new Error("Failed to reject performance");
+        console.log("❌ Performance rejected");
+
+        // Send message to user
+        const msgResult = await sendUserMessage(uId, "Performance Rejected", "Admin rejected your performance request.");
+
+        if (!msgResult.success) {
+            alert("Performance rejected but failed to send message: " + msgResult.message);
+        } else {
+            alert("Performance rejected and user notified successfully!");
+        }
+
+        // Reload data from server and redraw the table
+        table4.ajax.reload(null, false);
+
+
+    } catch (err) {
+        console.error("❌ Error in rejection flow:", err);
+
+        // Rollback UI
+        statusCell.className = 'status-badge status-pending';
+        statusCell.innerHTML = '<i class="fas fa-clock mr-1"></i>Pending';
+        buttons.forEach(btn => btn.disabled = false);
+
+        alert("Failed to reject performance. Please try again.");
+    }
 }
 
 //for food preorder and its dropdowns
@@ -498,7 +582,9 @@ async function approveVol(vId, uId, button) {
             alert("Volunteer approved and user notified successfully!");
         }
 
-        window.location.href = "/admin/dashboard";
+        table2.ajax.reload(null,false);
+        table3.ajax.reload(null, false);
+        loadApprovedVolCount();
 
     } catch (err) {
         console.error("❌ Error in approval flow:", err);
@@ -545,7 +631,7 @@ async function rejectVol(vId, uId, button) {
             alert("Volunteer rejected and user notified successfully!");
         }
 
-        window.location.href = "/admin/dashboard";
+        table2.ajax.reload(null,false);
 
     } catch (err) {
         console.error("❌ Error in rejection flow:", err);
@@ -1031,20 +1117,14 @@ const table2 = $('#VolunteerTable').DataTable({
 const table3 = $('#ApprovedTable').DataTable({
     processing: true,
     serverSide: true,
+    ordering: false,
     ajax: function(data, callback) {
         console.log("🔍 DataTables request object:", data);
 
         const page = Math.floor(data.start / data.length);
         const size = data.length;
 
-        let sortBy = "current_semester";
-        let direction = "desc";
-        if (data.order && data.order.length > 0) {
-            sortBy = data.columns[data.order[0].column].data;
-            direction = data.order[0].dir;
-        }
-
-        fetch(`/api/volunteers/approved?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`)
+        fetch(`/api/volunteers/approved?page=${page}&size=${size}&sortBy=${"currentSemester"}&direction=${"desc"}`)
             .then(res => res.json())
             .then(json => {
                 callback({
@@ -1105,10 +1185,216 @@ const table3 = $('#ApprovedTable').DataTable({
     ],
     pageLength: 10,
     lengthMenu: [5, 10, 25, 50],
-    order: [[2, "desc"]],
     searching : false
 });
 
+const table4 = $('#activityTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ordering: false,
+    ajax: function(data, callback) {
+        console.log("🔍 DataTables request object:", data);
+
+        const page = Math.floor(data.start / data.length);
+        const size = data.length;
+
+        fetch(`/api/performances/pending?page=${page}&size=${size}&sortBy=submittedTime&direction=desc`)
+            .then(res => res.json())
+            .then(json => {
+                callback({
+                    data: json.content,
+                    recordsTotal: json.totalElements,
+                    recordsFiltered: json.totalElements
+                });
+            })
+            .catch(err => console.error("❌ Error fetching data:", err));
+    },
+    columns: [
+        {
+            data: "userId",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="user-id">#${data}</span>
+                `;
+            }
+        },
+        {
+            data: "activityName",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <span class="font-semibold text-gray-900">${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "duration",
+            className:"table-cell",
+            render: function(data) {
+                return `<span class="duration">${data}</span>`;
+            }
+        },
+        {
+            data: "numberOfMembers",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "telegramUsername",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">${data}</a>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "activityDescription",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <p class="description text-sm">${data}</p>
+                `;
+            }
+        },
+        {
+            data:"status",
+            className:"table-cell",
+            render: function(data){
+                return `
+                    <span class="status-badge status-pending">
+                        <i class="fas fa-clock mr-1"></i>
+                        ${data}
+                    </span>
+                `
+            }
+        },
+        {
+            data: null, // no data from backend, we create buttons
+            orderable: false,
+            className:"table-cell",
+            render: function(data,type,row) {
+                return `
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveActivity(${row.pId},${row.userId},this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectActivity(${row.pId},${row.userId},this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                `;
+            }
+        },
+        {
+             data:"pId",visible : false
+        },
+    ],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50],
+    searching : false
+});
+
+const table5 = $('#ApprovedTable2').DataTable({
+    processing: true,
+    serverSide: true,
+    ordering: false,
+    ajax: function(data, callback) {
+        console.log("🔍 DataTables request object:", data);
+
+        const page = Math.floor(data.start / data.length);
+        const size = data.length;
+
+        fetch(`/api/performances/approved?page=${page}&size=${size}&sortBy=${"activityName"}&direction=${"desc"}`)
+            .then(res => res.json())
+            .then(json => {
+                callback({
+                    data: json.content,
+                    recordsTotal: json.totalElements,
+                    recordsFiltered: json.totalElements
+                });
+            })
+            .catch(err => console.error("❌ Error fetching data:", err));
+    },
+    columns: [
+        {
+            data: "userId",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="user-id">#${data}</span>
+                `;
+            }
+        },
+        {
+            data: "activityName",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <span class="font-semibold text-gray-900">${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "duration",
+            className:"table-cell user-id",
+            render: function(data) {
+                return `<span class="duration">${data}</span>`;
+            }
+        },
+        {
+            data: "numberOfMembers",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "telegramUsername",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">${data}</a>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "activityDescription",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <p class="description text-sm">${data}</p>
+                `;
+            }
+        }
+    ],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50],
+    searching : false
+});
 
 document.querySelector('#eventTable tbody').addEventListener('click', function (e) {
     const editIcon = e.target.closest('.edit-icon');
@@ -1233,8 +1519,32 @@ document.querySelector('#eventTable tbody').addEventListener('click', (e) => {
   }
 });
 
+document.querySelector('#activityTable tbody').addEventListener('click', (e) => {
+  // Find the nearest ancestor with class 'description' (could be the target itself)
+  const descCell = e.target.closest('.description');
+  if (descCell) {
+    descCell.classList.toggle('full'); // toggle your CSS class
+  }
+});
+
+document.querySelector('#ApprovedTable2 tbody').addEventListener('click', (e) => {
+  // Find the nearest ancestor with class 'description' (could be the target itself)
+  const descCell = e.target.closest('.description');
+  if (descCell) {
+    descCell.classList.toggle('full'); // toggle your CSS class
+  }
+});
+
 //volunteer count
 document.addEventListener("DOMContentLoaded", () => {
+    loadApprovedVolCount();
+});
+
+//performance count
+document.addEventListener("DOMContentLoaded", () => {
+    loadApprovedCount();
+});
+function loadApprovedVolCount(){
     fetch("/api/volunteers/count/approved")
         .then(res => res.json())
         .then(count => {
@@ -1242,4 +1552,14 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelector("#VolNum .text-3xl").textContent = count;
         })
         .catch(err => console.error("Error loading approved count:", err));
-});
+}
+
+function loadApprovedCount() {
+    fetch("/api/performances/count/approved")
+        .then(res => res.json())
+        .then(count => {
+            const target = document.querySelector("#perNum .text-3xl");
+            if (target) target.textContent = count;
+        })
+        .catch(err => console.error("Error loading approved count:", err));
+}

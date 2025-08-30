@@ -11,11 +11,12 @@ public class PerformanceResponseDto {
     private String telegramUsername;
     private String activityDescription;
     private Status status;
+    private Long pId;
 
     // Constructor
     public PerformanceResponseDto(Long userId, String activityName, String duration,
                                   Integer numberOfMembers, String telegramUsername,
-                                  String activityDescription, Status status) {
+                                  String activityDescription, Status status,Long pId) {
         this.userId = userId;
         this.activityName = activityName;
         this.duration = duration;
@@ -23,6 +24,7 @@ public class PerformanceResponseDto {
         this.telegramUsername = telegramUsername;
         this.activityDescription = activityDescription;
         this.status = status;
+        this.pId = pId;
     }
 
     // Getters & setters
@@ -80,6 +82,14 @@ public class PerformanceResponseDto {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Long getpId() {
+        return pId;
+    }
+
+    public void setpId(Long pId) {
+        this.pId = pId;
     }
 }
 
