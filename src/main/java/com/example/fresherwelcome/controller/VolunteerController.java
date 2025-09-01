@@ -46,7 +46,7 @@ public class  VolunteerController {
     public ResponseEntity<Map<String, Object>> getVolunteerForms(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "submitted_time") String sortBy,
+            @RequestParam(defaultValue = "submittedTime") String sortBy,
             @RequestParam(defaultValue = "desc") String direction
     ) {
         Page<VolunteerResponseDto> volPage = volunteerService.getAllPending(page, size, sortBy, direction);

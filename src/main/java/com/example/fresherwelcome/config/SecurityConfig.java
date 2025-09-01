@@ -50,11 +50,17 @@ public class SecurityConfig {
                         // Logout requires login
                         .requestMatchers(HttpMethod.POST,"/logout").authenticated()
 
+                        .requestMatchers(HttpMethod.POST,"/api/shops").authenticated()
+
                         .requestMatchers("/api/performances/**").authenticated()
+
+                        .requestMatchers("/api/food-sellers/**").authenticated()
 
                         .requestMatchers(HttpMethod.POST,"/api/messages").hasRole("ADMIN")
 
-                        .requestMatchers("/api/feedback/**").authenticated()
+                        .requestMatchers("/api/feedback/**","/api/shops/**").authenticated()
+
+                        .requestMatchers(HttpMethod.POST,"/api/food-sellers/submit").authenticated()
 
                         // Admin-only pages: only ADMIN can access /admin/**
                         .requestMatchers("/admin/**").hasRole("ADMIN")

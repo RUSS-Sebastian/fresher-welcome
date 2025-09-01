@@ -1,7 +1,9 @@
 package com.example.fresherwelcome.controller;
 import com.example.fresherwelcome.model.Event;
+import com.example.fresherwelcome.model.Shop;
 import com.example.fresherwelcome.service.AdminButtonService;
 import com.example.fresherwelcome.service.EventService;
+import com.example.fresherwelcome.service.ShopService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +18,12 @@ public class TemplateController {
 
     private final EventService eventService;
     private final AdminButtonService adminButtonService;
+    private final ShopService shopService;
 
-    public TemplateController(EventService eventService,AdminButtonService adminButtonService) {
+    public TemplateController(EventService eventService,AdminButtonService adminButtonService,ShopService shopService) {
         this.eventService = eventService;
         this.adminButtonService =  adminButtonService;
+        this.shopService = shopService;
     }
 
     @GetMapping("/home")
@@ -67,8 +71,10 @@ public class TemplateController {
     }
 
     @GetMapping("/food")
-    public String food() {
-        System.out.println("Food Seller Form Requested");
+    public String food(Model model) {
+        List<Shop> shops = shopService.getAvailableShops();
+        model.addAttribute("shops", shops);
+
         return "notStatic/food-seller-form";
     }
 

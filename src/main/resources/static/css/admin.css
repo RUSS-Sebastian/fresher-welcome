@@ -8,6 +8,13 @@ body {
       overflow: hidden;
 }
 
+/*main-content cons*/
+
+.cons{
+    min-width:264.91px;
+}
+
+
 .navbar-custom {
       background-color: #fdfbfb;
       color: rgb(34, 32, 32);
@@ -957,4 +964,11 @@ button.assign-btn {
 .person-icon {
     color: #6b7280;
     font-size: 0.875rem;
+}
+
+.image-preview {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
 }

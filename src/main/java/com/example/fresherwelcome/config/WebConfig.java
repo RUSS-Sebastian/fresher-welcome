@@ -1,0 +1,16 @@
+package com.example.fresherwelcome.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // Map URL /shops/** to the filesystem uploads/shops/
+        registry.addResourceHandler("/shops/**")
+                .addResourceLocations("file:uploads/shops/");
+    }
+}

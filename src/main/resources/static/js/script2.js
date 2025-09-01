@@ -95,27 +95,88 @@ function triggerSubmissionSequence(formId) {
     processVolunteerFormWithBackend();
   }else if(formId === 'activityForm'){
     processPerformanceFormWithBackend();
-  } else {
-    // Keep existing processing for other forms
-    const formData = new FormData(currentForm);
-    const enhancedData = collectEnhancedFormData(formData);
-    console.log('🚀 Enhanced Data for', formId, ':', enhancedData);
-
-    // Continue with simulated success for other forms
-    setTimeout(() => {
-      showEnhancedSuccessMessage();
-      createAdvancedCelebrationEffect();
-    }, 2000);
+  }else if(formId === 'foodSellerForm'){
+    processFoodSellerFormWithBackend();
   }
 
   // Phase 6: Auto-reset only for non-volunteer forms
-  // (Volunteer form reset will be handled after backend response)
-  if (formId == 'foodSellerForm') {
-    setTimeout(() => {
-      resetFormEnhanced();
-    }, 7000);
-  }
 }
+
+async function processFoodSellerFormWithBackend() {
+    // Assuming currentUser is globally available in backend session
+    const telegramUsername = document.querySelector(".telegramsss").value.trim();;
+    const currentSemester = document.getElementById("semester").value;
+    const foodName = document.getElementById("foodName").value.trim();
+    const numberOfMembers = parseInt(document.getElementById("members").value);
+    const price = parseInt(document.getElementById("price").value);
+    const description = document.getElementById("description").value.trim();
+    const userId = currentUser?.id;
+
+    // Get selected shopId from hidden input in the selected location
+    const selectedLocationInput = document.querySelector("#location");
+    const shopId = parseInt(selectedLocationInput.value);
+    console.log("Raw value:", selectedLocationInput.value);
+
+
+    // Optional checkbox
+    const isFoodSetCheckbox = document.getElementById("foodSet");
+    const isFoodSet = isFoodSetCheckbox.checked;
+
+    // --- Basic validation ---
+    if (!telegramUsername || !currentSemester || !foodName || !numberOfMembers || !price || !shopId) {
+        alert("Please fill all required fields correctly.");
+        return;
+    }
+
+    // Build DTO payload
+    const data = {
+        telegramUsername,
+        currentSemester,
+        foodName,
+        numberOfMembers,
+        price,
+        shopId,
+        userId,
+        isFoodSet,       // optional, default false in backend if missing
+        foodDescription: description || null  // optional
+    };
+
+    console.log("FoodSeller Payload:", data);
+
+    try {
+        const response = await fetch("/api/food-sellers/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                [csrfHeaderName]: csrfToken  // if CSRF protection is enabled
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            // Success actions
+            setTimeout(() => {
+                showEnhancedSuccessMessage(); // you can reuse your animation
+                createAdvancedCelebrationEffect();
+            }, 2000);
+
+            setTimeout(() => {
+                resetFormEnhanced();
+                resetLocationSelection();
+            }, 7000);
+
+        } else if (response.status === 409) {
+            alert("You cannot submit the food seller form more than once.");
+        } else {
+            const errorData = await response.json().catch(() => ({}));
+            alert(errorData.error || "Failed to submit form. Please try again.");
+        }
+    } catch (err) {
+        console.error("Request failed", err);
+        alert("Something went wrong. Please try again.");
+    }
+}
+
 async function processPerformanceFormWithBackend(){
 
     const userId = currentUser?.id; // make sure currentUser is defined globally
@@ -294,7 +355,16 @@ function createCompletionIndicator() {
 }
 
 function updateCompletionIndicator() {
-  const completedCount = document.querySelectorAll('input[required]:valid, select[required]:valid, input[required]:checked').length;
+  let completedCount = document.querySelectorAll('input[required]:valid, select[required]:valid, input[required]:checked').length;
+  console.log('Standard fields completed:', completedCount);
+
+  const locationField = document.getElementById('location');
+  if (locationField && locationField.hasAttribute('required') && locationField.value) {
+      completedCount++;
+      console.log('Location field completed. Total:', completedCount);
+  } else {
+      console.log('Location field NOT completed or not found');
+  }
   formCompletionData.completedFields = completedCount;
   
   const percentage = Math.round((completedCount / formCompletionData.totalFields) * 100);
@@ -666,6 +736,7 @@ function createCornerFireworks() {
       isValid = false;
     }
   });
+
   
   return isValid;
 }
@@ -705,24 +776,11 @@ function validateFieldAdvanced(field) {
     }
   }
 
-
-  /*if (field.id === "studentNumber" && field.value) {
-        const studentNumberRegex = /^\d{4}$/;
-        if (!studentNumberRegex.test(field.value)) {
-          isValid = false;
-          errorMessage = "Student Number must be exactly 4 digits";
-        }
+  if (field.id === 'location' && !field.value) {
+      isValid = false;
+      errorMessage = 'Please select a business location';
   }
 
-
-  // ✅ Name: only letters and spaces
-  if (field.id === "name" && field.value) {
-    const nameRegex = /^[A-Za-z\s]+$/;
-    if (!nameRegex.test(field.value)) {
-      isValid = false;
-      errorMessage = "Name must only contain letters";
-    }
-  }*/
   
   // Update visual state
   updateFieldValidationState(container, isValid, errorMessage);
@@ -871,15 +929,19 @@ function setupLocationSelector() {
   locationOptions.forEach(option => {
     option.addEventListener('click', () => {
       const locationName = option.dataset.location;
+      const shopId = option.querySelector(".shop-id").value;
       
       // Remove selected class from all options
       locationOptions.forEach(opt => opt.classList.remove('selected'));
       
       // Add selected class to clicked option
       option.classList.add('selected');
-      
+
       // Update hidden input value
-      locationInput.value = locationName;
+      locationInput.value = shopId;
+
+      // ✅ CRITICAL: Update the progress bar after selection
+      updateCompletionIndicator();
       
       // Update display text
       selectedText.textContent = `Selected: ${locationName}`;
@@ -2034,4 +2096,28 @@ additionalAnimations.textContent = `
   }
 `;
 
-document.head.appendChild(additionalAnimations); 
+document.head.appendChild(additionalAnimations);
+
+
+function resetLocationSelection() {
+  // Reset text
+  const selectedText = document.querySelector(".selected-text");
+  if (selectedText) {
+    selectedText.textContent = "Select a location";
+    selectedText.classList.remove("has-selection");
+  }
+
+  // Reset hidden input
+  const locationInput = document.getElementById("location");
+  if (locationInput) {
+    locationInput.value = "";
+  }
+
+  // Remove selected highlight
+  document.querySelectorAll(".location-option").forEach(opt => {
+    opt.classList.remove("selected");
+  });
+
+  // Recalculate progress
+  updateCompletionIndicator();
+}

@@ -275,10 +275,33 @@ async function navigateToForm(formType) {
             hideNavigationLoading(formType);
             return;
           }
-    }else{
-        setTimeout(() => { window.location.href = targetPage; }, 400);
-    }
+    }else if(formType === 'food-seller'){
+        try {
+         console.log("working food seller")
+         const response = await fetch(`/api/admin-buttons/${"seller_form_button"}`);
+         const allowed = await response.json(); // this is already true/false
+         console.log(allowed);
+         if (!allowed) {
+           alert("Admin hasn't approved users to submit the food seller register form yet.");
 
+           // Reset UI because navigation is cancelled
+           if (card) {
+             card.style.transform = '';
+             card.style.opacity = '';
+             card.style.filter = '';
+           }
+           hideNavigationLoading(formType);
+           return;
+         }else{
+             window.location.href = targetPage;
+         }
+        } catch (err) {
+         console.error("Error checking volunteer form access:", err);
+         alert("Something went wrong. Please try again later.");
+         hideNavigationLoading(formType);
+         return;
+        }
+   }
 }
 
 

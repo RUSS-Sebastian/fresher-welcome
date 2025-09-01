@@ -10,9 +10,11 @@ const vNum = document.getElementById('VolNum');
 const pNum = document.getElementById('perNum');
 const approvedVCard = document.getElementById('ApprovedCard');
 const approvedVCard2 = document.getElementById('ApprovedCard2');
+const shop = document.getElementById('Shop');
 let formStates = {
     volunteerFormContainer: false, // closed initially
-    activityFormContainer: false
+    activityFormContainer: false,
+    sellerFormContainer: false
 };
 let csrfToken = null;
 let csrfHeaderName = null;
@@ -100,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             pNum.style.display = "none";
             approvedVCard.style.display = "none";
             approvedVCard2.style.display = "none";
+            shop.style.display = "none";
 
         }else if(text == "Volunteer"){
           mainContent.style.display = "none";
@@ -116,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
           approvedVCard.style.display = "block";
           pNum.style.display = "none";
           approvedVCard2.style.display = "none";
+          shop.style.display = "none";
 
         } else if (text === "Feedback") {
             mainContent.style.display = "none";
@@ -132,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
             approvedVCard.style.display = "none";
             pNum.style.display = "none";
             approvedVCard2.style.display = "none";
+            shop.style.display = "none";
 
         }else if(text == "Event"){
             mainContent.style.display = "none";
@@ -148,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
             approvedVCard.style.display = "none";
             pNum.style.display = "none";
             approvedVCard2.style.display = "none";
+            shop.style.display = "none";
 
         }else if(text == "Voting"){
             king.style.display = "flex";
@@ -164,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
             approvedVCard.style.display = "none";
             pNum.style.display = "none";
             approvedVCard2.style.display = "none";
+            shop.style.display = "none";
 
         }else if(text == "Activity"){
           mainContent.style.display = "none";
@@ -180,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
           approvedVCard.style.display = "none";
           pNum.style.display = "block";
           approvedVCard2.style.display = "block";
+          shop.style.display = "none";
 
         }else if(text == "Food Seller"){
           mainContent.style.display = "none";
@@ -196,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
           approvedVCard.style.display = "none";
           pNum.style.display = "none";
           approvedVCard2.style.display = "none";
+          shop.style.display = "none";
 
         }else {
             mainContent.style.display = "none";
@@ -212,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
             approvedVCard.style.display = "none";
             pNum.style.display = "none";
             approvedVCard2.style.display = "none";
+            shop.style.display = "block";
         }
     }
 
@@ -248,25 +258,48 @@ function updateUI(containerId) {
     // Add fade effect
     statusDisplay.classList.add('fade-in');
     setTimeout(() => statusDisplay.classList.remove('fade-in'), 500);
+    let openMessage = "";
+    let closedMessage = "";
+
+    switch (containerId) {
+        case "volunteerFormContainer":
+            openMessage = "Volunteers can submit applications";
+            closedMessage = "Volunteers cannot submit applications";
+            break;
+
+        case "activityFormContainer":
+            openMessage = "Activities can be registered";
+            closedMessage = "Activities cannot be registered";
+            break;
+
+        case "sellerFormContainer":
+            openMessage = "Sellers can apply for stalls";
+            closedMessage = "Sellers cannot apply for stalls";
+            break;
+
+        default:
+            openMessage = "Form is available";
+            closedMessage = "Form is unavailable";
+    }
 
     if (formIsOpen) {
         // Form is open
-        toggleSwitch.classList.add('active');
-        statusEmoji.textContent = '🟢';
-        statusText.textContent = 'Form Open';
-        statusSubtext.textContent = 'Volunteers can submit applications';
-        actionButton.textContent = 'Close Form';
-        actionButton.classList.remove('bg-green-600', 'hover:bg-green-700');
-        actionButton.classList.add('bg-red-600', 'hover:bg-red-700');
+        toggleSwitch.classList.add("active");
+        statusEmoji.textContent = "🟢";
+        statusText.textContent = "Form Open";
+        statusSubtext.textContent = openMessage;
+        actionButton.textContent = "Close Form";
+        actionButton.classList.remove("bg-green-600", "hover:bg-green-700");
+        actionButton.classList.add("bg-red-600", "hover:bg-red-700");
     } else {
         // Form is closed
-        toggleSwitch.classList.remove('active');
-        statusEmoji.textContent = '🔴';
-        statusText.textContent = 'Form Closed';
-        statusSubtext.textContent = 'Volunteers cannot submit applications';
-        actionButton.textContent = 'Open Form';
-        actionButton.classList.remove('bg-red-600', 'hover:bg-red-700');
-        actionButton.classList.add('bg-green-600', 'hover:bg-green-700');
+        toggleSwitch.classList.remove("active");
+        statusEmoji.textContent = "🔴";
+        statusText.textContent = "Form Closed";
+        statusSubtext.textContent = closedMessage;
+        actionButton.textContent = "Open Form";
+        actionButton.classList.remove("bg-red-600", "hover:bg-red-700");
+        actionButton.classList.add("bg-green-600", "hover:bg-green-700");
     }
 }
 
@@ -276,7 +309,9 @@ function updateUI(containerId) {
 document.addEventListener("DOMContentLoaded", async () => {
     const buttons = [
         { containerId: "volunteerFormContainer", buttonName: "volunteer_form_button" },
-        { containerId: "activityFormContainer", buttonName: "activity_form_button" }
+        { containerId: "activityFormContainer", buttonName: "activity_form_button" },
+        {containerId: "sellerFormContainer", buttonName:"seller_form_button"}
+
     ];
 
     for (const { containerId, buttonName } of buttons) {
@@ -476,23 +511,43 @@ async function rejectActivity(pId, uId, button) {
     }
 }
 
-//for food preorder and its dropdowns
+
 function toggleDropdown(button) {
     const dropdown = button.nextElementSibling;
     const allDropdowns = document.querySelectorAll('.dropdown');
 
     // Close all other dropdowns
     allDropdowns.forEach(d => {
-        if (d !== dropdown) {
-            d.style.display = 'none';
-        }
+        if (d !== dropdown) d.style.display = 'none';
     });
 
-    // Toggle current dropdown
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    } else {
+        dropdown.style.display = 'block';
+
+        // Fetch latest available shops when dropdown is opened
+        fetch(`/api/shops/available`)
+            .then(res => res.json())
+            .then(shops => {
+                dropdown.innerHTML = ""; // clear old list
+                if (shops.length === 0) {
+                    dropdown.innerHTML = `<div class="dropdown-item text-gray-400">No locations available</div>`;
+                    return;
+                }
+                shops.forEach(shop => {
+                    const item = document.createElement("div");
+                    item.className = "dropdown-item";
+                    item.textContent = shop.shopName;
+                    item.onclick = () => assignLocation(item, shop.shopName, shop.shopId);
+                    dropdown.appendChild(item);
+                });
+            })
+            .catch(err => console.error("❌ Error fetching shops:", err));
+    }
 }
 
-function assignLocation(item, location) {
+function assignLocation(item, location, shopId) {
     const row = item.closest('tr');
     const assignedLocationCell = row.querySelector('.assigned-location');
     const dropdown = item.closest('.dropdown');
@@ -500,6 +555,7 @@ function assignLocation(item, location) {
     // Update assigned location
     assignedLocationCell.textContent = location;
     assignedLocationCell.setAttribute('data-assigned', location);
+    assignedLocationCell.setAttribute('data-shop-id', shopId);
     assignedLocationCell.classList.remove('assigned-none');
     assignedLocationCell.style.color = '#374151';
     assignedLocationCell.style.fontStyle = 'normal';
@@ -525,7 +581,7 @@ document.addEventListener('click', function(event) {
 
 
 /* food preorder form approve or decline*/
-function approveFood(button) {
+/*function approveFood(button) {
     const row = button.closest('tr');
     const statusCell = row.querySelector('.status-badge');
     const buttons = row.querySelectorAll('.action-btn');
@@ -548,7 +604,68 @@ function approveFood(button) {
     setTimeout(() => {
         row.style.backgroundColor = '';
     }, 1000);
+}*/
+
+async function approveFood(button) {
+    try {
+        const row = button.closest('tr');
+        const table = $('#foodTable').DataTable();
+        const rowData = table.row(row).data(); // get full row data
+        const statusCell = row.querySelector('.status-badge');
+        const buttons = row.querySelectorAll('.action-btn');
+
+        // Disable action buttons
+        buttons.forEach(btn => btn.disabled = true);
+
+        // Disable the "Assign Location" button
+        const assignBtn = row.querySelector('.assign-btn');
+        if (assignBtn) assignBtn.disabled = true;
+
+        // Get shopId: assigned first, fallback to original from rowData
+        const assignedLocationCell = row.querySelector('.assigned-location');
+        const shopId = assignedLocationCell.getAttribute('data-shop-id') || rowData.shop_id;
+
+        const formId = rowData.form_id;
+
+        // Update status visually
+        statusCell.className = 'status-badge status-approved';
+        statusCell.innerHTML = '<i class="fas fa-check-circle mr-1"></i>Approved';
+
+        // Success animation
+        row.style.backgroundColor = '#d1fae5';
+        setTimeout(() => {
+            row.style.backgroundColor = '';
+        }, 1000);
+
+        // Send PATCH request to backend
+        const response = await fetch(`/api/food-sellers/${formId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeaderName]: csrfToken
+            },
+            body: JSON.stringify({
+                shopId: Number(shopId),
+                status: 'APPROVED'
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Updated:', data);
+
+    } catch (err) {
+        console.error('Error approving seller:', err);
+        alert('Failed to approve seller. Please try again.');
+    }
 }
+
+
+
+
 
 async function approveVol(vId, uId, button) {
     const row = button.closest('tr');
@@ -1001,20 +1118,14 @@ const table1 = $('#eventTable').DataTable({
 const table2 = $('#VolunteerTable').DataTable({
     processing: true,
     serverSide: true,
+    ordering: false,
     ajax: function(data, callback) {
         console.log("🔍 DataTables request object:", data);
 
         const page = Math.floor(data.start / data.length);
         const size = data.length;
 
-        let sortBy = "submitted_time";
-        let direction = "desc";
-        if (data.order && data.order.length > 0) {
-            sortBy = data.columns[data.order[0].column].data;
-            direction = data.order[0].dir;
-        }
-
-        fetch(`/api/volunteers/pending?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`)
+        fetch(`/api/volunteers/pending?page=${page}&size=${size}&sortBy=submittedTime&direction=desc`)
             .then(res => res.json())
             .then(json => {
                 callback({
@@ -1110,7 +1221,6 @@ const table2 = $('#VolunteerTable').DataTable({
     ],
     pageLength: 10,
     lengthMenu: [5, 10, 25, 50],
-    order: [[2, "desc"]],
     searching : false
 });
 
@@ -1396,6 +1506,182 @@ const table5 = $('#ApprovedTable2').DataTable({
     searching : false
 });
 
+const table6 = $('#foodTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ordering: false,
+    ajax: function(data, callback) {
+        console.log("🔍 DataTables request object:", data);
+
+        const page = Math.floor(data.start / data.length);
+        const size = data.length;
+
+        fetch(`/api/food-sellers/pending?page=${page}&size=${size}&sortBy=submittedTime&direction=desc`)
+            .then(res => res.json())
+            .then(json => {
+                callback({
+                    data: json.content,
+                    recordsTotal: json.totalElements,
+                    recordsFiltered: json.totalElements
+                });
+            })
+            .catch(err => console.error("❌ Error fetching data:", err));
+    },
+    columns: [
+        {
+            data: "fullName",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "telegramUsername",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
+                        <a href="#" class="telegram-link">${data}</a>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "currentSemester",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fas fa-graduation-cap text-gray-400 mr-2"></i>
+                        <span class="font-medium text-gray-900">${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "foodName",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <span class="font-semibold text-gray-900">${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "price",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="price">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "preferredLocation",
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
+                        <span class="text-gray-700">${data}</span>
+                    </div>
+                `;
+            }
+        },
+        {
+            data: "foodSet",
+            className: "table-cell",
+            render: function(data) {
+                    const value = data; // convert anything truthy/falsy to true/false
+                    return value
+                        ? `<span class="food-set-badge food-set-true">
+                               <i class="fas fa-check mr-1"></i>Yes
+                           </span>`
+                        : `<span class="food-set-badge food-set-false">
+                               <i class="fas fa-times mr-1"></i>No
+                           </span>`;
+            }
+        },
+        {
+            data: "foodDescription", // no data from backend, we create buttons
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <p class="text-sm description">${data}</p>
+                `;
+            }
+        },
+        {
+            data: null, // no data from backend, we create buttons
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="assigned-location assigned-none" data-assigned="None">None</span>
+                `;
+            }
+        },
+        {
+            data: null, // no data from backend, we create buttons
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="relative">
+                        <button class="assign-btn" onclick="toggleDropdown(this)">
+                            Assign Location
+                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                        </button>
+                        <div class="dropdown">
+
+                        </div>
+                    </div>
+                `;
+            }
+        },
+        {
+            data:"status",
+            className:"table-cell",
+            render: function(data){
+                return `
+                    <span class="status-badge status-pending">
+                        <i class="fas fa-clock mr-1"></i>
+                        ${data}
+                    </span>
+                `
+            }
+        },
+        {
+            data: null, // no data from backend, we create buttons
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <div class="flex items-center">
+                        <button class="action-btn approve-btn" onclick="approveFood(this)">
+                            <i class="fas fa-check text-xs"></i>
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                `;
+            }
+        },
+        {
+             data:"shop_id",visible : false
+        },
+        {
+            data:"form_id",visible : false
+        }
+    ],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50],
+    searching : false
+});
+
 document.querySelector('#eventTable tbody').addEventListener('click', function (e) {
     const editIcon = e.target.closest('.edit-icon');
     if (!editIcon) return;
@@ -1563,3 +1849,135 @@ function loadApprovedCount() {
         })
         .catch(err => console.error("Error loading approved count:", err));
 }
+
+const uploadButton = document.getElementById('uploadButton');
+const uploadForm = document.getElementById('uploadForm');
+const closeForm = document.getElementById('closeForm');
+const cancelForm = document.getElementById('cancelForm');
+const shopForm = document.getElementById('shopForm');
+const shopImage = document.getElementById('shopImage');
+const uploadArea = document.getElementById('uploadArea');
+const imagePreview = document.getElementById('imagePreview');
+const previewImg = document.getElementById('previewImg');
+const fileName = document.getElementById('fileName');
+const successMessage = document.getElementById('successMessage');
+const uploadAnother = document.getElementById('uploadAnother');
+const uploadButtonContainer = document.getElementById('uploadButtonContainer');
+
+// Show form when upload button is clicked
+uploadButton.addEventListener('click', () => {
+    uploadForm.classList.remove('hidden');
+    uploadButtonContainer.classList.add('hidden');
+});
+
+// Hide form when close or cancel is clicked
+function hideForm() {
+    uploadForm.classList.add('hidden');
+    uploadButtonContainer.classList.remove('hidden');
+    shopForm.reset();
+    imagePreview.classList.add('hidden');
+    uploadArea.classList.remove('hidden');
+}
+
+closeForm.addEventListener('click', hideForm);
+cancelForm.addEventListener('click', hideForm);
+
+// Handle file upload area click
+uploadArea.addEventListener('click', () => {
+    shopImage.click();
+});
+
+// Handle file selection
+shopImage.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        // Validate file type
+        if (!file.type.match('image/jpeg')) {
+            alert('Please select a JPEG image file only.');
+            shopImage.value = '';
+            return;
+        }
+
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            fileName.textContent = file.name;
+            uploadArea.classList.add('hidden');
+            imagePreview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle form submission
+shopForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const shopName = document.getElementById('shopName').value;
+    const imageFile = shopImage.files[0];
+
+    if (shopName && imageFile) {
+        const formData = new FormData();
+        formData.append("shopName", shopName);
+        formData.append("imageFile", imageFile);
+
+        try {
+            const response = await fetch("/api/shops", {
+                method: "POST",
+                headers: {
+                    [csrfHeaderName]: csrfToken,
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Shop saved:", data);
+
+                uploadForm.classList.add('hidden');
+                successMessage.classList.remove('hidden');
+
+                shopForm.reset();
+                imagePreview.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+            } else {
+                alert("Upload failed!");
+            }
+        } catch (err) {
+            console.error("Error uploading shop:", err);
+        }
+    }
+});
+
+// Handle upload another button
+uploadAnother.addEventListener('click', () => {
+    successMessage.classList.add('hidden');
+    uploadButtonContainer.classList.remove('hidden');
+});
+
+// Drag and drop functionality
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('border-indigo-400');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('border-indigo-400');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('border-indigo-400');
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        const file = files[0];
+        if (file.type.match('image/jpeg')) {
+            shopImage.files = files;
+            shopImage.dispatchEvent(new Event('change'));
+        } else {
+            alert('Please select a JPEG image file only.');
+        }
+    }
+});

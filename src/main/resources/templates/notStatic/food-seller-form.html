@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -148,31 +148,7 @@
           <div class="form-row">
             <div class="form-group">
               <div class="input-container">
-                <input type="number" id="userId" name="user_id" required>
-                <label for="userId">
-                  <i class="fas fa-id-badge"></i>
-                  User ID
-                </label>
-                <span class="input-highlight"></span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="input-container">
-                <input type="text" id="legalName" name="name" required>
-                <label for="legalName">
-                  <i class="fas fa-user"></i>
-                  Legal Name
-                </label>
-                <span class="input-highlight"></span>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <div class="input-container">
-                <input type="text" id="telegram" name="telegram" required>
+                <input type="text" id="telegram" name="telegram" class="telegramsss" required>
                 <label for="telegram">
                   <i class="fab fa-telegram"></i>
                   Telegram Username
@@ -185,15 +161,17 @@
               <div class="select-container">
                 <select id="semester" name="sem" required>
                   <option value="" disabled selected></option>
-                  <option value="1">1st Semester</option>
-                  <option value="2">2nd Semester</option>
-                  <option value="3">3rd Semester</option>
-                  <option value="4">4th Semester</option>
-                  <option value="5">5th Semester</option>
-                  <option value="6">6th Semester</option>
-                  <option value="7">7th Semester</option>
-                  <option value="8">8th Semester</option>
-                  <option value="9+">9th Semester or Higher</option>
+                  <option value="1 Sem">1st Semester</option>
+                  <option value="2 Sem">2nd Semester</option>
+                  <option value="3 Sem">3rd Semester</option>
+                  <option value="4 Sem">4th Semester</option>
+                  <option value="5 Sem">5th Semester</option>
+                  <option value="6 Sem">6th Semester</option>
+                  <option value="7 Sem">7th Semester</option>
+                  <option value="8 Sem">8th Semester</option>
+                  <option value="9 Sem">9th Semester</option>
+                  <option value="10 Sem">10th Semester</option>
+                  <option value="Higher">Higher</option>
                 </select>
                 <label for="semester">
                   <i class="fas fa-graduation-cap"></i>
@@ -236,19 +214,12 @@
               </div>
 
               <div class="form-group">
-                <div class="select-container">
-                  <select id="sellerType" name="is_seller" required>
-                    <option value="" disabled selected></option>
-                    <option value="individual">👤 Individual Seller</option>
-                    <option value="business">🏢 Business/Company</option>
-                    <option value="student">🎓 Student Entrepreneur</option>
-                    <option value="partnership">🤝 Partnership</option>
-                  </select>
-                  <label for="sellerType">
-                    <i class="fas fa-briefcase"></i>
-                    Seller Type
+                <div class="input-container">
+                  <input type="number" id="members" name="number_of_members" min="1" max="50" required>
+                  <label for="members">
+                    <i class="fas fa-users"></i>
+                    Number of Members
                   </label>
-                  <span class="select-arrow"></span>
                   <span class="input-highlight"></span>
                 </div>
               </div>
@@ -261,17 +232,6 @@
                   <label for="price">
                     <i class="fas fa-dollar-sign"></i>
                     Price (Kyats)
-                  </label>
-                  <span class="input-highlight"></span>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="input-container">
-                  <input type="number" id="shopId" name="shop_id">
-                  <label for="shopId">
-                    <i class="fas fa-store-alt"></i>
-                    Shop ID (if applicable)
                   </label>
                   <span class="input-highlight"></span>
                 </div>
@@ -289,17 +249,11 @@
             <div class="form-group full-width">
               <div class="location-selector-container">
                 <div class="location-images-grid">
-                  <div class="location-option" data-location="Amarin Plaza Food Court">
-                    <img src="/images/amarin-plaza-food-court.jpg" alt="Amarin Plaza Food Court">
-                    <span class="location-name">Amarin Plaza Food Court</span>
-                  </div>
-                  <div class="location-option" data-location="Downtown Yangon">
-                    <img src="/images/1576548262194.jpg" alt="Downtown Yangon">
-                    <span class="location-name">Downtown Yangon</span>
-                  </div>
-                  <div class="location-option" data-location="University Campus">
-                    <img src="/images/5c015d77a310eff36908eb02.jpeg" alt="University Campus">
-                    <span class="location-name">University Campus</span>
+                  <div th:each="shop : ${shops}" class="location-option" th:attr="data-location=${shop.shopName}">
+                    <img th:src="${shop.shopImagePath}" th:alt="${shop.shopName}">
+                    <span class="location-name" th:text="${shop.shopName}"></span>
+                    <!-- hidden shopId -->
+                    <input type="hidden" th:value="${shop.shopId}" class="shop-id">
                   </div>
                 </div>
                 <input type="hidden" id="location" name="location" required>

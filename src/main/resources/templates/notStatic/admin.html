@@ -69,6 +69,12 @@
         </li>
         <li>
             <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-bag-fill px-2"></i>
+                <span class="link-text">Shop Management</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
                 <i class="bi bi-lightning-fill px-2"></i>
                 <span class="link-text">Activity</span>
             </a>
@@ -98,9 +104,9 @@
 
 
 <div class="content-area d-flex gap-1">
-    <div class="main-content p-4  gap-4">
+    <div class="main-content p-4  gap-4 w-100">
 
-        <div id="volunteerFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div id="volunteerFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 cons" >
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-lg font-semibold text-gray-900">Volunteer Form Control</h2>
                 <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -131,7 +137,7 @@
             </div>
         </div>
 
-        <div id="activityFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div id="activityFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 cons">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-lg font-semibold text-gray-900">Activity Form Control</h2>
                 <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -156,6 +162,37 @@
                 <button
                         class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 actionButton"
                         onclick="confirmAction('activityFormContainer', 'activity_form_button')"
+                >
+                    Open Form
+                </button>
+            </div>
+        </div>
+
+        <div id="sellerFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 cons">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-900">Food Seller Form Control</h2>
+                <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+            </div>
+
+            <div class="text-center space-y-6">
+                <!-- Status Display -->
+                <div class="status-indicator statusDisplay">
+                    <div class="text-4xl mb-2 statusEmoji">🔴</div>
+                    <div class="text-lg font-medium text-gray-700 statusText">Form Closed</div>
+                    <div class="text-sm text-gray-500 statusSubtext">Sellers cannot submit applications</div>
+                </div>
+
+                <!-- Toggle Switch -->
+                <div class="flex justify-center">
+                    <div class="toggle-switch toggleSwitch"  onclick="toggleForm('sellerFormContainer', 'seller_form_button')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button
+                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 actionButton"
+                        onclick="confirmAction('sellerFormContainer', 'seller_form_button')"
                 >
                     Open Form
                 </button>
@@ -324,12 +361,10 @@
         <table id="foodTable" class="food-table">
             <thead class="table-header">
             <tr>
-                <th>User ID</th>
-                <th>Telegram Username</th>
                 <th>Legal Name</th>
+                <th>Telegram Username</th>
                 <th>Current Semester</th>
                 <th>Food Name</th>
-                <th>Seller Type</th>
                 <th>Price</th>
                 <th>Preferred Location</th>
                 <th>Is Food Set</th>
@@ -340,174 +375,7 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
-            <tr class="table-row">
-                <td class="table-cell">
-                    <span class="user-id">#101</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@foodlover1</a>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <span class="font-semibold text-gray-900">John Doe</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fas fa-graduation-cap text-gray-400 mr-2"></i>
-                        <span class="font-medium text-gray-900">3</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-
-                        <span class="font-semibold text-gray-900">Chicken Biryani</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <span class="seller-type seller-individual">Individual Seller</span>
-                </td>
-                <td class="table-cell">
-                    <span class="price">$5.00</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
-                        <span class="text-gray-700">Location 1</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                            <span class="food-set-badge food-set-true">
-                                <i class="fas fa-check mr-1"></i>
-                                Yes
-                            </span>
-                </td>
-                <td class="table-cell">
-                    <p class="description-text text-sm description">Spicy and aromatic biryani af as aosfsuaf ascasjps s asfwa;</p>
-                </td>
-                <td class="table-cell">
-                    <span class="assigned-location assigned-none" data-assigned="None">None</span>
-                </td>
-                <td class="table-cell">
-                    <div class="relative">
-                        <button class="assign-btn" onclick="toggleDropdown(this)">
-                            Assign Location
-                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
-                        </button>
-                        <div class="dropdown">
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 1')">Location 1</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 2')">Location 2</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 3')">Location 3</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 4')">Location 4</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 5')">Location 5</div>
-                        </div>
-                    </div>
-                </td>
-                <td class="table-cell">
-                            <span class="status-badge status-pending">
-                                <i class="fas fa-clock mr-1"></i>
-                                Pending
-                            </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" onclick="approveFood(this)">
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="table-row">
-                <td class="table-cell">
-                    <span class="user-id">#202</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fab fa-telegram text-blue-500 mr-2"></i>
-                        <a href="#" class="telegram-link">@tastyfoods</a>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <span class="font-semibold text-gray-900">Jane Smith</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fas fa-graduation-cap text-gray-400 mr-2"></i>
-                        <span class="font-medium text-gray-900">7</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-
-                        <span class="font-semibold text-gray-900">Vegetable Salad</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                    <span class="seller-type seller-partnership">Partnership</span>
-                </td>
-                <td class="table-cell">
-                    <span class="price">$3.50</span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
-                        <span class="text-gray-700">Location 2</span>
-                    </div>
-                </td>
-                <td class="table-cell">
-                            <span class="food-set-badge food-set-false">
-                                <i class="fas fa-times mr-1"></i>
-                                No
-                            </span>
-                </td>
-                <td class="table-cell">
-                    <p class="description-text text-sm description">Fresh garden vegetables and djsa skpaf a aspw f jap asfhqp</p>
-                </td>
-                <td class="table-cell">
-                    <span class="assigned-location assigned-none" data-assigned="None">None</span>
-                </td>
-                <td class="table-cell">
-                    <div class="relative">
-                        <button class="assign-btn" onclick="toggleDropdown(this)">
-                            Assign Location
-                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
-                        </button>
-                        <div class="dropdown">
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 1')">Location 1</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 2')">Location 2</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 3')">Location 3</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 4')">Location 4</div>
-                            <div class="dropdown-item" onclick="assignLocation(this, 'Location 5')">Location 5</div>
-                        </div>
-                    </div>
-                </td>
-                <td class="table-cell">
-                            <span class="status-badge status-pending">
-                                <i class="fas fa-clock mr-1"></i>
-                                Pending
-                            </span>
-                </td>
-                <td class="table-cell">
-                    <div class="flex items-center">
-                        <button class="action-btn approve-btn" onclick="approveFood(this)">
-                            <i class="fas fa-check text-xs"></i>
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectFood(this)">
-                            <i class="fas fa-times text-xs"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
         </table>
-
-
     </div>
 
     <div id="VolCard" class="VolCard w-100">
@@ -575,6 +443,125 @@
         <div class="text-sm text-gray-500">Currently active</div>
     </div>
 
+    <div class="mx-auto w-100" id = "Shop">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Shop Management</h1>
+            <p class="text-gray-600">Upload your shop details and image</p>
+        </div>
+
+        <!-- Upload Button -->
+        <div class="text-center mb-8" id="uploadButtonContainer">
+            <button
+                    id="uploadButton"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-8 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center gap-3 mx-auto"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                Upload Shop Details
+            </button>
+        </div>
+
+        <!-- Upload Form (Hidden Initially) -->
+        <div id="uploadForm" class="hidden">
+            <div class="bg-white rounded-xl shadow-xl p-8 fade-in">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Add Your Shop</h2>
+                    <button
+                            id="closeForm"
+                            class="text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="shopForm" class="space-y-6">
+                    <!-- Shop Name Input -->
+                    <div>
+                        <label for="shopName" class="block text-sm font-medium text-gray-700 mb-2">
+                            Shop Name *
+                        </label>
+                        <input
+                                type="text"
+                                id="shopName"
+                                name="shopName"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                placeholder="Enter your shop name"
+                        >
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div>
+                        <label for="shopImage" class="block text-sm font-medium text-gray-700 mb-2">
+                            Shop Image (JPEG only) *
+                        </label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-indigo-400 transition-colors">
+                            <input
+                                    type="file"
+                                    id="shopImage"
+                                    name="shopImage"
+                                    accept=".jpeg,.jpg"
+                                    required
+                                    class="hidden"
+                            >
+                            <div id="uploadArea" class="cursor-pointer">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <p class="text-gray-600 mb-2">Click to upload shop image</p>
+                                <p class="text-sm text-gray-400">JPEG files only</p>
+                            </div>
+                            <div id="imagePreview" class="hidden mt-4">
+                                <img id="previewImg" class="image-preview mx-auto" alt="Shop preview">
+                                <p id="fileName" class="text-sm text-gray-600 mt-2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Buttons -->
+                    <div class="flex gap-4 pt-4">
+                        <button
+                                type="submit"
+                                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                        >
+                            Save Shop Details
+                        </button>
+                        <button
+                                type="button"
+                                id="cancelForm"
+                                class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Message (Hidden Initially) -->
+        <div id="successMessage" class="hidden">
+            <div class="bg-green-50 border border-green-200 rounded-xl p-6 text-center fade-in">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-green-800 mb-2">Shop Details Saved!</h3>
+                <p class="text-green-600 mb-4">Your shop information has been successfully uploaded.</p>
+                <button
+                        id="uploadAnother"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                >
+                    Upload Another Shop
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -622,6 +609,8 @@
         </form>
     </div>
 </div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
@@ -771,18 +760,6 @@
 
            });  // ← Initializes the table
    });
-
-
-   $(document).ready(function() {
-       $('#foodTable').DataTable({
-           autoWidth: false
-
-           });  // ← Initializes the table
-   });
-
-
-
-
    (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d7527a616a448a',t:'MTc1NDkxMTAwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
 </script>
 <script th:src="@{/js/admin.js}"></script>

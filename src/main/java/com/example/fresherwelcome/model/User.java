@@ -55,6 +55,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Performance> performances;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<FoodSeller> sellers;
+
 
 
     public List<UserMessage> getUserMessageList() {
@@ -130,6 +133,14 @@ public class User {
 
     public void setPerformances(List<Performance> performances) {
         this.performances = performances;
+    }
+
+    public List<FoodSeller> getSellers() {
+        return sellers;
+    }
+
+    public void setSellers(List<FoodSeller> sellers) {
+        this.sellers = sellers;
     }
 
 
