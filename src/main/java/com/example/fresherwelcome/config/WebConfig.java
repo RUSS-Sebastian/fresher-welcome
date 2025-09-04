@@ -12,5 +12,11 @@ public class WebConfig implements WebMvcConfigurer {
         // Map URL /shops/** to the filesystem uploads/shops/
         registry.addResourceHandler("/shops/**")
                 .addResourceLocations("file:uploads/shops/");
+
+        registry.addResourceHandler("/businesses/**")
+                .addResourceLocations("file:uploads/businesses/");
+
+        registry.addResourceHandler("/foods/**")
+                .addResourceLocations("file:uploads/foods/");
     }
 }

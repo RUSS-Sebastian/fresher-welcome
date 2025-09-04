@@ -2,6 +2,7 @@ package com.example.fresherwelcome.service;
 
 import com.example.fresherwelcome.dto.PerformanceRequestDto;
 import com.example.fresherwelcome.dto.PerformanceResponseDto;
+import com.example.fresherwelcome.mapper.sortFieldMapper;
 import com.example.fresherwelcome.model.*;
 import com.example.fresherwelcome.repository.PerformanceRepo;
 import com.example.fresherwelcome.repository.UserRepo;
@@ -93,6 +94,9 @@ public class PerformanceService {
     }
 
     public Page<PerApprovedDto> getAllApprovedPerformances(int page, int size, String sortBy, String direction) {
+
+        sortBy = sortFieldMapper.mapPerformance(sortBy);
+
         Sort sort = direction.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();

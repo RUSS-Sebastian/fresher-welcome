@@ -1,11 +1,8 @@
 package com.example.fresherwelcome.dto;
 
-import com.example.fresherwelcome.model.Status;
-
 import java.math.BigDecimal;
 
-public class SellerResponseDto {
-
+public class SellerApprovedDto {
     private String fullName;
     private String telegramUsername;
     private String currentSemester;
@@ -14,20 +11,8 @@ public class SellerResponseDto {
     private String preferredLocation;
     private boolean isFoodSet;
     private String foodDescription;
-    private Status status;
-    private long shop_id;
-    private long form_id;
-    private long user_id;
 
-    // No-args constructor
-    public SellerResponseDto() {
-    }
-
-    // All-args constructor
-    public SellerResponseDto(String fullName, String telegramUsername, String currentSemester,
-                             String foodName, BigDecimal price, String preferredLocation,
-                             boolean isFoodSet, String foodDescription, Status status,
-                             long shop_id,long seller_id,long user_id) {
+    public SellerApprovedDto(String fullName, String telegramUsername, String currentSemester, String foodName, BigDecimal price, String preferredLocation, boolean isFoodSet, String foodDescription) {
         this.fullName = fullName;
         this.telegramUsername = telegramUsername;
         this.currentSemester = currentSemester;
@@ -36,13 +21,16 @@ public class SellerResponseDto {
         this.preferredLocation = preferredLocation;
         this.isFoodSet = isFoodSet;
         this.foodDescription = foodDescription;
-        this.status = status;
-        this.shop_id = shop_id;
-        this.form_id = seller_id;
-        this.user_id = user_id;
     }
 
-    // Getters and Setters
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -65,14 +53,6 @@ public class SellerResponseDto {
 
     public void setCurrentSemester(String currentSemester) {
         this.currentSemester = currentSemester;
-    }
-
-    public String getFoodName() {
-        return foodName;
-    }
-
-    public void setFoodName(String foodName) {
-        this.foodName = foodName;
     }
 
     public BigDecimal getPrice() {
@@ -105,37 +85,5 @@ public class SellerResponseDto {
 
     public void setFoodDescription(String foodDescription) {
         this.foodDescription = foodDescription;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public long getShop_id() {
-        return shop_id;
-    }
-
-    public void setShop_id(long shop_id) {
-        this.shop_id = shop_id;
-    }
-
-    public long getForm_id() {
-        return form_id;
-    }
-
-    public void setForm_id(long form_id) {
-        this.form_id = form_id;
-    }
-
-    public long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
     }
 }

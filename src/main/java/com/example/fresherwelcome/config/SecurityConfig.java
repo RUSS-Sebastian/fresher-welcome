@@ -50,11 +50,11 @@ public class SecurityConfig {
                         // Logout requires login
                         .requestMatchers(HttpMethod.POST,"/logout").authenticated()
 
-                        .requestMatchers(HttpMethod.POST,"/api/shops").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/shops","/api/business").authenticated()
 
-                        .requestMatchers("/api/performances/**").authenticated()
+                        .requestMatchers("/api/performances/**","/api/foods/**").authenticated()
 
-                        .requestMatchers("/api/food-sellers/**").authenticated()
+                        .requestMatchers("/api/food-sellers/**","/api/business/**").authenticated()
 
                         .requestMatchers(HttpMethod.POST,"/api/messages").hasRole("ADMIN")
 

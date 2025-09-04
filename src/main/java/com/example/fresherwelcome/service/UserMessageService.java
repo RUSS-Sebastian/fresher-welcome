@@ -42,7 +42,7 @@ public class UserMessageService {
 
     // Fetch messages for a specific userId
     public List<UserMessageTitleContentDto> getMessagesByUserId(Long userId) {
-        List<UserMessage> messages = messageRepository.findByUserId(userId);
+        List<UserMessage> messages = messageRepository.findMessagesByUserIdDesc(userId);
         return messages.stream()
                 .map(msg -> new UserMessageTitleContentDto(msg.getTitle(), msg.getContent(),msg.getCreatedAt(),msg.getStatus(),msg.getId()))
                 .collect(Collectors.toList());

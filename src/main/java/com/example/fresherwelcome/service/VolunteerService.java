@@ -3,6 +3,7 @@ package com.example.fresherwelcome.service;
 import com.example.fresherwelcome.dto.VolApprovedDto;
 import com.example.fresherwelcome.dto.VolunteerRequestDto;
 import com.example.fresherwelcome.dto.VolunteerResponseDto;
+import com.example.fresherwelcome.mapper.sortFieldMapper;
 import com.example.fresherwelcome.model.User;
 import com.example.fresherwelcome.model.Volunteer;
 import com.example.fresherwelcome.model.VolunteerStatus;
@@ -87,6 +88,7 @@ public class VolunteerService {
     }
 
     public Page<VolApprovedDto> getAllApprovedVolunteers(int page, int size, String sortBy, String direction) {
+        sortBy = sortFieldMapper.mapVolunteer(sortBy);
         Sort sort = direction.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();

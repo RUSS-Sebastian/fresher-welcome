@@ -85,6 +85,11 @@ public class TemplateController {
         return "notStatic/volunteer-form";
     }
 
+    @GetMapping("/food-manager")
+    public String manager(){
+        return "notStatic/food-manager";
+    }
+
 
 
 }

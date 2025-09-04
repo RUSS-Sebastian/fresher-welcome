@@ -22,4 +22,9 @@ public interface UserMessageRepo extends JpaRepository<UserMessage, Long> {
     @Modifying
     @Query("UPDATE UserMessage m SET m.status = 'READ' WHERE m.id IN :ids AND m.status = 'UNREAD'")
     int markAsReadBulk(@Param("ids") List<Long> ids);
+
+    @Query("SELECT m FROM UserMessage m WHERE m.user.id = :userId ORDER BY m.createdAt DESC")
+    List<UserMessage> findMessagesByUserIdDesc(@Param("userId") Long userId);
+
+
 }

@@ -97,6 +97,11 @@ body {
    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
    transition: all 0.3s ease;
    z-index: 1000;
+   display: flex;
+   align-items: center;
+   gap: 8px; /* space between icon & text */
+   border: none;
+   cursor: pointer;
  }
 
  #admin-dashboard-btn {
@@ -190,3 +195,7 @@ body {
  .btn-no:hover {
    background-color: #c82333;
  }
+
+#SellerUser{
+    display:none;
+}

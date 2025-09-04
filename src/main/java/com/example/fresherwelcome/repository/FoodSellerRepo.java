@@ -12,4 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FoodSellerRepo extends JpaRepository<FoodSeller, Long> {
     Page<FoodSeller> findByStatus(Status status, Pageable pageable);
+
+    boolean existsByUserIdAndStatus(Long userId, Status status);
+
+    long countByStatus(Status status);
 }

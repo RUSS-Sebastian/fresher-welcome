@@ -1,13 +1,14 @@
 package com.example.fresherwelcome.controller;
 
-import com.example.fresherwelcome.dto.FoodSellerRequest;
-import com.example.fresherwelcome.dto.FoodSellerUpdateDto;
-import com.example.fresherwelcome.dto.SellerResponseDto;
+import com.example.fresherwelcome.dto.*;
 import com.example.fresherwelcome.model.FoodSeller;
+import com.example.fresherwelcome.model.User;
 import com.example.fresherwelcome.service.FoodSellerService;
+import com.example.fresherwelcome.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,9 +19,11 @@ import java.util.Map;
 public class FoodSellerController {
 
     private final FoodSellerService foodSellerService;
+    private final UserService userService;
 
-    public FoodSellerController(FoodSellerService foodSellerService) {
+    public FoodSellerController(FoodSellerService foodSellerService,UserService userService) {
         this.foodSellerService = foodSellerService;
+        this.userService = userService;
     }
 
     @PostMapping("/submit")
@@ -63,4 +66,44 @@ public class FoodSellerController {
         SellerResponseDto updatedSeller = foodSellerService.updateFoodSeller(formId, updateDto);
         return ResponseEntity.ok(updatedSeller);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/count/approved")
+    public ResponseEntity<Long> getApprovedSellersCount() {
+        long count = foodSellerService.countApprovedSellers();
+        return ResponseEntity.ok(count);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/approved")
+    public ResponseEntity<Map<String, Object>> getApprovedSellers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "foodName") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction
+    ) {
+        Page<SellerApprovedDto> pPage = foodSellerService.getAllApprovedSellers(page, size, sortBy, direction);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", pPage.getContent());
+        response.put("totalElements", pPage.getTotalElements());
+        response.put("totalPages", pPage.getTotalPages());
+        response.put("currentPage", pPage.getNumber());
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/has-approved")
+    public ResponseEntity<Map<String, Boolean>> hasApproved(Authentication authentication) {
+        User user = userService.getCurrentUser(authentication); // same as your /me
+        boolean result = foodSellerService.hasApprovedSeller(user.getId());
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("approved", result);
+
+        System.out.println("Calling the newest function");
+        return ResponseEntity.ok(response);
+    }
+
 }

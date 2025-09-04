@@ -58,7 +58,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<FoodSeller> sellers;
 
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private FoodBusiness business;
 
     public List<UserMessage> getUserMessageList() {
         return userMessageList;
@@ -143,6 +144,12 @@ public class User {
         this.sellers = sellers;
     }
 
+    public FoodBusiness getBusiness() {
+        return business;
+    }
 
+    public void setBusiness(FoodBusiness business) {
+        this.business = business;
+    }
 
 }

@@ -1,8 +1,7 @@
 package com.example.fresherwelcome.service;
 
-import com.example.fresherwelcome.dto.FoodSellerRequest;
-import com.example.fresherwelcome.dto.FoodSellerUpdateDto;
-import com.example.fresherwelcome.dto.SellerResponseDto;
+import com.example.fresherwelcome.dto.*;
+import com.example.fresherwelcome.mapper.sortFieldMapper;
 import com.example.fresherwelcome.model.*;
 import com.example.fresherwelcome.repository.FoodSellerRepo;
 import com.example.fresherwelcome.repository.ShopRepo;
@@ -89,7 +88,8 @@ public class FoodSellerService {
                 p.getFoodDescription(),
                 p.getStatus(),
                 p.getShop().getShopId(),
-                p.getFormId()
+                p.getFormId(),
+                p.getUser().getId()
         ));
 
     }
@@ -98,20 +98,22 @@ public class FoodSellerService {
         FoodSeller seller = foodSellerRepository.findById(formId)
                 .orElseThrow(() -> new RuntimeException("FoodSeller not found"));
 
-        // Update shop if provided
         if (dto.getShopId() != null) {
             Shop shop = shopRepository.findById(dto.getShopId())
                     .orElseThrow(() -> new RuntimeException("Shop not found"));
             seller.setShop(shop);
-            shop.setIsAvailable(false);
+
+            // Update status if provided
+            if (dto.getStatus() != null) {
+                seller.setStatus(dto.getStatus());
+
+                // Only mark shop unavailable if status is APPROVED
+                if (dto.getStatus() == Status.APPROVED) {
+                    shop.setIsAvailable(false);
+                }
+            }
         }
 
-
-
-        // Update status if provided
-        if (dto.getStatus() != null) {
-            seller.setStatus(dto.getStatus());
-        }
 
         foodSellerRepository.save(seller);
 
@@ -126,7 +128,46 @@ public class FoodSellerService {
                 seller.getFoodDescription(),
                 seller.getStatus(),
                 seller.getShop().getShopId(),
-                seller.getFormId()
+                seller.getFormId(),
+                seller.getUser().getId()
         );
+    }
+
+    public Page<SellerApprovedDto> getAllApprovedSellers(int page, int size, String sortBy, String direction) {
+
+        sortBy = sortFieldMapper.mapFoodSeller(sortBy);
+
+
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<FoodSeller> pPage;
+
+
+        pPage = foodSellerRepository.findByStatus(Status.APPROVED,pageable);
+
+
+        return pPage.map(p -> new SellerApprovedDto(
+                p.getUser().getName(),
+                p.getTelegramUsername(),
+                p.getCurrentSemester().getLabel(),
+                p.getFoodName(),
+                p.getPrice(),
+                p.getShop().getShopName(),
+                p.isFoodSet(),
+                p.getFoodDescription()
+        ));
+
+    }
+
+    public long countApprovedSellers() {
+        return foodSellerRepository.countByStatus(Status.APPROVED);
+    }
+
+    public boolean hasApprovedSeller(Long userId) {
+        return foodSellerRepository.existsByUserIdAndStatus(userId, Status.APPROVED);
     }
 }

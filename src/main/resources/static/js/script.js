@@ -1,33 +1,3 @@
-// Sample notifications data
-let notifications = [
-    {
-        id: 1,
-        type: 'message',
-        title: 'New message from Sarah',
-        message: 'Hey! Just wanted to check in about the project status.',
-        time: '2 minutes ago',
-        unread: true,
-        icon: '💬'
-    },
-    {
-        id: 2,
-        type: 'system',
-        title: 'System update completed',
-        message: 'Your system has been successfully updated to version 2.1.0',
-        time: '1 hour ago',
-        unread: true,
-        icon: '⚙️'
-    },
-    {
-        id: 3,
-        type: 'warning',
-        title: 'Storage almost full',
-        message: 'Your storage is 85% full. Consider upgrading your plan.',
-        time: '3 hours ago',
-        unread: true,
-        icon: '⚠️'
-    }
-];
 
 let userId = null;
 let csrfToken = null;
@@ -209,6 +179,10 @@ function handleClick(section){
     window.location.href='/protected/feed';
   }
 
+  else if(section=='yourShop'){
+    window.location.href='/protected/food-manager'
+  }
+
   else{
     console.warn('Unknown  section:',section);
   }
@@ -321,3 +295,33 @@ document.getElementById('confirm-yes').addEventListener('click', async function 
     console.error("Error during logout:", error);
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const activities = document.getElementById("Activities");
+  const sellerUser = document.getElementById("SellerUser");
+
+  // Store original HTML and classes to restore later
+  const originalHTML = activities.innerHTML;
+  const originalClasses = activities.className;
+
+  fetch("/api/food-sellers/has-approved")
+    .then(res => res.json())
+    .then(data => {
+      if (data.approved) {
+        // Approved → remove inner container and change classes
+        sellerUser.style.display = "block";
+        const inner = activities.querySelector('.col-6.col-md-4');
+        if (inner) {
+          activities.innerHTML = inner.innerHTML;
+        }
+        activities.className = 'col-6 col-md-4';
+      } else {
+        sellerUser.style.display = "none";
+        // Not approved → restore original
+        activities.innerHTML = originalHTML;
+        activities.className = originalClasses;
+      }
+    })
+    .catch(err => console.error("Error checking approved seller:", err));
+});
+
