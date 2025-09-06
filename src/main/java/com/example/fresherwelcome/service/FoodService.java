@@ -81,4 +81,22 @@ public class FoodService {
                 food.getShop().getBusinessId()
         );
     }
+
+    public void deleteFoodById(Long foodId) throws IOException {
+        Food food = foodRepository.findById(foodId)
+                .orElseThrow(() -> new RuntimeException("Food not found with id: " + foodId));
+
+        // Delete the image file from storage
+        if (food.getFoodImagePath() != null) {
+            String imageFileName = Paths.get(food.getFoodImagePath()).getFileName().toString();
+            Path imagePath = Paths.get(uploadDir, imageFileName);
+
+            if (Files.exists(imagePath)) {
+                Files.delete(imagePath);
+            }
+        }
+
+        // Delete food record from DB
+        foodRepository.delete(food);
+    }
 }

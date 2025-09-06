@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freshers' FoodCourt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #edebf7;
+            background-size: cover;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+        }
+        .shop-card {
+            height: 420px; /* Fixed height for all shop cards */
+            width: 100%; /* Full width of their container */
+        }
+        .shop-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(155, 89, 182, 0.6);
+        }
+        .food-item:hover {
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+        .gradient-container {
+            background: linear-gradient(135deg, #9b59b6 0%, #ff6b6b 100%);
+            animation: gradientPulse 6s ease infinite;
+        }
+        .pink-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .pink-button:hover {
+            background: linear-gradient(135deg, #ff8e8e 0%, #ff6b6b 100%);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-3px);
+        }
+        .shop-sign {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+        .shop-image-container {
+            height: 200px; /* Fixed image height */
+            width: 100%; /* Full width */
+            margin-bottom: 15px;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .shop-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .shop-card:hover .shop-image-container img {
+            transform: scale(1.1);
+        }
+        .neon-text {
+            text-shadow: 0 0 8px #2e2d2d, 0 0 15px #fff, 0 0 25px #ff2d75, 0 0 35px #ff2d75;
+            animation: neonGlow 2s ease-in-out infinite alternate;
+            color: #fff;
+        }
+        .dark-neon-text {
+            text-shadow: 0 0 5px #0f0e17, 0 0 10px #0f0e17, 0 0 20px #9b59b6, 0 0 30px #9b59b6;
+            animation: darkNeonGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes gradientPulse {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes neonGlow {
+            from { text-shadow: 0 0 8px #fff, 0 0 15px #fff, 0 0 25px #ff2d75, 0 0 35px #ff2d75; }
+            to { text-shadow: 0 0 12px #fff, 0 0 20px #ff4da6, 0 0 30px #ff4da6, 0 0 40px #ff4da6; }
+        }
+        @keyframes darkNeonGlow {
+            from { text-shadow: 0 0 5px #0f0e17, 0 0 10px #0f0e17, 0 0 20px #9b59b6, 0 0 30px #9b59b6; }
+            to { text-shadow: 0 0 10px #0f0e17, 0 0 20px #8e44ad, 0 0 30px #8e44ad, 0 0 40px #8e44ad; }
+        }
+        .price-tag {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        @media (max-width: 768px) {
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+<!-- Header -->
+<header class="gradient-container shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-white dark-neon-text">Freshers' FoodCourt</h1>
+        <div class="flex items-center space-x-4">
+            <button id="homeBtn" class="pink-button px-6 py-3 rounded-xl font-bold flex items-center space-x-3 shadow-lg text-lg">
+                <span>🏠</span>
+                <span>Home</span>
+            </button>
+            <button id="cartBtn" class="pink-button px-6 py-3 rounded-xl font-bold flex items-center space-x-3 shadow-lg text-lg">
+                <span>🛒</span>
+                <span>Cart (<span id="cartCount">0</span>)</span>
+            </button>
+        </div>
+    </div>
+</header>
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Shop Selection -->
+    <div id="shopSelection" class="mb-8">
+        <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Choose Your Favorite Shop</h2>
+        <div class="shop-grid">
+            <!-- Chicken Shop -->
+            <div th:each="shop : ${businesses}"
+                 class="shop-card cursor-pointer transition-all duration-500"
+                 th:attr="data-id=${shop.businessId}, data-name=${shop.businessName}, data-description=${shop.businessDescription}"
+                 onclick="showShop(this.dataset.id, this.dataset.name, this.dataset.description)">
+
+                <div class="shop-sign">
+                    <div class="shop-image-container">
+                        <img th:src="@{${shop.businessImagePath}}" th:alt="${shop.businessName}">
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3" th:text="${shop.businessName}"></h3>
+                        <p class="text-gray-600 mb-4" th:text="${shop.businessDescription}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Menu -->
+    <div id="shopMenu" class="hidden">
+        <div class="flex items-center mb-8">
+            <button onclick="backToShops()" class="pink-button px-6 py-3 rounded-xl font-bold mr-6 shadow-lg text-lg">← Back to Shops</button>
+            <div>
+                <h2 id="shopTitle" class="text-4xl font-bold text-gray-800"></h2>
+                <p id="shopDescription" class="text-gray-800 opacity-90 text-lg"></p>
+            </div>
+        </div>
+
+        <div id="menuItems" class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Menu items will be populated here -->
+        </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div id="orderSummary" class="hidden fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
+        <div class="gradient-container rounded-2xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-y-auto text-white transform transition-all duration-500 scale-95 hover:scale-100">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold neon-text">Your Order Summary</h3>
+                    <button onclick="closeOrderSummary()" class="text-white hover:text-gray-200 text-3xl transition-transform hover:rotate-90">×</button>
+                </div>
+                <div id="orderItems" class="space-y-4 mb-6">
+                    <!-- Order items will be populated here -->
+                </div>
+                <div class="border-t border-purple-300 pt-6">
+                    <div class="flex justify-between items-center text-xl font-bold mb-6">
+                        <span class="dark-neon-text">Total Amount:</span>
+                        <span id="orderTotal" class="text-2xl neon-text">0 MMK</span>
+                    </div>
+                    <button onclick="placeOrder()" class="w-full pink-button py-4 rounded-xl font-bold text-lg shadow-xl transition-all hover:scale-105">
+                        Confirm Order 🎉
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("homeBtn").addEventListener("click", () => {
+            window.location.href = "/protected/home";
+    });
+    let cart = [];
+    let currentShop = null;
+    let csrfToken = null;
+    let csrfHeaderName = null;
+    let currentUser = null;
+
+    window.addEventListener("DOMContentLoaded", async () => {
+        const response = await fetch("/api/users/me");
+        currentUser = await response.json();
+        console.log("Current User Loaded:", currentUser);
+    });
+
+    window.addEventListener("DOMContentLoaded", async () => {
+          // 1. Fetch CSRF token
+          const csrfResponse = await fetch("/csrf-token");
+          const csrfData = await csrfResponse.json();
+          csrfToken = csrfData.token;
+          csrfHeaderName = csrfData.headerName;
+          console.log("CSRF Token Loaded:", csrfHeaderName, csrfToken);
+    });
+
+    async function showShop(shopId, shopName, shopDescription) {
+        currentShop = shopId;
+
+        document.getElementById('shopSelection').classList.add('hidden');
+        document.getElementById('shopMenu').classList.remove('hidden');
+
+        document.getElementById('shopTitle').innerHTML = shopName;
+        document.getElementById('shopDescription').textContent = shopDescription;
+
+        try {
+            const response = await fetch(`/api/foods/shop/${shopId}`);
+            if (!response.ok) throw new Error("Failed to load foods for shop " + shopId);
+            const foods = await response.json();
+
+            const menuItems = document.getElementById('menuItems');
+            menuItems.innerHTML = '';
+
+            if (foods.length === 0) {
+                menuItems.innerHTML = `<p class="text-gray-600">No foods available for this shop.</p>`;
+                return;
+            }
+
+            foods.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'food-item bg-white rounded-2xl shadow-xl p-6 transition-all duration-500 hover:shadow-2xl';
+                itemDiv.innerHTML = `
+                    <div class="text-center">
+                        <div class="w-full h-48 bg-gray-200 rounded-xl mb-5 overflow-hidden">
+                            <img src="${item.foodImagePath}" alt="${item.foodName}"
+                                 class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">${item.foodName}</h4>
+                        <p class="text-gray-600 mb-5 text-md">${item.foodDescription}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="price-tag text-lg">${item.foodPrice.toLocaleString()} MMK</span>
+                            <button onclick="addToCart(${item.foodId}, ${shopId}, '${shopName}', ${item.foodPrice}, '${item.foodName}')"
+                                    class="pink-button px-5 py-3 rounded-xl font-bold shadow-lg">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+                menuItems.appendChild(itemDiv);
+            });
+
+        } catch (err) {
+            console.error("Error fetching foods:", err);
+            document.getElementById('menuItems').innerHTML =
+                `<p class="text-red-600">Failed to load foods. Please try again.</p>`;
+        }
+    }
+
+    function backToShops() {
+        document.getElementById('shopMenu').classList.add('hidden');
+        document.getElementById('shopSelection').classList.remove('hidden');
+        currentShop = null;
+    }
+
+    function addToCart(foodId, shopId, shopName, foodPrice, foodName) {
+        if (cart.length > 0 && cart[0].shopId !== shopId) {
+            const confirmSwitch = confirm(
+                `You have items from ${cart[0].shopName} in your cart. Adding items from ${shopName} will clear your current cart. Continue?`
+            );
+            if (confirmSwitch) {
+                cart = [];
+            } else {
+                return;
+            }
+        }
+
+        const existingItem = cart.find(i => i.foodId === foodId);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                foodId: foodId,
+                shopId: shopId,       // Backend-ready
+                shopName: shopName,    // Frontend display
+                price: foodPrice,
+                name: foodName,
+                quantity: 1
+            });
+        }
+
+        updateCartCount();
+
+        const button = event.target;
+        button.innerHTML = 'Added! ✓';
+        button.classList.add('bg-green-400', 'text-white');
+        setTimeout(() => {
+            button.innerHTML = 'Add to Cart';
+            button.classList.remove('bg-green-400', 'text-white');
+        }, 1000);
+    }
+
+    function updateCartCount() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cartCount').textContent = totalItems;
+    }
+
+    function showOrderSummary() {
+        if (cart.length === 0) {
+            alert('Your cart is empty! Add some items first.');
+            return;
+        }
+
+        console.log(cart); // You can send this directly to backend
+
+        const orderItems = document.getElementById('orderItems');
+        orderItems.innerHTML = '';
+
+        let total = 0;
+        cart.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'flex justify-between items-center bg-purple-100 bg-opacity-20 p-4 rounded-xl';
+            itemDiv.innerHTML = `
+                <div>
+                    <div class="font-bold text-lg">${item.name}</div>
+                    <div class="text-sm text-purple-200">${item.shopName}</div>
+                </div>
+                <div class="text-right">
+                    <div class="font-bold text-lg">${(item.price * item.quantity).toLocaleString()} MMK</div>
+                    <div class="text-sm text-purple-200">Qty: ${item.quantity}</div>
+                </div>
+            `;
+            orderItems.appendChild(itemDiv);
+            total += item.price * item.quantity;
+        });
+
+        document.getElementById('orderTotal').textContent = `${total.toLocaleString()} MMK`;
+        document.getElementById('orderSummary').classList.remove('hidden');
+    }
+
+    function closeOrderSummary() {
+        document.getElementById('orderSummary').classList.add('hidden');
+    }
+
+
+    async function placeOrder() {
+        if (cart.length === 0) return;
+
+        // Confirm order
+        const confirmOrder = confirm(
+            "Are you sure you want to place this order? You cannot cancel it once submitted."
+        );
+        if (!confirmOrder) return;
+
+        try {
+            // Prepare order data for backend
+            const orderData = {
+                userId: currentUser.id,
+                shopId: cart[0].shopId,
+                items: cart.map(item => ({
+                    foodId: item.foodId,
+                    quantity: item.quantity,
+                    price: item.price
+                }))
+            };
+
+            orderData.items.forEach((item, index) => {
+                console.log(`Item ${index}:`, item);
+            });
+
+            const response = await fetch('/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeaderName]: csrfToken
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            if (!response.ok) throw new Error("Failed to place order");
+
+            alert("🎉 Order placed successfully! Your food will be ready for pickup in 15-20 minutes. Thank you for choosing Freshers' FoodCourt!");
+
+            cart = [];
+            updateCartCount();
+            closeOrderSummary();
+            backToShops();
+
+        } catch (err) {
+            console.error("Error placing order:", err);
+            alert("❌ Failed to place order. Please try again.");
+        }
+    }
+
+
+
+    // Event listeners
+    document.getElementById('cartBtn').addEventListener('click', showOrderSummary);
+</script>
+</body>
+</html>

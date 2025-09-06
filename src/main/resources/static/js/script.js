@@ -168,7 +168,7 @@ function handleClick(section){
   }
 
   else if(section=='food'){
-    window.location.href='';
+    window.location.href='/protected/food-order';
   }
 
   else if(section=='activities'){

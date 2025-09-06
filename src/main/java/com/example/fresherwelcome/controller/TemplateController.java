@@ -2,6 +2,7 @@ package com.example.fresherwelcome.controller;
 import com.example.fresherwelcome.model.Event;
 import com.example.fresherwelcome.model.Shop;
 import com.example.fresherwelcome.service.AdminButtonService;
+import com.example.fresherwelcome.service.BusinessService;
 import com.example.fresherwelcome.service.EventService;
 import com.example.fresherwelcome.service.ShopService;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,13 @@ public class TemplateController {
     private final EventService eventService;
     private final AdminButtonService adminButtonService;
     private final ShopService shopService;
+    private final BusinessService foodBusinessService;
 
-    public TemplateController(EventService eventService,AdminButtonService adminButtonService,ShopService shopService) {
+    public TemplateController(EventService eventService,AdminButtonService adminButtonService,ShopService shopService,BusinessService bService) {
         this.eventService = eventService;
         this.adminButtonService =  adminButtonService;
         this.shopService = shopService;
+        this.foodBusinessService = bService;
     }
 
     @GetMapping("/home")
@@ -89,6 +92,13 @@ public class TemplateController {
     public String manager(){
         return "notStatic/food-manager";
     }
+
+    @GetMapping("/food-order")
+    public String order(Model model){
+        model.addAttribute("businesses", foodBusinessService.getAllBusinesses());
+        return "notStatic/food";
+    }
+
 
 
 

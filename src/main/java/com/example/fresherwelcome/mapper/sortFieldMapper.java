@@ -24,5 +24,12 @@ public class sortFieldMapper {
         };
     }
 
+    public static String mapOrder(String sortBy) {
+        return switch (sortBy) {
+            case "userId" -> "user.id";
+            default -> sortBy;
+        };
+    }
+
 
 }

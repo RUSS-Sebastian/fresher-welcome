@@ -1,6 +1,7 @@
 package com.example.fresherwelcome.service;
 
 import com.example.fresherwelcome.dto.BusinessDto;
+import com.example.fresherwelcome.dto.FoodBusinessDTO;
 import com.example.fresherwelcome.model.FoodBusiness;
 import com.example.fresherwelcome.model.Shop;
 import com.example.fresherwelcome.model.User;
@@ -19,7 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BusinessService {
@@ -38,6 +41,25 @@ public class BusinessService {
         this.userRepository = userRepository;
         this.userService = userService;
     }
+
+
+    public FoodBusiness saveOrUpdateBusinessWithImage(
+            String businessName,
+            MultipartFile imageFile,
+            String description,
+            long userId
+    ) throws IOException {
+        boolean exists = foodBusinessRepository.findByUser_Id(userId).isPresent();
+
+        if (exists) {
+            logger.info("Business already exists for userId: {}, updating instead", userId);
+            return updateBusinessWithImage(businessName, imageFile, description, userId);
+        } else {
+            logger.info("No business found for userId: {}, creating new", userId);
+            return saveBusinessWithImage(businessName, imageFile, description, userId);
+        }
+    }
+
 
     public FoodBusiness saveBusinessWithImage(String businessName, MultipartFile imageFile,String description,long userId) throws IOException {
         logger.info("Saving business: {}", businessName);
@@ -92,5 +114,53 @@ public class BusinessService {
 
         return toDto(business);
     }
+
+    public FoodBusiness updateBusinessWithImage(
+            String businessName,
+            MultipartFile imageFile,
+            String description,
+            long userId
+    ) throws IOException {
+        FoodBusiness business = foodBusinessRepository.findByUser_Id(userId)
+                .orElseThrow(() -> new IllegalArgumentException("No business found for userId: " + userId));
+
+        // update fields
+        business.setBusinessName(businessName);
+        business.setBusinessDescription(description);
+
+        // handle image only if new one provided
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // delete old image if it exists
+            if (business.getBusinessImagePath() != null) {
+                String oldFileName = Paths.get(business.getBusinessImagePath()).getFileName().toString();
+                Path oldFilePath = Paths.get(uploadDir, oldFileName);
+                Files.deleteIfExists(oldFilePath);
+            }
+
+            // save new image
+            String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir, fileName);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            String imageUrl = "/businesses/" + fileName;
+            business.setBusinessImagePath(imageUrl);
+        }
+
+        return foodBusinessRepository.save(business);
+    }
+
+    public List<FoodBusinessDTO> getAllBusinesses() {
+        return foodBusinessRepository.findAll()
+                .stream()
+                .map(business -> new FoodBusinessDTO(
+                        business.getBusinessId(),
+                        business.getBusinessName(),
+                        business.getBusinessImagePath(),
+                        business.getBusinessDescription(),
+                        business.getUser().getId() // assumes your User entity field is `id`
+                ))
+                .collect(Collectors.toList());
+    }
+
 
 }

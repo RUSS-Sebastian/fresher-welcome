@@ -53,4 +53,16 @@ public class FoodController {
     public List<FoodResponseDTO> getFoodsByShop(@PathVariable Long shopId) {
         return foodService.getFoodsByShopId(shopId);
     }
+
+    @DeleteMapping("/{foodId}")
+    public ResponseEntity<?> deleteFood(@PathVariable Long foodId) {
+        try {
+            foodService.deleteFoodById(foodId);
+            return ResponseEntity.ok("Food deleted successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Error deleting food image");
+        }
+    }
 }

@@ -43,7 +43,7 @@ public class FoodBusinessController {
         try {
 
             User user = userService.getCurrentUser(authentication);
-            FoodBusiness savedBusiness = businessService.saveBusinessWithImage(businessName, imageFile, description, user.getId());
+            FoodBusiness savedBusiness = businessService.saveOrUpdateBusinessWithImage(businessName, imageFile, description, user.getId());
             BusinessDto dto = businessService.toDto(savedBusiness);
             System.out.println("DEBUG: Upload process completed successfully");
             return ResponseEntity.ok(dto);

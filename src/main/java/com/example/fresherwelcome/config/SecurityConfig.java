@@ -50,9 +50,9 @@ public class SecurityConfig {
                         // Logout requires login
                         .requestMatchers(HttpMethod.POST,"/logout").authenticated()
 
-                        .requestMatchers(HttpMethod.POST,"/api/shops","/api/business").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/shops","/api/business","/api/orders").authenticated()
 
-                        .requestMatchers("/api/performances/**","/api/foods/**").authenticated()
+                        .requestMatchers("/api/performances/**","/api/foods/**","/api/orders/**").authenticated()
 
                         .requestMatchers("/api/food-sellers/**","/api/business/**").authenticated()
 
