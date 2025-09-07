@@ -1,10 +1,7 @@
 package com.example.fresherwelcome.controller;
 import com.example.fresherwelcome.model.Event;
 import com.example.fresherwelcome.model.Shop;
-import com.example.fresherwelcome.service.AdminButtonService;
-import com.example.fresherwelcome.service.BusinessService;
-import com.example.fresherwelcome.service.EventService;
-import com.example.fresherwelcome.service.ShopService;
+import com.example.fresherwelcome.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +18,14 @@ public class TemplateController {
     private final AdminButtonService adminButtonService;
     private final ShopService shopService;
     private final BusinessService foodBusinessService;
+    private final CandidateService candidateService;
 
-    public TemplateController(EventService eventService,AdminButtonService adminButtonService,ShopService shopService,BusinessService bService) {
+    public TemplateController(EventService eventService,AdminButtonService adminButtonService,ShopService shopService,BusinessService bService,CandidateService candidateService) {
         this.eventService = eventService;
         this.adminButtonService =  adminButtonService;
         this.shopService = shopService;
         this.foodBusinessService = bService;
+        this.candidateService = candidateService;
     }
 
     @GetMapping("/home")
@@ -97,6 +96,21 @@ public class TemplateController {
     public String order(Model model){
         model.addAttribute("businesses", foodBusinessService.getAllBusinesses());
         return "notStatic/food";
+    }
+
+    @GetMapping("/kq")
+    public String kq(){
+        return "notStatic/kq";
+    }
+
+    @GetMapping("/kq1")
+    public String kq1(Model model) {
+        // Load Kings and Queens
+        model.addAttribute("kings", candidateService.getAllKings());
+        model.addAttribute("queens", candidateService.getAllQueens());
+
+        // Return Thymeleaf template
+        return "notStatic/kq1";
     }
 
 

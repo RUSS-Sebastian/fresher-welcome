@@ -1,3 +1,14 @@
+let csrfToken = null;
+let csrfHeaderName = null;
+window.addEventListener("DOMContentLoaded", async () => {
+      // 1. Fetch CSRF token
+      const csrfResponse = await fetch("/csrf-token");
+      const csrfData = await csrfResponse.json();
+      csrfToken = csrfData.token;
+      csrfHeaderName = csrfData.headerName;
+      console.log("CSRF Token Loaded:", csrfHeaderName, csrfToken);
+});
+
 var kingSwiper = new Swiper(".king-swiper", {
     effect: "coverflow",
     grabCursor: true,
@@ -117,47 +128,33 @@ const votes = {
     king: {},
     queen: {}
 };
-
-/*// Track user's vote per category
 let userVotes = {
     king: null,
     queen: null
 };
 
-// Attach voting logic to each slide
-document.querySelectorAll('.swiper-slide').forEach(slide => {
-    slide.addEventListener('click', () => {
-        const name = slide.querySelector('.title span')?.textContent;
-        const parentSwiper = slide.closest('.swiper');
-        const category = parentSwiper.classList.contains('king-swiper') ? 'king' : 'queen';
+async function loadUserVotes() {
+    try {
+        const response = await fetch('/api/votes/myVotes');
+        if (response.ok) {
+            const data = await response.json();
+            userVotes.king = data.king || null;
+            userVotes.queen = data.queen || null;
 
-        if (!name || !category) return;
-
-        // Check if user already voted in this category
-        if (userVotes[category]) {
-            alert(`You have already voted for ${userVotes[category]} in the ${category.toUpperCase()} category.`);
-            return;
+            // mark voted slides visually
+            if (userVotes.king) {
+                document.querySelector(`.king-swiper .swiper-slide[data-id='${userVotes.king}']`)?.classList.add('voted');
+            }
+            if (userVotes.queen) {
+                document.querySelector(`.queen-swiper .swiper-slide[data-id='${userVotes.queen}']`)?.classList.add('voted');
+            }
         }
+    } catch (err) {
+        console.error("Failed to load user votes:", err);
+    }
+}
 
-        // Confirm vote
-        const confirmVote = confirm(`Are you sure you want to vote for ${name} as ${category.toUpperCase()}?`);
-        if (confirmVote) {
-            // Register vote
-            userVotes[category] = name;
-
-            // Feedback
-            alert(`Successfully voted for ${name} as ${category.toUpperCase()}!`);
-
-            // Mark as voted visually
-            slide.classList.add('voted');
-        }
-    });
-});*/
-
-let userVotes = {
-    king: null,
-    queen: null
-};
+window.addEventListener('DOMContentLoaded', loadUserVotes);
 
 let selectedSlide = null;
 let selectedName = '';
@@ -192,11 +189,42 @@ function hideModal() {
 }
 
 // Handle vote confirmation
-yesBtn.addEventListener('click', () => {
-    userVotes[selectedCategory] = selectedName;
-    selectedSlide.classList.add('voted');
-    showModal(`Successfully voted for ${selectedName} as ${selectedCategory.toUpperCase()}!`, 'alert');
+yesBtn.addEventListener('click', async () => {
+    if (!selectedSlide) return;
+
+    const candidateId = selectedSlide.dataset.id;
+    const category = selectedCategory.toUpperCase();
+
+    try {
+        const response = await fetch('/api/votes/cast', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeaderName]: csrfToken
+            },
+            body: JSON.stringify({
+                candidateId: candidateId,
+                category: category
+            })
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+            selectedSlide.classList.add('voted');
+            userVotes[selectedCategory] = selectedSlide.querySelector('.title span').textContent;
+            showModal(`Successfully voted for ${userVotes[selectedCategory]} as ${category}!`, 'alert');
+        } else {
+            showModal(result, 'alert'); // show error message from backend
+        }
+    } catch (error) {
+        console.error(error);
+        showModal("Failed to submit vote. Please try again.", 'alert');
+    }
 });
+
+
+
 
 // Handle vote cancellation
 noBtn.addEventListener('click', () => {
@@ -229,210 +257,3 @@ document.querySelectorAll('.swiper-slide').forEach(slide => {
         showModal(`Are you sure you want to vote for ${name} as ${category.toUpperCase()}?`, 'confirm');
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*const kingSwiper = new Swiper(".king-swiper", {
-    effect: "coverflow",
-    grabCursor: true,
-    centeredSlides: true,
-    initialSlide: 0,
-    speed: 600,
-    slidesPerView: "auto",
-    coverflowEffect: {
-        rotate: 0,
-        stretch: 80,
-        depth: 350,
-        modifier: 1,
-        slideShadows: true,
-    },
-    on: {
-        click(event) {
-            kingSwiper.slideTo(this.clickedIndex);
-        },
-    },
-    pagination: {
-        el: ".king-pagination",
-    },
-});
-
-
-// QUEEN Swiper
-const queenSwiper = new Swiper(".queen-swiper", {
-    effect: "coverflow",
-    grabCursor: true,
-    centeredSlides: true,
-    initialSlide: 0,
-    speed: 600,
-    slidesPerView: "auto",
-    coverflowEffect: {
-        rotate: 0,
-        stretch: 80,
-        depth: 350,
-        modifier: 1,
-        slideShadows: true,
-    },
-    on: {
-        click(event) {
-            queenSwiper.slideTo(this.clickedIndex);
-        },
-    },
-    pagination: {
-        el: ".queen-pagination",
-    },
-});*/
-
-
- /*new Swiper(".king-swiper", {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        pagination: {
-            el: ".king-pagination",
-            clickable: true,
-        },
-        loop: true,
-        centeredSlides: true,
-    });
-
-    new Swiper(".queen-swiper", {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        pagination: {
-            el: ".queen-pagination",
-            clickable: true,
-        },
-        loop: true,
-        centeredSlides: true,
-    });
-*/
-
-
-
-
-
-
-
-/*var swiper=new Swiper(".swiper",{
-    effect: "coverflow",
-    grabCursor: true,
-    centeredSlides: true,
-    initialSlide: 2,
-    speed: 600,
-    preventClicks: true,
-    slidesPerView: "auto",
-    coverflowEffect: {
-        rotate: 0,
-        stretch: 80,
-        depth: 350,
-        modifier: 1,
-        slideShadows: true,
-    },
-    on: {
-        click(event){
-            if (this.clickedIndex !== undefined) {
-            swiper.slideTo(this.clickedIndex);
-        }
-    }
-    },
-    pagination: {
-        el: ".swiper-pagination",
-    },
-});
-
-particlesJS("particles-js", {
-  "particles": {
-    "number": {
-      "value": 160,
-      "density": {
-        "enable": true,
-        "value_area": 800
-      }
-    },
-    "color": {
-      value: ["#ffffff", "#192bce", "#08a06b"]
-    },
-    "shape": {
-      "type": "circle",
-    },
-    
-    "opacity": {
-      "value": 0.6,
-      "random": false,
-      "anim": {
-        "enable": false,
-        "speed": 10,
-        "opacity_min": 0.1,
-        "sync": false
-      }
-    },
-    "size": {
-      "value": 5,
-      "random": true,
-      "anim": {
-        "enable": true,
-        "speed": 4,
-        "size_min": 0.1,
-        "sync": false
-      }
-    },
-    "line_linked": {
-      "enable": false
-    },
-    "move": {
-      "enable": true,
-      "speed": 1,
-      "direction": "none",
-      "random": true,
-      "straight": false,
-      "out_mode": "none",
-      "bounce": false,
-      "attract": {
-        "enable": false,
-        "rotateX": 600,
-        "rotateY": 1200
-      }
-    }
-  },
-  "retina_detect": true
-});*/

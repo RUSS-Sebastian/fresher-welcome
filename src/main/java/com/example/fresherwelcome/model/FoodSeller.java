@@ -13,7 +13,7 @@ public class FoodSeller {
     @Column(name = "form_id")
     private Long formId;
 
-    @Column(name = "telegram_username", nullable = false, unique = true)
+    @Column(name = "telegram_username", nullable = false)
     private String telegramUsername;
 
     @Convert(converter = FoodSeller.SemesterConverter.class)

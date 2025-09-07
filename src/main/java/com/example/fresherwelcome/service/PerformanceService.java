@@ -36,15 +36,6 @@ public class PerformanceService {
             throw new IllegalArgumentException("User with ID " + dto.getUserId() + " not found");
         }
         User user = optionalUser.get();
-
-        // Check if user already submitted a performance
-        if (performanceRepository.existsByUser(user)) {
-            // throw a clear exception for one-to-one violation
-            throw new IllegalStateException("You have already submitted a performance form.");
-        }
-
-
-
         // --- Convert DTO to Entity ---
         Performance p = new Performance();
         p.setUser(user);

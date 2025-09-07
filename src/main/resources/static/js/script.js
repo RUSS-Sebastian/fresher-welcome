@@ -4,6 +4,21 @@ let csrfToken = null;
 let csrfHeaderName = null;
 let isDropdownOpen = false;
 let displayedMessageIds = new Set();
+let canVoteKingQueen = false;
+
+// Fetch permission once when page loads
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch(`/api/admin-buttons/vote_button`);
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        canVoteKingQueen = await response.json(); // true/false
+        console.log('King/Queen voting allowed:', canVoteKingQueen);
+    } catch (err) {
+        console.error('Failed to check voting permission:', err);
+        alert('Failed to load voting permissions. Some features may not work.');
+    }
+});
 
 async function updateNotificationBadge(userId) {
     try {
@@ -159,8 +174,12 @@ document.addEventListener('click', function(event) {
 
 
 function handleClick(section){
-  if(section=='kingqueen'){
-    window.location.href='kq.html';
+  if (section === 'kingqueen') {
+      if (canVoteKingQueen) {
+          window.location.href = '/protected/kq';
+      } else {
+          alert("You can't vote for Kings and Queens yet!");
+      }
   }
 
   else if(section=='registration'){

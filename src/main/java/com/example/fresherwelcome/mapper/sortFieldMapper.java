@@ -31,5 +31,14 @@ public class sortFieldMapper {
         };
     }
 
+    public static String mapVote(String sortBy) {
+        return switch (sortBy) {
+            case "tnt" -> "user.tnt";
+            default -> sortBy;
+        };
+    }
+
+
+
 
 }

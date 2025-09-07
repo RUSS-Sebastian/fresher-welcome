@@ -48,11 +48,11 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST,"/api/performances").hasAnyRole("ADMIN","STUDENT")
                         // Logout requires login
-                        .requestMatchers(HttpMethod.POST,"/logout").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/logout","/api/candidates/save").authenticated()
 
                         .requestMatchers(HttpMethod.POST,"/api/shops","/api/business","/api/orders").authenticated()
 
-                        .requestMatchers("/api/performances/**","/api/foods/**","/api/orders/**").authenticated()
+                        .requestMatchers("/api/performances/**","/api/foods/**","/api/orders/**","/api/votes/**","/api/candidates/**").authenticated()
 
                         .requestMatchers("/api/food-sellers/**","/api/business/**").authenticated()
 

@@ -13,13 +13,13 @@ const approvedVCard = document.getElementById('ApprovedCard');
 const approvedVCard2 = document.getElementById('ApprovedCard2');
 const approvedVCard3 = document.getElementById('ApprovedCard3');
 const shop = document.getElementById('Shop');
+const candidate = document.getElementById('Candidate');
 let formStates = {
     volunteerFormContainer: false, // closed initially
     activityFormContainer: false,
-    sellerFormContainer: false
+    sellerFormContainer: false,
+    voteFormContainer:false
 };
-let csrfToken = null;
-let csrfHeaderName = null;
 let currentUser = null;
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
             approvedVCard3.style.display = "none";
             shop.style.display = "none";
             foodNum.style.display = "none";
+            candidate.style.display = "none";
 
         }else if(text == "Volunteer"){
           mainContent.style.display = "none";
@@ -126,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
           shop.style.display = "none";
           foodNum.style.display = "none";
           approvedVCard3.style.display = "none";
+          candidate.style.display = "none";
 
         } else if (text === "Feedback") {
             mainContent.style.display = "none";
@@ -145,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shop.style.display = "none";
             foodNum.style.display = "none";
             approvedVCard3.style.display = "none";
+            candidate.style.display = "none";
 
         }else if(text == "Event"){
             mainContent.style.display = "none";
@@ -164,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shop.style.display = "none";
             foodNum.style.display = "none";
             approvedVCard3.style.display = "none";
+            candidate.style.display = "none";
 
         }else if(text == "Voting"){
             king.style.display = "flex";
@@ -183,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shop.style.display = "none";
             foodNum.style.display = "none";
             approvedVCard3.style.display = "none";
+            candidate.style.display = "none";
 
         }else if(text == "Activity"){
           mainContent.style.display = "none";
@@ -202,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
           shop.style.display = "none";
           foodNum.style.display = "none";
           approvedVCard3.style.display = "none";
+          candidate.style.display = "none";
 
         }else if(text == "Food Seller"){
           mainContent.style.display = "none";
@@ -221,7 +227,27 @@ document.addEventListener("DOMContentLoaded", () => {
           shop.style.display = "none";
           approvedVCard3.style.display = "block";
           foodNum.style.display = "block";
+          candidate.style.display = "none";
 
+        }else if(text == "Candidate Management"){
+            mainContent.style.display = "none";
+            feedbackCard.style.display = "none";
+            chart.style.display = "none";
+            eventCard.style.display = "none";
+            king.style.display = "none";
+            queen.style.display = "none";
+            voteCard.style.display = "none";
+            aCard.style.display = "none";
+            foodCard.style.display = "none";
+            vCard.style.display = "none";
+            vNum.style.display = "none";
+            approvedVCard.style.display = "none";
+            pNum.style.display = "none";
+            approvedVCard2.style.display = "none";
+            shop.style.display = "none";
+            foodNum.style.display = "none";
+            approvedVCard3.style.display = "none";
+            candidate.style.display = "block";
         }else {
             mainContent.style.display = "none";
             feedbackCard.style.display = "none";
@@ -240,6 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shop.style.display = "block";
             foodNum.style.display = "none";
             approvedVCard3.style.display = "none";
+            candidate.style.display = "none";
         }
     }
 
@@ -295,6 +322,11 @@ function updateUI(containerId) {
             closedMessage = "Sellers cannot apply for stalls";
             break;
 
+        case "voteFormContainer":
+            openMessage = "Users can vote king and queens";
+            closedMessage = "Users can't vote king and queens";
+            break;
+
         default:
             openMessage = "Form is available";
             closedMessage = "Form is unavailable";
@@ -328,7 +360,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const buttons = [
         { containerId: "volunteerFormContainer", buttonName: "volunteer_form_button" },
         { containerId: "activityFormContainer", buttonName: "activity_form_button" },
-        {containerId: "sellerFormContainer", buttonName:"seller_form_button"}
+        {containerId: "sellerFormContainer", buttonName:"seller_form_button"},
+        {containerId:"voteFormContainer",buttonName:"vote_button"}
 
     ];
 
@@ -396,15 +429,6 @@ function getLocalDatetime() {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-document.querySelector('#voteTable tbody').addEventListener('click', function (e) {
-    if (e.target.closest('.delete-icon')) {
-      const confirmed = confirm("Are you sure you want to delete?");
-      if (confirmed) {
-        const row = e.target.closest('tr');
-        row.remove();
-      }
-    }
-});
 
 // Handle approve/reject clicks
 document.querySelectorAll('.approve').forEach(btn => {
@@ -2193,4 +2217,214 @@ uploadArea.addEventListener('drop', (e) => {
             alert('Please select a JPEG image file only.');
         }
     }
+});
+
+
+const uploadButton1 = document.getElementById('uploadButton1');
+const uploadForm1 = document.getElementById('uploadForm1');
+const closeForm1 = document.getElementById('closeForm1');
+const cancelForm1 = document.getElementById('cancelForm1');
+const candidateForm = document.getElementById('candidateForm');
+const candidateImage = document.getElementById('candidateImage');
+const uploadArea1 = document.getElementById('uploadArea1');
+const imagePreview1 = document.getElementById('imagePreview1');
+const previewImg1 = document.getElementById('previewImg1');
+const fileName1 = document.getElementById('fileName1');
+const successMessage1 = document.getElementById('successMessage1');
+const uploadAnother1 = document.getElementById('uploadAnother1');
+const uploadButtonContainer1 = document.getElementById('uploadButtonContainer1');
+const candidateNameInput = document.getElementById('candidateName');
+const candidateTypeSelect = document.getElementById('candidateType');
+
+
+// Show the upload form
+uploadButton1.addEventListener('click', () => {
+    uploadForm1.classList.remove('hidden');
+    uploadButtonContainer1.classList.add('hidden');
+});
+
+// Hide form when close or cancel is clicked
+function hideCandidateForm() {
+    uploadForm1.classList.add('hidden');
+    uploadButtonContainer1.classList.remove('hidden');
+    candidateForm.reset();
+    imagePreview1.classList.add('hidden');
+    uploadArea1.classList.remove('hidden');
+}
+
+closeForm1.addEventListener('click', hideCandidateForm);
+cancelForm1.addEventListener('click', hideCandidateForm);
+
+// Handle file upload area click
+uploadArea1.addEventListener('click', () => {
+    candidateImage.click();
+});
+
+// Handle file selection for candidate image
+candidateImage.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        // Validate file type
+        if (!file.type.match('image/jpeg')) {
+            alert('Please select a JPEG image file only.');
+            candidateImage.value = '';
+            return;
+        }
+
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg1.src = e.target.result;
+            fileName1.textContent = file.name;
+            uploadArea1.classList.add('hidden');
+            imagePreview1.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+candidateForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // prevent normal form submit
+
+    // Validate inputs (optional, already required in HTML)
+    const name = candidateNameInput.value.trim();
+    const category = candidateTypeSelect.value;
+    const imageFile = candidateImage.files[0];
+
+    if (!name || !category || !imageFile) {
+        alert('Please fill all required fields.');
+        return;
+    }
+
+    // Prepare FormData
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('category', category);
+    formData.append('imageFile', imageFile);
+
+    try {
+        const response = await fetch('/api/candidates/save', {
+            method: 'POST',
+            headers: {
+                [csrfHeaderName]: csrfToken,
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save candidate.');
+        }
+
+        const savedCandidate = await response.json();
+        console.log('Candidate saved:', savedCandidate);
+
+        // Show success message
+        uploadForm1.classList.add('hidden');
+        successMessage1.classList.remove('hidden');
+        candidateForm.reset();
+        imagePreview1.classList.add('hidden');
+        uploadArea1.classList.remove('hidden');
+
+    } catch (err) {
+        console.error(err);
+        alert('Error saving candidate. Please try again.');
+    }
+});
+
+// Handle upload another button
+uploadAnother1.addEventListener('click', () => {
+    successMessage1.classList.add('hidden');
+    uploadButtonContainer1.classList.remove('hidden');
+});
+
+// Drag and drop functionality
+uploadArea1.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea1.classList.add('border-indigo-400');
+});
+
+uploadArea1.addEventListener('dragleave', () => {
+    uploadArea1.classList.remove('border-indigo-400');
+});
+
+uploadArea1.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea1.classList.remove('border-indigo-400');
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        const file = files[0];
+        if (file.type.match('image/jpeg')) {
+            candidateImage.files = files;
+            candidateImage.dispatchEvent(new Event('change'));
+        } else {
+            alert('Please select a JPEG image file only.');
+        }
+    }
+});
+
+
+const table8 = $('#voteTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: function(data, callback) {
+        console.log("🔍 DataTables request object:", data);
+
+        const page = Math.floor(data.start / data.length);
+        const size = data.length;
+
+        let sortBy = "tnt";
+        let direction = "desc";
+        if (data.order && data.order.length > 0) {
+            sortBy = data.columns[data.order[0].column].data;
+            direction = data.order[0].dir;
+        }
+
+        fetch(`/api/votes/voters?page=${page}&size=${size}&sortBy=${sortBy}&direction=${direction}`)
+            .then(res => res.json())
+            .then(json => {
+                callback({
+                    data: json.content,
+                    recordsTotal: json.totalElements,
+                    recordsFiltered: json.totalElements
+                });
+            })
+            .catch(err => console.error("❌ Error fetching data:", err));
+    },
+    columns: [
+        {
+            data: "tnt",
+            orderable:false,
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "kingName",
+            orderable:false,
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+        {
+            data: "queenName",
+            orderable:false,
+            className:"table-cell",
+            render: function(data) {
+                return `
+                    <span class="font-semibold text-gray-900">${data}</span>
+                `;
+            }
+        },
+    ],
+    order: [[0, "desc"]],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50],
+    searching : false
 });

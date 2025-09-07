@@ -9,7 +9,7 @@ function handleReady() {
 
   // Wait for animation to finish (e.g. 1s), then redirect
   setTimeout(() => {
-    window.location.href = 'kq1.html';
+    window.location.href = '/protected/kq1';
   }, 1000); // match your CSS animation duration
 
  /* // After animation, activate reveal section

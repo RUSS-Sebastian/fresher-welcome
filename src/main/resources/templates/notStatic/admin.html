@@ -81,6 +81,12 @@
         </li>
         <li>
             <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
+                <i class="bi bi-person-badge-fill px-2"></i>
+                <span class="link-text">Candidate Management</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="sidebar-item text-dark text-decoration-none d-flex align-items-center gap-3 py-2">
                 <i class="bi bi-bar-chart-line-fill px-2"></i>
                 <span class="link-text">Voting</span>
             </a>
@@ -199,6 +205,37 @@
             </div>
         </div>
 
+        <div id="voteFormContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 cons">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-900">Vote Control</h2>
+                <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+            </div>
+
+            <div class="text-center space-y-6">
+                <!-- Status Display -->
+                <div class="status-indicator statusDisplay">
+                    <div class="text-4xl mb-2 statusEmoji">🔴</div>
+                    <div class="text-lg font-medium text-gray-700 statusText">Form Closed</div>
+                    <div class="text-sm text-gray-500 statusSubtext">Users can't vote king and queens</div>
+                </div>
+
+                <!-- Toggle Switch -->
+                <div class="flex justify-center">
+                    <div class="toggle-switch toggleSwitch"  onclick="toggleForm('voteFormContainer', 'vote_button')">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button
+                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 actionButton"
+                        onclick="confirmAction('voteFormContainer', 'vote_button')"
+                >
+                    Open Form
+                </button>
+            </div>
+        </div>
+
     </div>
 
 
@@ -284,59 +321,16 @@
 
 
 
-    <div id="VoteCard" class="VoteCard mt-3 bg-white rounded w-100">
+    <div id="VoteCard" class="VoteCard mt-3 w-100">
         <table id ="voteTable" class="voteTable display p-3">
-
-            <thead>
-            <tr>
-                <th>TNT</th>
-                <th>Voted for (Boy)</th>
-                <th>Voted for (Girl)</th>
-                <th>Voted time</th>
-                <th></th>
-            </tr>
+            <thead class="table-header">
+                <tr>
+                    <th>TNT</th>
+                    <th>Voted for (Boy)</th>
+                    <th>Voted for (Girl)</th>
+                </tr>
             </thead>
-
-            <tbody>
-            <tr>
-                <td>1452</td>
-                <td>James</td>
-                <td>Emily</td>
-                <td>2025-08-09 10:15</td>
-                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
-            </tr>
-            <tr>
-                <td>832</td>
-                <td>Michael</td>
-                <td>Olivia</td>
-                <td>2025-08-09 10:20</td>
-                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
-            </tr>
-            <tr>
-                <td>2107</td>
-                <td>William</td>
-                <td>Ava</td>
-                <td>2025-08-09 10:25</td>
-                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
-            </tr>
-            <tr>
-                <td>677</td>
-                <td>David</td>
-                <td>Sophia</td>
-                <td>2025-08-09 10:30</td>
-                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
-            </tr>
-            <tr>
-                <td>1599</td>
-                <td>Joseph</td>
-                <td>Isabella</td>
-                <td>2025-08-09 10:35</td>
-                <td><span class="icon-button delete-icon"><i class="bi bi-trash-fill"></i></span></td>
-            </tr>
-            </tbody>
-
         </table>
-
     </div>
 
 
@@ -589,6 +583,142 @@
         </div>
     </div>
 
+    <div class="mx-auto w-100" id = "Candidate">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Candidate Management</h1>
+            <p class="text-gray-600">Upload your candidate details and image</p>
+        </div>
+
+        <!-- Upload Button -->
+        <div class="text-center mb-8" id="uploadButtonContainer1">
+            <button
+                    id="uploadButton1"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-8 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center gap-3 mx-auto"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                Upload Candidate Details
+            </button>
+        </div>
+
+        <!-- Upload Form (Hidden Initially) -->
+        <div id="uploadForm1" class="hidden">
+            <div class="bg-white rounded-xl shadow-xl p-8 fade-in">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Add Your Candidate</h2>
+                    <button
+                            id="closeForm1"
+                            class="text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="candidateForm" class="space-y-6">
+                    <!-- Candidate Name Input -->
+                    <div>
+                        <label for="candidateName" class="block text-sm font-medium text-gray-700 mb-2">
+                            Candidate Name *
+                        </label>
+                        <input
+                                type="text"
+                                id="candidateName"
+                                name="candidateName"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                placeholder="Enter your candidate name"
+                        >
+                    </div>
+
+                    <!--King Queen Selection-->
+                    <div>
+                        <label for="candidateType" class="block text-sm font-medium text-gray-700 mb-2">
+                            Candidate Type *
+                        </label>
+                        <select
+                                id="candidateType"
+                                name="candidateType"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                        >
+                            <option value="">Select candidate type</option>
+                            <option value="KING">KING</option>
+                            <option value="QUEEN">QUEEN</option>
+                        </select>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div>
+                        <label for="candidateImage" class="block text-sm font-medium text-gray-700 mb-2">
+                            Candidate Image (JPEG only) *
+                        </label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-indigo-400 transition-colors">
+                            <input
+                                    type="file"
+                                    id="candidateImage"
+                                    name="candidateImage"
+                                    accept=".jpeg,.jpg"
+                                    required
+                                    class="hidden"
+                            >
+                            <div id="uploadArea1" class="cursor-pointer">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <p class="text-gray-600 mb-2">Click to upload candidate image</p>
+                                <p class="text-sm text-gray-400">JPEG files only</p>
+                            </div>
+                            <div id="imagePreview1" class="hidden mt-4">
+                                <img id="previewImg1" class="image-preview mx-auto" alt="Candidate preview">
+                                <p id="fileName1" class="text-sm text-gray-600 mt-2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Buttons -->
+                    <div class="flex gap-4 pt-4">
+                        <button
+                                type="submit"
+                                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                        >
+                            Save Candidate Details
+                        </button>
+                        <button
+                                type="button"
+                                id="cancelForm1"
+                                class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Message (Hidden Initially) -->
+        <div id="successMessage1" class="hidden">
+            <div class="bg-green-50 border border-green-200 rounded-xl p-6 text-center fade-in">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-green-800 mb-2">Candidate Details Saved!</h3>
+                <p class="text-green-600 mb-4">Your candidate information has been successfully uploaded.</p>
+                <button
+                        id="uploadAnother1"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                >
+                    Upload Another Candidate
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -644,150 +774,96 @@
 
 <script>
 
-   document.addEventListener('DOMContentLoaded', function () {
-       const kingLabels = ['King1', 'King2', 'King3', 'King4'];
-       const voteData = [12, 15, 9, 10];  // Number of votes for each
+    document.addEventListener('DOMContentLoaded', function () {
+        // Load both charts
+        loadCandidateChart('/api/candidates/kings', 'KingPie', 'KingSummary', 'King Statistics');
+        loadCandidateChart('/api/candidates/queens', 'QueenPie', 'QueenSummary', 'Queen Statistics');
+    });
 
-       const totalVotes = voteData.reduce((acc, val) => acc + val, 0);
-       const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'];
+    // 🎨 Random color generator
+    function generateRandomColors(count) {
+        const colors = [];
+        for (let i = 0; i < count; i++) {
+            const r = Math.floor(Math.random() * 200);
+            const g = Math.floor(Math.random() * 200);
+            const b = Math.floor(Math.random() * 200);
+            colors.push(`rgb(${r}, ${g}, ${b})`);
+        }
+        return colors;
+    }
 
-       // Create pie chart
-       const ctx = document.getElementById('KingPie').getContext('2d');
-       const kingChart = new Chart(ctx, {
-           type: 'doughnut',
-           data: {
-               labels: kingLabels,
-               datasets: [{
-                   data: voteData,
-                   backgroundColor: backgroundColors,
-               }]
-           },
-           options: {
-               responsive:true,
-               maintainAspectRatio: true,
-               plugins: {
-                   tooltip: {
-                       callbacks: {
-                           label: function(context) {
-                               const label = context.label || '';
-                               const value = context.raw;
-                               const percentage = ((value / totalVotes) * 100).toFixed(1);
-                               return `${label}: ${value} votes (${percentage}%)`;
-                           }
-                       }
-                   },
-                   legend: {
-                       position: 'bottom',
-                   },
-                   datalabels: {
-                       color: '#fff',
-                       formatter: (value, context) => {
-                           const percentage = ((value / totalVotes) * 100).toFixed(1);
-                           return `${percentage}%`;
-                       }
-                   }
-               }
-           },
-           plugins: [ChartDataLabels] // Enable datalabels plugin
-       });
+    // 📊 Generic function to load chart + summary
+    async function loadCandidateChart(apiUrl, canvasId, summaryId, chartTitle) {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
 
-       // Populate summary
-       const summaryDiv = $('#KingSummary');
-       kingLabels.forEach((label, index) => {
-           const votes = voteData[index];
-           const percent = ((votes / totalVotes) * 100).toFixed(1);
-           const color = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'][index]; // sync with chart colors
+            const labels = data.map(item => item.name);
+            const votes = data.map(item => item.voteCount);
+            const totalVotes = votes.reduce((acc, val) => acc + val, 0);
+            const backgroundColors = generateRandomColors(labels.length);
 
+            // Render chart
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: votes,
+                        backgroundColor: backgroundColors,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.label || '';
+                                    const value = context.raw;
+                                    const percentage = ((value / totalVotes) * 100).toFixed(1);
+                                    return `${label}: ${value} votes (${percentage}%)`;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            formatter: (value) => {
+                                const percentage = ((value / totalVotes) * 100).toFixed(1);
+                                return `${percentage}%`;
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
 
-           summaryDiv.append(`
-               <div class="d-flex justify-content-center align-items-center mb-2 ">
-                   <div style="width: 15px; height: 15px; background-color: ${color}; margin-right: 10px; border-radius: 3px;"></div>
-                   <div><strong>${label}</strong>: ${votes} vote${votes !== 1 ? 's' : ''} (${percent}%)</div>
-               </div>
-           `);
-       });
+            // Render summary
+            const summaryDiv = document.getElementById(summaryId);
+            summaryDiv.innerHTML = '';
+            labels.forEach((label, index) => {
+                const votesCount = votes[index];
+                const percent = ((votesCount / totalVotes) * 100).toFixed(1);
+                const color = backgroundColors[index];
 
+                summaryDiv.innerHTML += `
+                    <div class="d-flex justify-content-center align-items-center mb-2">
+                        <div style="width: 15px; height: 15px; background-color: ${color}; margin-right: 10px; border-radius: 3px;"></div>
+                        <div><strong>${label}</strong>: ${votesCount} vote${votesCount !== 1 ? 's' : ''} (${percent}%)</div>
+                    </div>
+                `;
+            });
 
-
-   });
-
-
-
-   document.addEventListener('DOMContentLoaded', function () {
-       const queenLabels = ['Q1', 'Que2', 'Que3', 'Que4'];
-       const voteData = [32, 10, 28, 20];  // Number of votes for each
-
-       const totalVotes = voteData.reduce((acc, val) => acc + val, 0);
-       const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'];
-
-       // Create pie chart
-       const ctx = document.getElementById('QueenPie').getContext('2d');
-       const queenChart = new Chart(ctx, {
-           type: 'doughnut',
-           data: {
-               labels: queenLabels,
-               datasets: [{
-                   data: voteData,
-                   backgroundColor: backgroundColors,
-               }]
-           },
-           options: {
-               responsive:true,
-               maintainAspectRatio: true,
-               plugins: {
-                   tooltip: {
-                       callbacks: {
-                           label: function(context) {
-                               const label = context.label || '';
-                               const value = context.raw;
-                               const percentage = ((value / totalVotes) * 100).toFixed(1);
-                               return `${label}: ${value} votes (${percentage}%)`;
-                           }
-                       }
-                   },
-                   legend: {
-                       position: 'bottom',
-                   },
-                   datalabels: {
-                       color: '#fff',
-                       formatter: (value, context) => {
-                           const percentage = ((value / totalVotes) * 100).toFixed(1);
-                           return `${percentage}%`;
-                       }
-                   }
-               }
-           },
-           plugins: [ChartDataLabels] // Enable datalabels plugin
-       });
-
-       // Populate summary
-       const summaryDiv = $('#QueenSummary');
-       queenLabels.forEach((label, index) => {
-           const votes = voteData[index];
-           const percent = ((votes / totalVotes) * 100).toFixed(1);
-           const color = ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'][index]; // sync with chart colors
-
-
-           summaryDiv.append(`
-               <div class="d-flex justify-content-center align-items-center mb-2 ">
-                   <div style="width: 15px; height: 15px; background-color: ${color}; margin-right: 10px; border-radius: 3px;"></div>
-                   <div><strong>${label}</strong>: ${votes} vote${votes !== 1 ? 's' : ''} (${percent}%)</div>
-               </div>
-           `);
-       });
-
-
-
-   });
-
-
-   $(document).ready(function() {
-       $('#voteTable').DataTable({
-           autoWidth: false
-
-           });  // ← Initializes the table
-   });
-   (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d7527a616a448a',t:'MTc1NDkxMTAwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
+        } catch (error) {
+            console.error(`Error loading ${chartTitle}:`, error);
+        }
+    }
+(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d7527a616a448a',t:'MTc1NDkxMTAwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
 </script>
 <script th:src="@{/js/admin.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
